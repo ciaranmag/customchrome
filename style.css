@@ -1,0 +1,167 @@
+body, html {
+  margin:0;
+  padding:0;
+}
+
+body {
+  width: 600px;
+  height: 100%;
+	background-color: #f3f3f3;
+}
+
+.searchbox-holder {
+	text-align: center;
+}
+
+#search-icon {
+	font-size: 20px;
+	color: #9F9F9F;
+}
+
+#searchbox {
+	text-align: center;
+  padding:0;
+  margin: 10px 0;
+  width: 40%;
+  height: 40px;
+  border:none;
+  border-bottom: 1px solid #26a69a;
+  font-size: 1.3em;
+}
+
+#searchbox:active, #searchbox:focus + #search-icon {
+  outline: none;
+}
+
+.waves-light.enabled {
+	background-color: #81c784 !important;
+}
+
+.disabled {
+	cursor: pointer !important;
+}
+
+.profile-holder {
+	text-align: center;
+}
+
+.profile-card-content {
+	padding: 20px 0px 0px 0px !important;
+}
+
+.extension-card-content {
+	padding: 20px 0px !important;
+	border-radius: 0px !important;
+}
+
+.extBlock {
+  width: 530px;
+  min-height: 5vw;
+  float: left;
+  margin: 10px 25px;
+  text-align: left;
+}
+
+.lefty {
+  float: left;
+  width: 85%;
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.righty {
+	float: right;
+	width: 15%;
+}
+
+.extBlock img {
+  width: 50px;
+  height: 50px;
+  float: left;
+  vertical-align: middle;
+}
+
+.extBlock:first-of-type {
+	margin-top: 30px !important;
+}
+
+.activeTitleDiv {
+	background-color: #81c784;
+}
+
+.inactiveTitleDiv {
+	background-color: #DFDFDF;
+}
+
+#activeTitle,
+#inactiveTitle {
+	padding: 20px 0px;
+	padding-left: 30px !important;
+}
+
+#activeTitle {
+	color: #FFF;
+}
+
+#inactiveTitle {
+	color: #9F9F9F;
+}
+
+.extName {
+  height:30px;
+  overflow: hidden;
+  font-size: 20px;
+  padding-left: 10px;
+  font-family: 'Roboto', sans-serif;
+  color: black;
+}
+
+.extDescription {
+  overflow: hidden;
+  font-size: 12px;
+  color: #a3a3a3;
+  padding-left: 10px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.extToggle {
+  font-size: 15px;
+  float: right;
+}
+
+.js-switch {
+  font-size: 30px;
+}
+
+span.lever::after {
+	background-color: #81c784;
+}
+.switch label input[type=checkbox]:checked+.lever:after {
+	background-color: #81c784;
+}
+.switch label input[type=checkbox]:checked+.lever {
+	background-color: #81c784;
+}
+
+span.lever {
+	background-color: #DFDFDF;
+}
+
+/* Not working */
+.switch label input[type=checkbox].lever {
+	background-color: #DFDFDF;
+}
+
+/*.state {
+  color: #a3a3a3;;
+  font-size: 16px;
+}*/
+
+.card {
+	margin: 10px !important;
+}
+.card:first-of-type {
+	margin-bottom: 50px !important;
+}
+

@@ -1,0 +1,15 @@
+ Quick Extension Manager:
+ ☐ Sort active and inactive alphabetically
+ ☐ User custom profiles e.g. (YouTube - turn on AlienTube and MagicActions / WebDev - turn on LiveReload, ColorPicker, FontFinder / Reddit - turn on RES, Imagus / Always On - never turn these off / Shopping - Price Checkers)
+ ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
+ ☐ Toast notifications "RES and Imagus have been turned on, enjoy your browsing"
+ ☐ Change search icon to font and change colour on focus
+
+
+Issues:
+  ☐ Profile buttons don't remember their enabled/disabled state when the popup.html is closed and re-opened
+
+
+Ask Chris:
+ ☐ Sort lists alphabetically
+ ☐ 
