@@ -36,7 +36,9 @@
 </div>
 
 <div class="searchbox-holder">
-	<i id="search-icon" class="mdi-action-search"></i><input type="text" id="searchbox">
+	<i id="search-icon" class="mdi-action-search"></i>
+	<input type="text" id="searchbox">
+	<a href="chrome-extension://eahcjoahlfpbkjhcddhkahcnipemfica/options.html" target="_blank"><i class="mdi-action-settings"></i></a>
 </div>
 
 
@@ -73,6 +75,8 @@
 
 	  <div class="righty">
 	  	<span class="switch extToggle">
+	  			<span class="extId">{{ id }}</span>
+	  			<span class="extState">{{ enabled }}</span>
 		      <input type="checkbox" class="js-switch" id="test5" {{ enabled }} />
 		      <span class="lever"></span>
 		  </span>

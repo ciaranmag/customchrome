@@ -38,7 +38,31 @@ $(document).ready(function(){
 				}
 			});
 
-			checkboxListener(); // run the function which listens for a change in a checkbox state
+			extStateListener(); // run the function which listens for a change in a checkbox state
+			
+			$(".extId").hide();
+			$(".extState").hide();
+
+			$(".extBlock").click(function(){
+				var theExtId = $(this).find(".extId").text();
+				var theExtState = $(this).find(".extState");
+				var theExtStateText = theExtState.text();
+				var wholeExt = $(this);
+				if (theExtStateText === "true") {
+					chrome.management.setEnabled(theExtId, false, function (){
+						theExtState.text("false");
+						wholeExt.append(".inactiveExtensions");
+						location.reload();
+					});
+				} 
+				else if (theExtStateText === "false") {
+					chrome.management.setEnabled(theExtId, true, function (){
+						theExtState.text("true");
+						wholeExt.append(".activeExtensions");
+						location.reload();
+					});
+				};
+			});
 		});
 
 	// Search
@@ -55,14 +79,16 @@ $(document).ready(function(){
 					}
 				});
 		});
+		$('.searchbox').focus();
 }); // close $(document).ready
 
 // function which listens for checkbox changes and then disables/enables extension depending on the change requested
 var g;
-var checkboxListener = function(){
-	$('.extToggle input').change(
+function extStateListener() {
+	$('.extState').change(
 		function(){
-			g = $(this); // g is now set to the selected extension
+			g = $(this).parent(); // g is now set to the selected extension
+			console.log(g);
 			var appId = g.id; // set the appid as an attribute in our handlebars template at the end of popup.html ** changed g.attr('appid') to g.id - it should still work **
 			if (g.enabled) {
 				// app is active, disable extension - eh this is being mirrored for some reason, asynchronous-ness messing stuff up maybe? works anyway
@@ -79,6 +105,8 @@ var checkboxListener = function(){
 	);
 };
 
+
+
 // Changes the appearance of a profile button to show if it's in on or off mode
 $(".profile-btn").click(function(){
 	if ($(this).hasClass("enabled")) {
@@ -92,6 +120,15 @@ $(".profile-btn").click(function(){
 });
 
 
+
+	// extArray.forEach(function(a) {
+	// 	if (a.id === "diebikgmpmeppiilkaijjbdgciafajmg") { 
+	// 		console.log(a);}
+	// 	});
+
+
+
+
 // messing around trying to get the profile buttons working
 
 alwaysOnBtn.addEventListener('click', function(){
@@ -100,7 +137,6 @@ if ($(this).hasClass("enabled")) {
 		chrome.management.setEnabled(arg, false, function (){
 			console.log('Turning ' +arg+ ' off');
 			extArray[63].enabled = false;
-			extArray[63].checkbox = "";
 		});
 	});
 } else if ($(this).hasClass("disabled")) {}
@@ -108,7 +144,6 @@ if ($(this).hasClass("enabled")) {
 		chrome.management.setEnabled(arg, true, function (){
 			console.log('Turning Reddit on');
 			extArray[63].enabled = true;
-			extArray[63].checkbox = "checked";
 		});
 	});
 	checkboxListener();

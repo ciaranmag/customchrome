@@ -9,29 +9,7 @@ body {
 	background-color: #f3f3f3;
 }
 
-.searchbox-holder {
-	text-align: center;
-}
-
-#search-icon {
-	font-size: 20px;
-	color: #9F9F9F;
-}
-
-#searchbox {
-	text-align: center;
-  padding:0;
-  margin: 10px 0;
-  width: 40%;
-  height: 40px;
-  border:none;
-  border-bottom: 1px solid #26a69a;
-  font-size: 1.3em;
-}
-
-#searchbox:active, #searchbox:focus + #search-icon {
-  outline: none;
-}
+/* PROFILES */
 
 .waves-light.enabled {
 	background-color: #81c784 !important;
@@ -47,6 +25,51 @@ body {
 
 .profile-card-content {
 	padding: 20px 0px 0px 0px !important;
+}
+
+
+/* SEARCHBOX */
+
+.searchbox-holder {
+  text-align: center;
+}
+
+#search-icon {
+  font-size: 20px;
+  color: #9F9F9F;
+}
+
+#searchbox {
+  text-align: center;
+  padding:0;
+  margin: 10px 0;
+  width: 40%;
+  height: 40px;
+  border:none;
+  border-bottom: 1px solid #26a69a;
+  font-size: 1.3em;
+}
+
+#searchbox:active, #searchbox:focus + #search-icon {
+  outline: none;
+}
+
+/* SETTINGS */
+
+.mdi-action-settings, 
+a.mdi-action-settings {
+  color: #9F9F9F;
+  font-size: 20px;
+}
+
+/* EXTENSIONS */
+
+.card {
+  margin: 10px !important;
+}
+
+.card:first-of-type {
+  margin-bottom: 50px !important;
 }
 
 .extension-card-content {
@@ -158,10 +181,4 @@ span.lever {
   font-size: 16px;
 }*/
 
-.card {
-	margin: 10px !important;
-}
-.card:first-of-type {
-	margin-bottom: 50px !important;
-}
 
