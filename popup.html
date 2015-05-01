@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Quick Extension Manager</title>
-	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto'>
+	<!-- <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto'> -->
   <link rel="stylesheet" href="materialize/materialize.min.css">
   <link rel="stylesheet" href="style.css">
 	<style type="text/css">
@@ -26,11 +26,11 @@
 <div class="row">
   <div class="col s12">
     <div class="card-content profile-card-content black-text profile-holder">
-    	<a class="waves-effect waves-light btn profile-btn enabled" id="alwaysOnBtn">Always On</a>
-    	<a class="waves-effect waves-light btn profile-btn enabled">Web Dev</a>
-    	<a class="waves-effect waves-light btn profile-btn disabled">Design</a>
-    	<a class="waves-effect waves-light btn profile-btn disabled">Reddit</a>
-    	<a class="waves-effect waves-light btn profile-btn disabled">YouTube</a>
+    	<a class="profile-btn" id="profile1">Always On</a>
+    	<a class="profile-btn" id="profile2">Web Dev</a>
+    	<a class="profile-btn" id="profile3">Design</a>
+    	<a class="profile-btn" id="profile4">Reddit</a>
+    	<a class="profile-btn" id="profile5">YouTube</a>
     </div>
   </div>
 </div>
@@ -49,9 +49,9 @@
 	  <div id="activeExtensions" class="card-content extension-card-content activeTitleDiv">
 	    <span id="activeTitle" class="card-title">Active</span>
 		</div>
-		<div class="card-action">
+		<!-- <div class="card-action">
       <a href="#">TURN OFF ALL EXTENSIONS</a>
-    </div>
+    </div> -->
 	</div>
 
 	<!-- Spit out inactive extensions -->
@@ -87,7 +87,7 @@
 
 	<script src="jquery-2.1.1.min.js"></script>
   <script src="handlebars-v3.0.1.js"></script>
-  <script src="materialize/materialize.min.js"></script>
+  <!-- <script src="materialize/materialize.min.js"></script> -->
   <script src="myscript.js"></script>
 </body>
 </html>
