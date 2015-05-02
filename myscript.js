@@ -206,19 +206,26 @@ $(".profile-btn").click(function(){ // if a profile btn is clicked
 // 	);
 // };
 
-function extStateListener() {
+function extStateListener() { // turn on/off extensions when toggle is switched
 	$('.js-switch').change(
 		function(){
-			var id = $(this).parents('.switch').attr('id');
-			console.log('id is'+id);
+			var id = $(this).parents('.switch').attr('id'); //get the app id
+			var name = $(this).parents('.switch').attr('name'); //get the app name
 
-			if($(this).is(':checked')){
-				console.log('app id '+id+' was UNchecked, enabling now');
-				chrome.management.setEnabled(id, true, function (){});
+			if($(this).is(':checked')){//gets the NEW state of the toggle, turns ext on/off as necessary
+				//extension was off, turn it on:
+				chrome.management.setEnabled(id, true, function (){
+					//add toast for user feedback
+					Materialize.toast(name+' is now on', 4000)
+				});
 			} else {
-				console.log('app id '+id+' was checked, disabling now');
-				chrome.management.setEnabled(id, false, function (){});
+				//extension was ON, turn it off:
+				chrome.management.setEnabled(id, false, function (){
+					//add toast for user feedback
+					Materialize.toast(name+' is now off', 4000)
+				});
 			}
+
 		})
 
 }
