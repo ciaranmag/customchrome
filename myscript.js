@@ -170,31 +170,28 @@ $(".profile-btn").click(function(){ // if a profile btn is clicked
 
 
 // function which listens for checkbox changes and then disables/enables extension depending on the change requested
-// 
-// 
-// //////////////////      IS THIS NEEDED ANYMORE??
-// 
-// var g;
-// function extStateListener() {
-// 	$('.extState').change(
-// 		function(){
-// 			g = $(this).parent(); // g is now set to the selected extension
-// 			console.log(g);
-// 			var appId = g.id; // set the appid as an attribute in our handlebars template at the end of popup.html ** changed g.attr('appid') to g.id - it should still work **
-// 			if (g.enabled) {
-// 				// app is active, disable extension - eh this is being mirrored for some reason, asynchronous-ness messing stuff up maybe? works anyway
-// 				chrome.management.setEnabled(appId, true, function (){
-// 					// SET SWITCH TO OFF HERE
-// 				});
-// 			} else {
-// 				// app is off, turn on - as above, this is being mirrored for some reason. working tho...
-// 				chrome.management.setEnabled(appId, false, function (){
-// 					// SET SWITCH TO ON HERE
-// 				});
-// 			}
-// 		}
-// 	);
-// };
+
+var g;
+function extStateListener() {
+	$('.extState').change(
+		function(){
+			g = $(this).parent(); // g is now set to the selected extension
+			console.log(g);
+			var appId = g.id; // set the appid as an attribute in our handlebars template at the end of popup.html ** changed g.attr('appid') to g.id - it should still work **
+			if (g.enabled) {
+				// app is active, disable extension - eh this is being mirrored for some reason, asynchronous-ness messing stuff up maybe? works anyway
+				chrome.management.setEnabled(appId, true, function (){
+					// SET SWITCH TO OFF HERE
+				});
+			} else {
+				// app is off, turn on - as above, this is being mirrored for some reason. working tho...
+				chrome.management.setEnabled(appId, false, function (){
+					// SET SWITCH TO ON HERE
+				});
+			}
+		}
+	);
+};
 
 
 
