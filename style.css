@@ -7,9 +7,19 @@ body {
 	width: 600px;
 	height: 100%;
 	background-color: #f3f3f3;
+	font-family: 'Roboto', sans-serif;
 }
 
+
 /* PROFILES */
+
+.profile-card-content {
+	padding: 20px 0px 0px 0px !important;
+}
+
+.profile-holder {
+	text-align: center;
+}
 
 .profile-btn {
 /*  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -40,24 +50,11 @@ body {
 	color: #9F9F9F;
 }
 
-.profile-holder {
-	text-align: center;
-}
 
-.profile-card-content {
-	padding: 20px 0px 0px 0px !important;
-}
-
-
-/* SEARCHBOX */
+/* SEARCHBOX AND SETTINGS */
 
 .searchbox-holder {
 	text-align: center;
-}
-
-#search-icon {
-	font-size: 20px;
-	color: #9F9F9F;
 }
 
 #searchbox {
@@ -75,13 +72,13 @@ body {
 	outline: none;
 }
 
-/* SETTINGS */
-
+#search-icon,
 .mdi-action-settings, 
 a.mdi-action-settings {
 	color: #9F9F9F;
 	font-size: 20px;
 }
+
 
 /* EXTENSIONS */
 
@@ -167,7 +164,6 @@ a.mdi-action-settings {
 	height: 30px;
 	overflow: hidden;
 	font-size: 20px;
-	font-family: 'Roboto', sans-serif;
 	color: black;
 }
 
@@ -175,7 +171,6 @@ a.mdi-action-settings {
 	overflow: hidden;
 	font-size: 12px;
 	color: #a3a3a3;
-	font-family: 'Roboto', sans-serif;
 }
 
 .extToggle {
