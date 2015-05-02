@@ -104,15 +104,15 @@ a.mdi-action-settings {
 }
 
 .lefty {
-	width: 90%;
+	width: 74%;
 	display: inline-block;
 	height: 100%;
 	vertical-align: middle;
 }
 
 .righty {
-	float: right;
-	width: 10%;
+	display: inline-block;
+	width: 25%;
 }
 
 .picHolder {
