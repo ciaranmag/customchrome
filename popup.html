@@ -53,7 +53,6 @@
       <a href="#">TURN OFF ALL EXTENSIONS</a>
     </div> -->
 	</div>
-
 	<!-- Spit out inactive extensions -->
 	<div class="card">
 	  <div id="inactiveExtensions" class="card-content extension-card-content inactiveTitleDiv">
@@ -64,26 +63,30 @@
 </div> <!-- allExtensionsContainer -->
 
 
-	<!-- Handlebar Template Start -->
-	<script id="entry-template" type="text/x-handlebars-template">
-	<div class="extBlock">
-	  <div class="lefty">
-	  	<img src="{{ pic }}">
-	  	<span class="extName" >{{ name }}</span><br>
-	  	<span class="extDescription">{{ description }}</span>
-	  </div>
-
-	  <div class="righty">
-	  	<span class="switch extToggle">
-	  			<span class="extId">{{ id }}</span>
-	  			<span class="extState">{{ enabled }}</span>
-		      <input type="checkbox" class="js-switch" id="test5" {{ enabled }} />
-		      <span class="lever"></span>
-		  </span>
-	  </div>
+<!-- Handlebar Template Start -->
+<script id="entry-template" type="text/x-handlebars-template">
+<div class="extBlock">
+	<div class="lefty">
+	 	<div class="picHolder">
+	 		<img src="{{ pic }}">
+	 	</div>
+	 	<div class="nameDesc">
+		 	<span class="extName" >{{ name }}</span><br>
+		 	<span class="extDescription">{{ description }}</span>
+		</div>
 	</div>
-	</script>
-	<!-- Handlebar Template End-->
+
+	<div class="righty">
+	 	<span class="extId">{{ id }}</span>
+	 	<span class="extState">{{ enabled }}</span>
+	 	<span class="switch extToggle">
+	     <input type="checkbox" class="js-switch" id="test5" {{ enabled }} />
+	     <span class="lever"></span>
+	 </span>
+	</div>
+</div>
+</script>
+<!-- Handlebar Template End-->
 
 	<script src="jquery-2.1.1.min.js"></script>
   <script src="handlebars-v3.0.1.js"></script>
@@ -91,3 +94,11 @@
   <script src="myscript.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+

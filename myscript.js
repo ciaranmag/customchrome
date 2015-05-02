@@ -2,6 +2,7 @@ var extArray = [];
 var activeExtensions = [];
 var inactiveExtensions = [];
 var profilesHolder = {};
+var btnId;
 var profile1 = [];
 var profile2 = [];
 var profile3 = [];
@@ -48,17 +49,12 @@ $(document).ready(function(){
 		
 		// These profiles can't reference extArray permanently because if a user installs/uninstalls extensions these extensions will change places in the extArray array
 		profile1 =[
-			extArray[0],
-			extArray[1],
-			extArray[2],
-			extArray[3]
+			extArray[0]
 		];
 
 		profile2 =[
-			extArray[4],
-			extArray[5],
-			extArray[6],
-			extArray[7]
+			extArray[0],
+			extArray[1]
 		];
 
 		profile3 =[
@@ -76,10 +72,10 @@ $(document).ready(function(){
 		];
 
 		profile5 =[
-			extArray[16],
-			extArray[17],
-			extArray[18],
-			extArray[19]
+			extArray[0],
+			extArray[1],
+			extArray[2],
+			extArray[3]
 		];
 
 		profilesHolder = {
@@ -90,36 +86,39 @@ $(document).ready(function(){
 			"profile5": profile5
 		};
 
+		// the amount of extension profiles the user has
 		var sizeOfProfilesHolder = Object.keys(profilesHolder).length;
 
-		for (var i = 0; i < sizeOfProfilesHolder-1; i++) {
-			for (key in profilesHolder){
-					// These numbers need to go through the size of each profile instead of being numbered
-					if (profilesHolder[key][0]["enabled"] && profilesHolder[key][1]["enabled"] && profilesHolder[key][2]["enabled"] && profilesHolder[key][3]["enabled"]) {
-						$("#" + key).addClass("on");
-					} else{
+		for (var i = 0; i < sizeOfProfilesHolder-1; i++) { // cycle through the profilesHolder
+			for (key in profilesHolder){ // cycle through the extension profiles
+				$("#" + key).addClass("on"); // default turn the profile btn to the on appearance
+				for (var i = 0; i < profilesHolder[key].length; i++) { // cycle through the extensions within the profile
+					if (profilesHolder[key][i]["enabled"] === false) { // if any of the extensions are turned off then the profile isn't fully on so give it the off appearance
+						$("#" + key).removeClass("on");
 						$("#" + key).addClass("off");
 					}
+				};
 			}
 		};
 
 		// Turning individual extensions on or off with a click
-		$(".extId").hide();
-		$(".extState").hide();
+		$(".extId").hide(); // hide this - just here to reference each individual ext
+		$(".extState").hide(); // hide this - just here to reference each individual ext's state
 
-		$(".extBlock").click(function(){
-			var theExtId = $(this).find(".extId").text();
-			var theExtState = $(this).find(".extState");
-			var theExtStateText = theExtState.text();
-			var wholeExt = $(this);
-			if (theExtStateText === "true") {
+		// THIS AREA WILL BE CHANGED WHEN I INTRODUCE SWITCHES FOR EACH EXTENSION
+		$(".extBlock").click(function(){ // if an ext is clicked on
+			var wholeExt = $(this); // the entire extension
+			var theExtId = wholeExt.find(".extId").text(); // get it's extension id
+			var theExtState = wholeExt.find(".extState"); // quick way to access it's state for later
+			var theExtStateText = theExtState.text(); // take the state's text (either true or false)
+			if (theExtStateText === "true") { // if the ext is on then turn it off and change the state text, then put it in the inactive section and reload the popup
 				chrome.management.setEnabled(theExtId, false, function (){
 					theExtState.text("false");
 					wholeExt.append(".inactiveExtensions");
 					location.reload();
 				});
 			} 
-			else if (theExtStateText === "false") {
+			else if (theExtStateText === "false") {// or if the ext is off then turn it on and change the state text, then put it in the active section and reload the popup
 				chrome.management.setEnabled(theExtId, true, function (){
 					theExtState.text("true");
 					wholeExt.append(".activeExtensions");
@@ -146,39 +145,19 @@ $(document).ready(function(){
 	$('.searchbox').focus();
 }); // close $(document).ready
 
-// function which listens for checkbox changes and then disables/enables extension depending on the change requested
-var g;
-function extStateListener() {
-	$('.extState').change(
-		function(){
-			g = $(this).parent(); // g is now set to the selected extension
-			console.log(g);
-			var appId = g.id; // set the appid as an attribute in our handlebars template at the end of popup.html ** changed g.attr('appid') to g.id - it should still work **
-			if (g.enabled) {
-				// app is active, disable extension - eh this is being mirrored for some reason, asynchronous-ness messing stuff up maybe? works anyway
-				chrome.management.setEnabled(appId, true, function (){
-					// SET SWITCH TO OFF HERE
-				});
-			} else {
-				// app is off, turn on - as above, this is being mirrored for some reason. working tho...
-				chrome.management.setEnabled(appId, false, function (){
-					// SET SWITCH TO ON HERE
-				});
-			}
-		}
-	);
-};
 
-$("#profile1").click(function(){
-	if ($(this).hasClass("on")) { // turn all off
-		profile1.forEach(function(extensionObj){
+//  TURNING PROFILE BUTTONS ON OR OFF AFTER CLICKING THEM
+$(".profile-btn").click(function(){ // if a profile btn is clicked
+	btnId = $(this).attr("id"); // find out which one and assign to btnId
+	if ($(this).hasClass("on")) { // if the btn is currently on then turn all extensions off
+		window[btnId].forEach(function(extensionObj){
 			chrome.management.setEnabled(extensionObj.id, false, function (){});
 		})
 		$(this).removeClass("on");
 		$(this).addClass("off");
 	}
-	else if ($(this).hasClass("off")) { // turn all on
-		profile1.forEach(function(extensionObj){
+	else if ($(this).hasClass("off")) { // if the btn is currently off then turn all extensions on
+		window[btnId].forEach(function(extensionObj){
 			chrome.management.setEnabled(extensionObj.id, true, function (){});
 		})
 		$(this).removeClass("off");
@@ -188,6 +167,40 @@ $("#profile1").click(function(){
 });
 
 
+
+
+// function which listens for checkbox changes and then disables/enables extension depending on the change requested
+// 
+// 
+// //////////////////      IS THIS NEEDED ANYMORE??
+// 
+// var g;
+// function extStateListener() {
+// 	$('.extState').change(
+// 		function(){
+// 			g = $(this).parent(); // g is now set to the selected extension
+// 			console.log(g);
+// 			var appId = g.id; // set the appid as an attribute in our handlebars template at the end of popup.html ** changed g.attr('appid') to g.id - it should still work **
+// 			if (g.enabled) {
+// 				// app is active, disable extension - eh this is being mirrored for some reason, asynchronous-ness messing stuff up maybe? works anyway
+// 				chrome.management.setEnabled(appId, true, function (){
+// 					// SET SWITCH TO OFF HERE
+// 				});
+// 			} else {
+// 				// app is off, turn on - as above, this is being mirrored for some reason. working tho...
+// 				chrome.management.setEnabled(appId, false, function (){
+// 					// SET SWITCH TO ON HERE
+// 				});
+// 			}
+// 		}
+// 	);
+// };
+
+
+
+
+
+// /////////////////         RANDOM SHIT
 
 
 // extension.toggle(enabled);

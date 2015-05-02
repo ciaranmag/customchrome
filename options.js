@@ -12,11 +12,15 @@ $(document).ready(function(){
 		allExtArray.sort(function(a, b) {
 			return a.name.localeCompare(b.name);
 		});
+
+		// Spit out long list of all extension names into a dialog popup after clicking the floating add btn
+
 	});
 });
 
+// var optJs = chrome.extension.getURL("options.js");
 
-
+console.log(extArray);
 
 
 

@@ -1,11 +1,11 @@
 body, html {
-  margin:0;
-  padding:0;
+	margin:0;
+	padding:0;
 }
 
 body {
-  width: 600px;
-  height: 100%;
+	width: 600px;
+	height: 100%;
 	background-color: #f3f3f3;
 }
 
@@ -13,31 +13,31 @@ body {
 
 .profile-btn {
 /*  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);*/
-  border: none;
-  border-radius: 2px;
-  display: inline-block;
-  height: 36px;
-  line-height: 36px;
-  outline: 0;
-  padding: 0 2rem;
-  text-transform: uppercase;
-  vertical-align: middle;
-  background-color: #DFDFDF;
-  color: #DFDFDF;
+	-moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);*/
+	border: none;
+	border-radius: 2px;
+	display: inline-block;
+	height: 36px;
+	line-height: 36px;
+	outline: 0;
+	padding: 0 2rem;
+	text-transform: uppercase;
+	vertical-align: middle;
+	background-color: #DFDFDF;
+	color: #DFDFDF;
 }
 
 .on {
 	background-color: #81c784 !important;
-  cursor: pointer !important;
-  color: #fff;
+	cursor: pointer !important;
+	color: #fff;
 }
 
 .off {
 	cursor: pointer !important;
-  background-color: #DFDFDF;
-  color: #9F9F9F;
+	background-color: #DFDFDF;
+	color: #9F9F9F;
 }
 
 .profile-holder {
@@ -52,45 +52,45 @@ body {
 /* SEARCHBOX */
 
 .searchbox-holder {
-  text-align: center;
+	text-align: center;
 }
 
 #search-icon {
-  font-size: 20px;
-  color: #9F9F9F;
+	font-size: 20px;
+	color: #9F9F9F;
 }
 
 #searchbox {
-  text-align: center;
-  padding:0;
-  margin: 10px 0;
-  width: 40%;
-  height: 40px;
-  border:none;
-  border-bottom: 1px solid #26a69a;
-  font-size: 1.3em;
+	text-align: center;
+	padding:0;
+	margin: 10px 0;
+	width: 40%;
+	height: 40px;
+	border:none;
+	border-bottom: 1px solid #26a69a;
+	font-size: 1.3em;
 }
 
 #searchbox:active, #searchbox:focus + #search-icon {
-  outline: none;
+	outline: none;
 }
 
 /* SETTINGS */
 
 .mdi-action-settings, 
 a.mdi-action-settings {
-  color: #9F9F9F;
-  font-size: 20px;
+	color: #9F9F9F;
+	font-size: 20px;
 }
 
 /* EXTENSIONS */
 
 .card {
-  margin: 10px !important;
+	margin: 10px !important;
 }
 
 .card:first-of-type {
-  margin-bottom: 50px !important;
+	margin-bottom: 50px !important;
 }
 
 .extension-card-content {
@@ -99,31 +99,42 @@ a.mdi-action-settings {
 }
 
 .extBlock {
-  width: 530px;
-  min-height: 5vw;
-  float: left;
-  margin: 10px 25px;
-  text-align: left;
+	width: 530px;
+	min-height: 5vw;
+	float: left;
+	margin: 10px 25px;
+	text-align: left;
 }
 
 .lefty {
-  float: left;
-  width: 85%;
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
+	width: 90%;
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
 }
 
 .righty {
 	float: right;
-	width: 15%;
+	width: 10%;
+}
+
+.picHolder {
+	display: inline-block;
+	width: 10%;
+	vertical-align: top;
+}
+
+.nameDesc {
+	display: inline-block;
+	width: 84%;
+	vertical-align: top;
+	margin-left: 5%;
 }
 
 .extBlock img {
-  width: 50px;
-  height: 50px;
-  float: left;
-  vertical-align: middle;
+	width: 50px;
+	height: 50px;
+	vertical-align: top;
 }
 
 .extBlock:first-of-type {
@@ -153,29 +164,27 @@ a.mdi-action-settings {
 }
 
 .extName {
-  height:30px;
-  overflow: hidden;
-  font-size: 20px;
-  padding-left: 10px;
-  font-family: 'Roboto', sans-serif;
-  color: black;
+	height: 30px;
+	overflow: hidden;
+	font-size: 20px;
+	font-family: 'Roboto', sans-serif;
+	color: black;
 }
 
 .extDescription {
-  overflow: hidden;
-  font-size: 12px;
-  color: #a3a3a3;
-  padding-left: 10px;
-  font-family: 'Roboto', sans-serif;
+	overflow: hidden;
+	font-size: 12px;
+	color: #a3a3a3;
+	font-family: 'Roboto', sans-serif;
 }
 
 .extToggle {
-  font-size: 15px;
-  float: right;
+	font-size: 15px;
+	float: right;
 }
 
 .js-switch {
-  font-size: 30px;
+	font-size: 30px;
 }
 
 span.lever::after {
@@ -196,10 +205,5 @@ span.lever {
 .switch label input[type=checkbox].lever {
 	background-color: #DFDFDF;
 }
-
-/*.state {
-  color: #a3a3a3;;
-  font-size: 16px;
-}*/
 
 
