@@ -77,11 +77,14 @@
 	</div>
 
 	<div class="righty">
-	 	<span class="extId">{{ id }}</span>
-	 	<span class="extState">{{ enabled }}</span>
-	 	<span class="switch extToggle">
-	     <input type="checkbox" class="js-switch" id="test5" {{ enabled }} />
-	     <span class="lever"></span>
+	     <div class="switch" id="{{ id }}">
+		    <label>
+		      Off
+		      <input type="checkbox" {{enabled}} class="js-switch">
+		      <span class="lever"></span>
+		      On
+		    </label>
+		  </div>
 	 </span>
 	</div>
 </div>

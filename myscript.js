@@ -37,6 +37,19 @@ $(document).ready(function(){
 			}
 			entry.pic = imgsrc; // setting the url we got earlier as entry.pic
 
+			var state = entry.enabled;
+
+			// console.log('state: '+state);
+
+			if(state === true){
+				state = "checked"
+			} else {
+				state = ""
+			}
+
+			entry.enabled = state;
+		// console.log("state is: "+state);
+
 			// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
 			if (entry.enabled) {
 				$('#activeExtensions').append(template(entry));
@@ -106,26 +119,26 @@ $(document).ready(function(){
 		$(".extState").hide(); // hide this - just here to reference each individual ext's state
 
 		// THIS AREA WILL BE CHANGED WHEN I INTRODUCE SWITCHES FOR EACH EXTENSION
-		$(".extBlock").click(function(){ // if an ext is clicked on
-			var wholeExt = $(this); // the entire extension
-			var theExtId = wholeExt.find(".extId").text(); // get it's extension id
-			var theExtState = wholeExt.find(".extState"); // quick way to access it's state for later
-			var theExtStateText = theExtState.text(); // take the state's text (either true or false)
-			if (theExtStateText === "true") { // if the ext is on then turn it off and change the state text, then put it in the inactive section and reload the popup
-				chrome.management.setEnabled(theExtId, false, function (){
-					theExtState.text("false");
-					wholeExt.append(".inactiveExtensions");
-					location.reload();
-				});
-			} 
-			else if (theExtStateText === "false") {// or if the ext is off then turn it on and change the state text, then put it in the active section and reload the popup
-				chrome.management.setEnabled(theExtId, true, function (){
-					theExtState.text("true");
-					wholeExt.append(".activeExtensions");
-					location.reload();
-				});
-			};
-		});
+		// $(".extBlock").click(function(){ // if an ext is clicked on
+		// 	var wholeExt = $(this); // the entire extension
+		// 	var theExtId = wholeExt.find(".extId").text(); // get it's extension id
+		// 	var theExtState = wholeExt.find(".extState"); // quick way to access it's state for later
+		// 	var theExtStateText = theExtState.text(); // take the state's text (either true or false)
+		// 	if (theExtStateText === "true") { // if the ext is on then turn it off and change the state text, then put it in the inactive section and reload the popup
+		// 		chrome.management.setEnabled(theExtId, false, function (){
+		// 			theExtState.text("false");
+		// 			wholeExt.append(".inactiveExtensions");
+		// 			location.reload();
+		// 		});
+		// 	} 
+		// 	else if (theExtStateText === "false") {// or if the ext is off then turn it on and change the state text, then put it in the active section and reload the popup
+		// 		chrome.management.setEnabled(theExtId, true, function (){
+		// 			theExtState.text("true");
+		// 			wholeExt.append(".activeExtensions");
+		// 			location.reload();
+		// 		});
+		// 	};
+		// });
 	});
 
 // Search
@@ -171,29 +184,44 @@ $(".profile-btn").click(function(){ // if a profile btn is clicked
 
 // function which listens for checkbox changes and then disables/enables extension depending on the change requested
 
-var g;
+// var g;
+// function extStateListener() {
+// 	$('.js-switch').change(
+// 		function(){
+// 			g = $(this).parent(); // g is now set to the selected extension
+// 			console.log(g);
+// 			var appId = g.id; // set the appid as an attribute in our handlebars template at the end of popup.html ** changed g.attr('appid') to g.id - it should still work **
+// 			if (g.enabled) {
+// 				// app is active, disable extension - eh this is being mirrored for some reason, asynchronous-ness messing stuff up maybe? works anyway
+// 				chrome.management.setEnabled(appId, true, function (){
+// 					// SET SWITCH TO OFF HERE
+// 				});
+// 			} else {
+// 				// app is off, turn on - as above, this is being mirrored for some reason. working tho...
+// 				chrome.management.setEnabled(appId, false, function (){
+// 					// SET SWITCH TO ON HERE
+// 				});
+// 			}
+// 		}
+// 	);
+// };
+
 function extStateListener() {
-	$('.extState').change(
+	$('.js-switch').change(
 		function(){
-			g = $(this).parent(); // g is now set to the selected extension
-			console.log(g);
-			var appId = g.id; // set the appid as an attribute in our handlebars template at the end of popup.html ** changed g.attr('appid') to g.id - it should still work **
-			if (g.enabled) {
-				// app is active, disable extension - eh this is being mirrored for some reason, asynchronous-ness messing stuff up maybe? works anyway
-				chrome.management.setEnabled(appId, true, function (){
-					// SET SWITCH TO OFF HERE
-				});
+			var id = $(this).parents('.switch').attr('id');
+			console.log('id is'+id);
+
+			if($(this).is(':checked')){
+				console.log('app id '+id+' was UNchecked, enabling now');
+				chrome.management.setEnabled(id, true, function (){});
 			} else {
-				// app is off, turn on - as above, this is being mirrored for some reason. working tho...
-				chrome.management.setEnabled(appId, false, function (){
-					// SET SWITCH TO ON HERE
-				});
+				console.log('app id '+id+' was checked, disabling now');
+				chrome.management.setEnabled(id, false, function (){});
 			}
-		}
-	);
-};
+		})
 
-
+}
 
 
 
