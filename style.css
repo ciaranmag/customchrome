@@ -196,7 +196,7 @@ span.lever {
 	background-color: #DFDFDF;
 }
 
-/* Not working */
+/* Not working? */
 .switch label input[type=checkbox].lever {
 	background-color: #DFDFDF;
 }
@@ -204,5 +204,23 @@ span.lever {
 .switch label .lever {
 	background-color: #DFDFDF;
 }
+
+/* TOASTS */
+
+.ccToastOn {
+	background-color: #81c784;
+}
+
+.ccToastOff {
+	background-color: #DFDFDF;
+	color: #9F9F9F;
+}
+
+
+
+
+
+
+
 
 

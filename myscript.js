@@ -89,7 +89,7 @@ $(document).ready(function(){
 			extArray[3]
 		];
 
-		profilesHolder = {
+		profilesHolder = { // "profile1" etc. will be the user's custom name e.g. "Web Dev"
 			"profile1": profile1,
 			"profile2": profile2,
 			"profile3": profile3,
@@ -162,19 +162,22 @@ $(".profile-btn").click(function(){ // if a profile btn is clicked
 	btnId = $(this).attr("id"); // find out which one and assign to btnId
 	if ($(this).hasClass("on")) { // if the btn is currently on then turn all extensions off
 		window[btnId].forEach(function(extensionObj){
-			chrome.management.setEnabled(extensionObj.id, false, function (){});
+			chrome.management.setEnabled(extensionObj.id, false, function (){
+				Materialize.toast(btnId+' is now off', 2000, 'ccToastOff');
+			});
 		})
 		$(this).removeClass("on");
 		$(this).addClass("off");
 	}
 	else if ($(this).hasClass("off")) { // if the btn is currently off then turn all extensions on
 		window[btnId].forEach(function(extensionObj){
-			chrome.management.setEnabled(extensionObj.id, true, function (){});
+			chrome.management.setEnabled(extensionObj.id, true, function (){
+				Materialize.toast(btnId+' is now on', 2000, 'ccToastOn');
+			});
 		})
 		$(this).removeClass("off");
 		$(this).addClass("on");
 	}
-	location.reload();
 });
 
 
@@ -207,15 +210,15 @@ $(".profile-btn").click(function(){ // if a profile btn is clicked
 function extStateListener() { // turn on/off extensions when toggle is switched
 	$('.js-switch').change(
 		function(){
-			var id = $(this).parents('.switch').attr('id');
-			var name = $(this).parents('.switch').attr('name'); //get the app name
+			var id = $(this).parents('.switch').attr('id'); // get the app id
+			var name = $(this).parents('.switch').attr('name'); // get the app name
 			if($(this).is(':checked')){
 				chrome.management.setEnabled(id, true, function (){
-					Materialize.toast(name+' is now on', 4000);
+					Materialize.toast(name+' is now on', 2000, 'ccToastOn');
 				});
 			} else {
 				chrome.management.setEnabled(id, false, function (){
-					Materialize.toast(name+' is now off', 4000);
+					Materialize.toast(name+' is now off', 2000, 'ccToastOff');
 				});
 			}
 		})
