@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
   <title>Custom Chrome Options</title>
-	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto'>
+	<!-- <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto'> -->
   <link rel="stylesheet" href="materialize/materialize.min.css">
   <link rel="stylesheet" href="options.css">
   <!-- add custom chrome icon as favicon -->
@@ -37,8 +37,24 @@
 	  </div>
 	</div>
 	<div class="floatingBtnDiv">
-	  <a class="btn-floating btn-large waves-effect waves-light red"><i class="mdi-content-add"></i></a>
+	  <a class="btn-floating btn-large waves-effect waves-light red" data-target="modal1"><i class="mdi-content-add" data-target="modal1"></i></a>
 	</div>
+
+ <!-- Modal Trigger -->
+  <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+  </div>
+
+
 
 	<div class="card profileCard">
 	  <div id="" class="card-content profileTitleDiv">

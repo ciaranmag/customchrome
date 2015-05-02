@@ -37,18 +37,16 @@ $(document).ready(function(){
 			}
 			entry.pic = imgsrc; // setting the url we got earlier as entry.pic
 
+
+			// setting switches to either on or off
 			var state = entry.enabled;
-
-			// console.log('state: '+state);
-
 			if(state === true){
 				state = "checked"
 			} else {
 				state = ""
 			}
-
 			entry.stringEnabled = state;
-		// console.log("state is: "+state);
+
 
 			// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
 			if (entry.enabled) {
@@ -210,17 +208,12 @@ function extStateListener() {
 	$('.js-switch').change(
 		function(){
 			var id = $(this).parents('.switch').attr('id');
-			console.log('id is'+id);
-
 			if($(this).is(':checked')){
-				console.log('app id '+id+' was UNchecked, enabling now');
 				chrome.management.setEnabled(id, true, function (){});
 			} else {
-				console.log('app id '+id+' was checked, disabling now');
 				chrome.management.setEnabled(id, false, function (){});
 			}
 		})
-
 }
 
 

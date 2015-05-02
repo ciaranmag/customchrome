@@ -13,20 +13,16 @@ $(document).ready(function(){
 			return a.name.localeCompare(b.name);
 		});
 
-		// Spit out long list of all extension names into a dialog popup after clicking the floating add btn
+		// Spit out long list of all extension names into a modal after clicking the floating add btn
 
 	});
 });
 
-// var optJs = chrome.extension.getURL("options.js");
-
-console.log(extArray);
 
 
 
 
-
-// // SAMPLE OPTIONS
+// // SAMPLE OPTIONS FROM CHROME WEBSITE
 
 // // Saves options to chrome.storage.sync.
 // function save_options() {
