@@ -204,14 +204,19 @@ $(".profile-btn").click(function(){ // if a profile btn is clicked
 // 	);
 // };
 
-function extStateListener() {
+function extStateListener() { // turn on/off extensions when toggle is switched
 	$('.js-switch').change(
 		function(){
 			var id = $(this).parents('.switch').attr('id');
+			var name = $(this).parents('.switch').attr('name'); //get the app name
 			if($(this).is(':checked')){
-				chrome.management.setEnabled(id, true, function (){});
+				chrome.management.setEnabled(id, true, function (){
+					Materialize.toast(name+' is now on', 4000);
+				});
 			} else {
-				chrome.management.setEnabled(id, false, function (){});
+				chrome.management.setEnabled(id, false, function (){
+					Materialize.toast(name+' is now off', 4000);
+				});
 			}
 		})
 }
