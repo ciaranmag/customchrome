@@ -47,7 +47,7 @@ $(document).ready(function(){
 				state = ""
 			}
 
-			entry.enabled = state;
+			entry.stringEnabled = state;
 		// console.log("state is: "+state);
 
 			// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
