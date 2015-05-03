@@ -18,6 +18,7 @@ var template = Handlebars.compile(source);
 
 
 $(document).ready(function(){
+	$('.modal-trigger').leanModal();
 	chrome.management.getAll(function(info) {
 		// info is a list of all user installed apps, extensions etc push extensions to extArray
 		info.forEach(function(entry) {
@@ -193,8 +194,27 @@ $('#addProfile').click(
 	function(){
 		console.log('user is adding a profile');
 		//open modal
-		$('#profilePrompt').openModal();
+		$('#profilePrompt').openModal({
+			complete: function() {
+				//function ro run when modal is dismissed
+				var name = $('#name').text();
+				console.log('user is adding the '+name+' profile');
+			},
+
+		});
 	});
+
+// $('#nameSubmit').click(
+// 	function(){
+// 		//catch the name the user selected
+// 		var name = $('#name').text();
+// 		//check if it's empty 
+// 		if (name == ""){
+
+// 		}
+// 		console.log('user is adding the '+name+' profile');
+// 	}
+// )
 
 // /////////////////         RANDOM SHIT
 
