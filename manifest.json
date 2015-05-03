@@ -12,7 +12,6 @@
   "permissions": [
     "management",
     "tabs",
-    "system.memory",
     "storage"
   ],
 
