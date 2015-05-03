@@ -40,19 +40,24 @@
 	  <a class="btn-floating btn-large waves-effect waves-light red" data-target="modal1"><i class="mdi-content-add" data-target="modal1"></i></a>
 	</div>
 
- <!-- Modal Trigger -->
-  <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+
 
   <!-- Modal Structure -->
   <div id="modal1" class="modal">
     <div class="modal-content">
-      <h4>Modal Header</h4>
-      <p>A bunch of text</p>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+      <h4>Add some extensions to this profile</h4>
+      <p class="modalOutput"></p>
     </div>
   </div>
+
+
+
+<script id="modalExtList" type="text/x-handlebars-template">
+	<img src="{{ pic }}">
+	<p class="extNameInModal">{{ name }}</p>
+</script>
+
+
 
 
 
