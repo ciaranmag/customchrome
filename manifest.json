@@ -11,7 +11,8 @@
 
   "permissions": [
     "management",
-    "tabs"
+    "tabs",
+    "storage"
   ],
 
   "content_scripts": [
