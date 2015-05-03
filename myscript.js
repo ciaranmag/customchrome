@@ -197,24 +197,26 @@ $('#addProfile').click(
 		$('#profilePrompt').openModal({
 			complete: function() {
 				//function ro run when modal is dismissed
-				var name = $('#name').text();
-				console.log('user is adding the '+name+' profile');
 			},
 
 		});
 	});
 
-// $('#nameSubmit').click(
-// 	function(){
-// 		//catch the name the user selected
-// 		var name = $('#name').text();
-// 		//check if it's empty 
-// 		if (name == ""){
+$('#nameSubmit').click(
+	function(){
+		//catch the name the user selected
+		var name = $('#name').val();
+		//check if it's empty 
+		if (name == ""){
 
-// 		}
-// 		console.log('user is adding the '+name+' profile');
-// 	}
-// )
+		}
+		console.log('user is adding the '+name+' profile');
+		var btnHtml = "<a class='profile-btn off' id='"+name+"'>"+name.toString()+"</a>";
+		console.log(btnHtml);
+		$('.profile-holder').append(btnHtml);
+		name = "";
+	}
+)
 
 // /////////////////         RANDOM SHIT
 
