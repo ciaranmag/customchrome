@@ -31,6 +31,7 @@
     	<a class="profile-btn" id="profile3">Design</a>
     	<a class="profile-btn" id="profile4">Reddit</a>
     	<a class="profile-btn" id="profile5">YouTube</a>
+    	<a class="btn-floating btn-large waves-effect waves-light red" title='add profile' id='addProfile'><i class="mdi-content-add"></i></a>
     </div>
   </div>
 </div>
@@ -65,6 +66,19 @@
 
 </div> <!-- allExtensionsContainer -->
 
+<!-- Modal html -->
+<div id="profilePrompt" class="modal">
+    <div class="modal-content">
+      <h4>Name your new profile</h4>
+      <div class="input-field col s6">
+          <input id="name" type="text" class="validate">
+          <label for="profileName">Name</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+    </div>
+  </div>
 
 <!-- Handlebar Template Start -->
 <script id="entry-template" type="text/x-handlebars-template">

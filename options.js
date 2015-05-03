@@ -15,9 +15,11 @@ $(document).ready(function(){
 
 		// Spit out long list of all extension names into a modal after clicking the floating add btn
 
+	//test:
+	alert('hello');
 	});
-});
 
+});
 
 
 
