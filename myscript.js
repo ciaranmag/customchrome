@@ -195,6 +195,7 @@ $('#addProfile').click(
 		//open modal
 		$('#profilePrompt').openModal();
 	});
+
 // /////////////////         RANDOM SHIT
 
 
