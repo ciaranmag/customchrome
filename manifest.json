@@ -12,7 +12,8 @@
   "permissions": [
     "management",
     "tabs",
-    "system.memory"
+    "system.memory",
+    "storage"
   ],
 
   "content_scripts": [

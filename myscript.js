@@ -184,7 +184,17 @@ function extStateListener() { // turn on/off extensions when toggle is switched
 		})
 }
 
-
+//listen for addProfile button press
+	// add a button to list 
+	//prompt for profile name
+	//set that name as button text
+	//add that profile to the storage.sync object...
+$('#addProfile').click(
+	function(){
+		console.log('user is adding a profile');
+		//open modal
+		$('#profilePrompt').openModal();
+	});
 
 
 // /////////////////         RANDOM SHIT

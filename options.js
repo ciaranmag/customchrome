@@ -31,11 +31,11 @@ $(document).ready(function(){
 				}
 				entry.pic = imgsrc; // setting the url we got earlier as entry.pic
 					
-
 				$('.modalOutput').append(template(entry));
 			});
 	});
 
+});
 
 
 });
