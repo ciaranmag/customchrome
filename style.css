@@ -50,6 +50,12 @@ body {
 	color: #9F9F9F;
 }
 
+/* MODAL FOR PROFILES */
+
+#validatePrompt {
+	display:none;
+}
+
 
 /* SEARCHBOX AND SETTINGS */
 
@@ -209,6 +215,11 @@ span.lever {
 
 .ccToastOn {
 	background-color: #81c784;
+}
+
+.alert {
+	background-color: orange;
+	color:white;
 }
 
 .ccToastOff {

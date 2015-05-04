@@ -212,6 +212,7 @@ $('#nameSubmit').submit(
 		if (name === ""){
 			//name is empty, don't close modal and prompt user for name
 			console.log('name is empty, user must enter a (unique) name');
+			Materialize.toast('Your profile needs a name!', 2000, 'alert');
 			return;
 		}
 
