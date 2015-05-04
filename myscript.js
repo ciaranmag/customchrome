@@ -196,25 +196,37 @@ $('#addProfile').click(
 		//open modal
 		$('#profilePrompt').openModal({
 			complete: function() {
+
 				//function ro run when modal is dismissed
 			},
 
 		});
 	});
 
-$('#nameSubmit').click(
-	function(){
+$('#nameSubmit').submit(
+	function(e){
+		e.preventDefault();
 		//catch the name the user selected
 		var name = $('#name').val();
-		//check if it's empty 
-		if (name == ""){
-
+		//check if it's empty
+		if (name === ""){
+			//name is empty, don't close modal and prompt user for name
+			console.log('name is empty, user must enter a (unique) name');
+			return;
 		}
+
+		//check if it's the same name as an existing profile
+		// if(name === existingProfileName){
+
+		// }
 		console.log('user is adding the '+name+' profile');
 		var btnHtml = "<a class='profile-btn off' id='"+name+"'>"+name.toString()+"</a>";
-		console.log(btnHtml);
-		$('.profile-holder').append(btnHtml);
-		name = "";
+		//prepend new button with new profile name to profile-holder
+		$('.profile-holder').prepend(btnHtml);
+		//set name to ""
+		$('#name').val("");
+		//close modal:
+		$('#profilePrompt').closeModal();
 	}
 )
 
