@@ -31,7 +31,7 @@ body {
 	height: 36px;
 	line-height: 36px;
 	outline: 0;
-	padding: 0 2rem;
+	margin:5px;
 	text-transform: uppercase;
 	vertical-align: middle;
 	background-color: #DFDFDF;
@@ -48,6 +48,11 @@ body {
 	cursor: pointer !important;
 	background-color: #DFDFDF;
 	color: #9F9F9F;
+}
+
+#profileSettings {
+	cursor: pointer;
+	
 }
 
 /* MODAL FOR PROFILES */

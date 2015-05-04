@@ -244,7 +244,7 @@ $('#nameSubmit').submit(
 		})
 
 		console.log('user is adding the '+name+' profile');
-		var btnHtml = "<a class='profile-btn off' id='"+name+"'>"+name.toString()+"</a>";
+		var btnHtml = "<a class='btn profile-btn off' id='"+name+"'>"+name.toString()+"</a>";
 		//prepend new button with new profile name to profile-holder
 		$('.profile-holder').prepend(btnHtml);
 		//set name to ""
@@ -304,7 +304,7 @@ var getProfiles = function(){
 		for (i=0; i<l; i++){
 			console.log('adding '+obj.profiles[i]+" to profiles holder");
 			name = obj.profiles[i];
-			var btnHtml = "<a class='profile-btn off' id='"+name+"'>"+name+"</a>";
+			var btnHtml = "<a class='btn profile-btn off' id='"+name+"'>"+name+"</a>";
 			//prepend to profile-holder
 			$('.profile-holder').prepend(btnHtml);
 
@@ -313,8 +313,18 @@ var getProfiles = function(){
 }
 
 
+//add extensions to new profile modal
+//loop over extArray to populate the list
+var populateModal = function(){
+	extArray.forEach(function(ext){
+		
+	})
+}
 
 
+
+
+//add/remove extensions from profiles
 
 
 
