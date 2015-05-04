@@ -229,6 +229,20 @@ $('#nameSubmit').submit(
 			return;
 		}
 
+		//push name to profiles array
+		//gotta check if it's the first profile to be added
+		if(typeof profiles === 'undefined'){
+			profiles = [name];
+		} else {
+			profiles.push(name);
+		}
+		
+
+		//push name to profiles array in storage.sync
+		chrome.storage.sync.set({'profiles':profiles}, function(){
+			console.log('storage.sync updated with new profile')
+		})
+
 		console.log('user is adding the '+name+' profile');
 		var btnHtml = "<a class='profile-btn off' id='"+name+"'>"+name.toString()+"</a>";
 		//prepend new button with new profile name to profile-holder
@@ -273,6 +287,12 @@ var getProfiles = function(){
 		//console.log(obj)
 
 		profiles = obj.profiles;
+
+		//if there are no profiles, exit function
+		if(!(obj.profiles)){
+			console.log('no profiles exist yet');
+			return;
+		}
 
 		console.log('length of profiles array is:'+obj.profiles.length);
 		//set l to number of profiles
