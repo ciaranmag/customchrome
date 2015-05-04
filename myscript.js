@@ -223,7 +223,7 @@ $('#nameSubmit').submit(
 		}
 
 		//check if it's the same name as an existing profile
-		if ($.inArray(name, profiles)){
+		if ($.inArray(name, profiles) != -1){
 			console.log('profile already exists');
 			Materialize.toast('Profile already exists!', 2000, 'alert');
 			return;
