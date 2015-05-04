@@ -11,6 +11,8 @@ var profile3 = [];
 var profile4 = [];
 var profile5 = [];
 
+var profiles = [];
+
 // Handlebars.js
 var source   = $("#entry-template").html();
 var template = Handlebars.compile(source);
@@ -18,6 +20,10 @@ var template = Handlebars.compile(source);
 
 
 $(document).ready(function(){
+	//call function to check storage.sync for existing user profiles:
+	getProfiles();
+
+
 	$('.modal-trigger').leanModal();
 	chrome.management.getAll(function(info) {
 		// info is a list of all user installed apps, extensions etc push extensions to extArray
@@ -64,43 +70,43 @@ $(document).ready(function(){
 		extStateListener(); // run the function which listens for a change in a checkbox state
 		
 		// These profiles can't reference extArray permanently because if a user installs/uninstalls extensions these extensions will change places in the extArray array
-		profile1 =[
-			extArray[0]
-		];
+		// profile1 =[
+		// 	extArray[0]
+		// ];
 
-		profile2 =[
-			extArray[0],
-			extArray[1]
-		];
+		// profile2 =[
+		// 	extArray[0],
+		// 	extArray[1]
+		// ];
 
-		profile3 =[
-			extArray[8],
-			extArray[9],
-			extArray[10],
-			extArray[11]
-		];
+		// profile3 =[
+		// 	extArray[8],
+		// 	extArray[9],
+		// 	extArray[10],
+		// 	extArray[11]
+		// ];
 
-		profile4 =[
-			extArray[12],
-			extArray[13],
-			extArray[14],
-			extArray[15]
-		];
+		// profile4 =[
+		// 	extArray[12],
+		// 	extArray[13],
+		// 	extArray[14],
+		// 	extArray[15]
+		// ];
 
-		profile5 =[
-			extArray[0],
-			extArray[1],
-			extArray[2],
-			extArray[3]
-		];
+		// profile5 =[
+		// 	extArray[0],
+		// 	extArray[1],
+		// 	extArray[2],
+		// 	extArray[3]
+		// ];
 
-		profilesHolder = { // "profile1" etc. will be the user's custom name e.g. "Web Dev"
-			"profile1": profile1,
-			"profile2": profile2,
-			"profile3": profile3,
-			"profile4": profile4,
-			"profile5": profile5
-		};
+		// profilesHolder = { // "profile1" etc. will be the user's custom name e.g. "Web Dev"
+		// 	"profile1": profile1,
+		// 	"profile2": profile2,
+		// 	"profile3": profile3,
+		// 	"profile4": profile4,
+		// 	"profile5": profile5
+		// };
 
 		// the amount of extension profiles the user has
 		var sizeOfProfilesHolder = Object.keys(profilesHolder).length;
@@ -217,9 +223,12 @@ $('#nameSubmit').submit(
 		}
 
 		//check if it's the same name as an existing profile
-		// if(name === existingProfileName){
+		if ($.inArray(name, profiles)){
+			console.log('profile already exists');
+			Materialize.toast('Profile already exists!', 2000, 'alert');
+			return;
+		}
 
-		// }
 		console.log('user is adding the '+name+' profile');
 		var btnHtml = "<a class='profile-btn off' id='"+name+"'>"+name.toString()+"</a>";
 		//prepend new button with new profile name to profile-holder
@@ -255,6 +264,33 @@ $('#nameSubmit').submit(
 //////////////////         OPTIONS.HTML
 
 
+//code to retrieve profiles from chrome.storage:
+// learned form here: http://stackoverflow.com/questions/14531102/saving-and-retrieving-from-chrome-storage-sync
+
+var getProfiles = function(){
+	//check storage for any profiles
+	chrome.storage.sync.get('profiles', function(obj){
+		//console.log(obj)
+
+		profiles = obj.profiles;
+
+		console.log('length of profiles array is:'+obj.profiles.length);
+		//set l to number of profiles
+		var l = obj.profiles.length;
+		//set variable to hold profile name
+		var name;
+
+		//loop over each profile and append it to the profiles-holder
+		for (i=0; i<l; i++){
+			console.log('adding '+obj.profiles[i]+" to profiles holder");
+			name = obj.profiles[i];
+			var btnHtml = "<a class='profile-btn off' id='"+name+"'>"+name+"</a>";
+			//prepend to profile-holder
+			$('.profile-holder').prepend(btnHtml);
+
+		}
+	})
+}
 
 
 
