@@ -1,15 +1,19 @@
- Quick Extension Manager:
- ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
- ☐ Toast notifications "RES and Imagus have been turned on, enjoy your browsing"
- ☐ Change search icon colour on when focusing on search input and move search icon into the input area
- ☐ Add Google Analytics
- ☐ Give extensions individual cards to see if it looks good
+ Quick Extension Manager ToDo:
+ ☐ Get profiles sorted (users can create, modify, and delete them)
+ ☐ Setup Google Analytics
+ ☐ New App Icon
+ ☐ Clean up code, commenting, CSS tweaks
+   ☐ Change search icon colour on when focusing on search input and move search icon into the input area
+   ☐ Change from first result having margin-top TO activeTitle and inactiveTitle to having margin-bottom (so that it works for search results)
+   ☐ Look at loading times of each file - try to improve them
+   ☐ Clean up manifest permissions
 
 
 Issues:
- ☐ Change from first result having margin-top TO activeTitle and inactiveTitle to having margin-bottom (so that it works for search results)
- ☐ Makes profile custom for users
-
 
 Chris:
- ☐ 
+
+
+Future Features:
+ ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
+ ☐ Advanced option to see memory usage of each extension (next to switch)

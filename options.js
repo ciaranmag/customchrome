@@ -21,6 +21,7 @@ $(document).ready(function(){
 		});
 
 		// Spit out long list of all extension names into a modal after clicking the floating add btn
+
 			allExtArray.forEach(function(entry) {
 				// extension icons are stored in entry.icons, but not all extensions have icons
 				if (entry.icons === undefined) {
@@ -31,12 +32,13 @@ $(document).ready(function(){
 				}
 				entry.pic = imgsrc; // setting the url we got earlier as entry.pic
 					
-
 				$('.modalOutput').append(template(entry));
 			});
 	});
 
+});
 
+});
 
 });
 
