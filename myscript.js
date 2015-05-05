@@ -23,8 +23,8 @@ $(document).ready(function(){
 	//call function to check storage.sync for existing user profiles:
 	getProfiles();
 
-
 	$('.modal-trigger').leanModal();
+
 	chrome.management.getAll(function(info) {
 		// info is a list of all user installed apps, extensions etc push extensions to extArray
 		info.forEach(function(entry) {
@@ -129,7 +129,7 @@ $(document).ready(function(){
 
 	});
 
-// Search
+	// Search
 	$("#searchbox").keyup(function(){
 			// Retrieve the input field text
 			var filter = $(this).val();
@@ -144,7 +144,6 @@ $(document).ready(function(){
 			});
 	});
 	$('.searchbox').focus();
-
 
 
 }); // close $(document).ready
@@ -192,7 +191,7 @@ function extStateListener() { // turn on/off extensions when toggle is switched
 }
 
 
-//  INCLUDE THESE IN #addProfile click function AFTER THE MODAL IS CLOSED
+////////////////  INCLUDE THESE IN #addProfile click function AFTER THE MODAL IS CLOSED
 //  $('#profileHeader').css("background-color", "#f3f3f3");
 //	$('#noProfilesText').hide();
 
@@ -260,31 +259,11 @@ $('#nameSubmit').submit(
 	}
 )
 
-// /////////////////         RANDOM SHIT
-
-
-
-// // Code to get current tab URL
-// chrome.tabs.getSelected(null,function(tab) {
-//     var tablink = tab.url;
-// });
-// // OR
-// var tablink;
-// chrome.tabs.getSelected(null,function(tab) {
-//     tablink = tab.url;
-// });
-// // OR
-// chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-//     var url = tabs[0].url;
-// });
-
-
-
 
 //////////////////         OPTIONS.HTML
 
 
-//code to retrieve profiles from chrome.storage:
+// code to retrieve profiles from chrome.storage:
 // learned form here: http://stackoverflow.com/questions/14531102/saving-and-retrieving-from-chrome-storage-sync
 
 var getProfiles = function(){
@@ -333,7 +312,6 @@ var populateModal = function(){
 
 // remove profiles
 $("#rmv").click(function(){
-	console.log("we're in");
 	// a quick one-line removes all profiles
 	chrome.storage.sync.clear()
 })
