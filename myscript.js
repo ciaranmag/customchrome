@@ -191,6 +191,12 @@ function extStateListener() { // turn on/off extensions when toggle is switched
 		})
 }
 
+
+//  INCLUDE THESE IN #addProfile click function AFTER THE MODAL IS CLOSED
+//  $('#profileHeader').css("background-color", "#f3f3f3");
+//	$('#noProfilesText').hide();
+
+
 //listen for addProfile button press
 	// add a button to list 
 	//prompt for profile name
@@ -290,9 +296,13 @@ var getProfiles = function(){
 
 		//if there are no profiles, exit function
 		if(!(obj.profiles)){
+			$('#noProfilesText').show();
+			$('#profileHeader').css("background-color", "#03A9FA");
 			console.log('no profiles exist yet');
 			return;
 		}
+
+		$('#noProfilesText').hide();
 
 		console.log('length of profiles array is:'+obj.profiles.length);
 		//set l to number of profiles
@@ -321,8 +331,17 @@ var populateModal = function(){
 	})
 }
 
+// remove profiles
+$("#rmv").click(function(){
+	console.log("we're in");
+	// a quick one-line removes all profiles
+	chrome.storage.sync.clear()
+})
 
 
+StorageArea.remove(a, function() {
+		console.log("success")
+	})
 
 //add/remove extensions from profiles
 
