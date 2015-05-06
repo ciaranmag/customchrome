@@ -1,16 +1,8 @@
-////////////////// POPUP.HTML
-
 var extArray = [];
 var activeExtensions = [];
 var inactiveExtensions = [];
-var profilesHolder = {};
 var btnId;
-var profile1 = [];
-var profile2 = [];
-var profile3 = [];
-var profile4 = [];
-var profile5 = [];
-
+var profilesHolder = {};
 var profiles = [];
 
 // Handlebars for active and inactive lists
@@ -23,7 +15,10 @@ var extListTemplate = Handlebars.compile(extListSource);
 
 
 $(document).ready(function(){
-	//call function to check storage.sync for existing user profiles:
+
+	$('#editBtn').hide();
+
+	// call function to check storage.sync for existing user profiles:
 	getProfiles();
 
 	$('.modal-trigger').leanModal();
@@ -46,11 +41,10 @@ $(document).ready(function(){
 			if (entry.icons === undefined) {
 				imgsrc = 'icon-128.png'  // if there aren't any icons, set a default
 			} else {
-				// and if there is an array of icons, we want the highest res one (which is going to be the last one in the array) so find the array length, then use that value (-1) to get the last icon then set that item's url as our app icon url
+				// if there is an array of icons, we want the highest res one (which is the last one in the array) so get the array length (-1) to get the last icon then set that item's url as our app icon url
 				imgsrc = entry.icons[entry.icons.length-1].url;
 			}
 			entry.pic = imgsrc; // setting the url we got earlier as entry.pic
-
 
 			// setting switches to either on or off
 			var state = entry.enabled;
@@ -60,7 +54,6 @@ $(document).ready(function(){
 				state = ""
 			}
 			entry.stringEnabled = state;
-
 
 			// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
 			if (entry.enabled) {
@@ -72,63 +65,36 @@ $(document).ready(function(){
 
 		extStateListener(); // run the function which listens for a change in a checkbox state
 		
-		// These profiles can't reference extArray permanently because if a user installs/uninstalls extensions these extensions will change places in the extArray array
-		// profile1 =[
-		// 	extArray[0]
-		// ];
 
-		// profile2 =[
-		// 	extArray[0],
-		// 	extArray[1]
-		// ];
-
-		// profile3 =[
-		// 	extArray[8],
-		// 	extArray[9],
-		// 	extArray[10],
-		// 	extArray[11]
-		// ];
-
-		// profile4 =[
-		// 	extArray[12],
-		// 	extArray[13],
-		// 	extArray[14],
-		// 	extArray[15]
-		// ];
-
-		// profile5 =[
-		// 	extArray[0],
-		// 	extArray[1],
-		// 	extArray[2],
-		// 	extArray[3]
-		// ];
+// THE BELOW FOR LOOP WAS CREATED BASED ON THE profilesHolder STRUCTURE BELOW
 
 		// profilesHolder = { // "profile1" etc. will be the user's custom name e.g. "Web Dev"
 		// 	"profile1": profile1,
 		// 	"profile2": profile2,
 		// 	"profile3": profile3,
-		// 	"profile4": profile4,
-		// 	"profile5": profile5
 		// };
 
+		// profile1 =[
+		// 	extArray[0]
+		// ];
+
 		// the amount of extension profiles the user has
-		var sizeOfProfilesHolder = Object.keys(profilesHolder).length;
+		// var sizeOfProfilesHolder = Object.keys(profilesHolder).length;
 
-		for (var i = 0; i < sizeOfProfilesHolder-1; i++) { // cycle through the profilesHolder
-			for (key in profilesHolder){ // cycle through the extension profiles
-				$("#" + key).addClass("on"); // default turn the profile btn to the on appearance
-				for (var i = 0; i < profilesHolder[key].length; i++) { // cycle through the extensions within the profile
-					if (profilesHolder[key][i]["enabled"] === false) { // if any of the extensions are turned off then the profile isn't fully on so give it the off appearance
-						$("#" + key).removeClass("on");
-						$("#" + key).addClass("off");
-					}
-				};
-			}
-		};
+		// for (var i = 0; i < sizeOfProfilesHolder-1; i++) { // cycle through the profilesHolder
+		// 	for (key in profilesHolder){ // cycle through the extension profiles
+		// 		$("#" + key).addClass("on"); // default turn the profile btn to the on appearance
+		// 		for (var i = 0; i < profilesHolder[key].length; i++) { // cycle through the extensions within the profile
+		// 			if (profilesHolder[key][i]["enabled"] === false) { // if any of the extensions are turned off then the profile isn't fully on so give it the off appearance
+		// 				$("#" + key).removeClass("on");
+		// 				$("#" + key).addClass("off");
+		// 			}
+		// 		};
+		// 	}
+		// };
 
-		// Turning individual extensions on or off with a click
-		$(".extId").hide(); // hide this - just here to reference each individual ext
-		$(".extState").hide(); // hide this - just here to reference each individual ext's state
+		$(".extId").hide(); // just here to reference each individual ext
+		$(".extState").hide(); // just here to reference each individual ext's state
 
 	});
 
@@ -148,30 +114,28 @@ $(document).ready(function(){
 	});
 	$('.searchbox').focus();
 
-
 }); // close $(document).ready
 
 
-//  TURNING PROFILE BUTTONS ON OR OFF AFTER CLICKING THEM
+// after clicking a profile button toggle it's appearance (on or off) and cycle through associated extensions turning them all on or off
 $(".profile-btn").click(function(){ // if a profile btn is clicked
+	console.log("see the click");
 	btnId = $(this).attr("id"); // find out which one and assign to btnId
 	if ($(this).hasClass("on")) { // if the btn is currently on then turn all extensions off
-		window[btnId].forEach(function(extensionObj){
-			chrome.management.setEnabled(extensionObj.id, false, function (){
-				Materialize.toast(btnId+' is now off', 2000, 'ccToastOff');
-			});
-		})
-		$(this).removeClass("on");
-		$(this).addClass("off");
+		// window[btnId].forEach(function(extensionObj){
+		// 	chrome.management.setEnabled(extensionObj.id, false, function (){
+		// 		Materialize.toast(btnId+' is now off', 2000, 'ccToastOff');
+		// 	});
+		// })
+		$(this).removeClass("on").addClass("off");
 	}
 	else if ($(this).hasClass("off")) { // if the btn is currently off then turn all extensions on
-		window[btnId].forEach(function(extensionObj){
-			chrome.management.setEnabled(extensionObj.id, true, function (){
-				Materialize.toast(btnId+' is now on', 2000, 'ccToastOn');
-			});
-		})
-		$(this).removeClass("off");
-		$(this).addClass("on");
+		// window[btnId].forEach(function(extensionObj){
+		// 	chrome.management.setEnabled(extensionObj.id, true, function (){
+		// 		Materialize.toast(btnId+' is now on', 2000, 'ccToastOn');
+		// 	});
+		// })
+		$(this).removeClass("off").addClass("on");
 	}
 });
 
@@ -203,16 +167,13 @@ function checkboxlistener() { // turn on/off extensions when toggle is switched
 			
 		})
 }
-////////////////  INCLUDE THESE IN #addProfile click function AFTER THE MODAL IS CLOSED
-//  $('#profileHeader').css("background-color", "#f3f3f3");
-//	$('#noProfilesText').hide();
 
 
-//listen for addProfile button press
-	// add a button to list 
-	//prompt for profile name
-	//set that name as button text
-	//add that profile to the storage.sync object...
+// listen for addProfile button press
+// add a button to list 
+// prompt for profile name
+// set that name as button text
+// add that profile to the storage.sync object...
 $('#addProfile').click(
 	function(){
 		console.log('user is adding a profile');
@@ -220,7 +181,7 @@ $('#addProfile').click(
 		$('#profilePrompt').openModal({
 			complete: function() {
 
-				//function ro run when modal is dismissed
+				// function to run when modal is dismissed
 			},
 
 		});
@@ -229,92 +190,88 @@ $('#addProfile').click(
 $('#nameSubmit').submit(
 	function(e){
 		e.preventDefault();
-		//catch the name the user selected
+		// catch the name the user selected
 		var name = $('#name').val();
-		//check if it's empty
+		// check if it's empty
 		if (name === ""){
-			//name is empty, don't close modal and prompt user for name
+			// name is empty, don't close modal and prompt user for name
 			console.log('name is empty, user must enter a (unique) name');
 			Materialize.toast('Your profile needs a name!', 2000, 'alert');
 			return;
 		}
 
-		//check if it's the same name as an existing profile
+		// check if it's the same name as an existing profile
+		// ADD .toLowerCase TO THIS TO MAKE SURE IT WORKS
 		if ($.inArray(name, profiles) != -1){
 			console.log('profile already exists');
 			Materialize.toast('Profile already exists!', 2000, 'alert');
 			return;
 		}
 
-		//push name to profiles array
-		//gotta check if it's the first profile to be added
-		if(typeof profiles === 'undefined'){
+		// check if it's the first profile to be added
+		// push name to profiles array
+		if (typeof profiles === 'undefined') {
 			profiles = [name];
 		} else {
 			profiles.push(name);
 		}
 		
-
-		//push name to profiles array in storage.sync
+		// push name to profiles array in storage.sync
 		chrome.storage.sync.set({'profiles':profiles}, function(){
 			console.log('storage.sync updated with new profile')
 		})
 
 		console.log('user is adding the '+name+' profile');
-		var btnHtml = "<a class='btn profile-btn off' id='"+name+"'>"+name.toString()+"</a>";
-		//prepend new button with new profile name to profile-holder
-		$('.profile-holder').prepend(btnHtml);
-		//set name to ""
+		var btnHtml = "<a class='profile-btn off' id='"+name.toLowerCase()+"'>"+name.toString()+"</a>";
+		// append new button with new profile name to profile-holder
+		$('.profile-holder').append(btnHtml);
+		// set profile name to user-defined profile name
 		$('#name').val("");
-		//close modal:
+		// close modal
 		$('#profilePrompt').closeModal();
 
-		//after half a second open the modal where the user will specify what extensions to add to profile
+		// after half a second open the modal, user can specify what extensions to add to profile
 		setTimeout(function(){
 			addExtensions(name);
 		}, 500)
 	}
 )
 
-
-//add extensions to new profile modal
-
+// add extensions to new profile modal
 var addExtensions = function(name){
-	//open the modal
+	// open the modal
 	$('#addExts').openModal({
 			complete: function() {
-				//turn h4 text back to normal after modal is dismissed
+				// turn h4 text back to normal after modal is dismissed
 				$('#addExts h4').text(a);
 			}
 		});
 
-	//change H5 text to say "add extensions to [profile name]"
+	// change H5 text to say "add extensions to [profile name]"
 	var a = $('#addExts h4').text();
 	$('#addExts h4').text(a + " " + name);
 
 
-	//loop over extArray to populate the list
+	// loop over extArray to populate the list
 	extArray.forEach(function(ext){
-		//console.log(ext);
+		// console.log(ext);
 		$('#extList').append(extListTemplate(ext));
 	})
+	$('#profileHeader').css("background-color", "#f3f3f3");
+	$('#editBtn').show();
+	$('#noProfilesText').hide();
 }
 
 
-//////////////////         OPTIONS.HTML
-
-
-// code to retrieve profiles from chrome.storage:
-// learned form here: http://stackoverflow.com/questions/14531102/saving-and-retrieving-from-chrome-storage-sync
-
+// retrieve profiles from chrome.storage:
 var getProfiles = function(){
-	//check storage for any profiles
+	// check storage for any profiles
 	chrome.storage.sync.get('profiles', function(obj){
-		//console.log(obj)
+		// console.log(obj)
 
 		profiles = obj.profiles;
 
-		//if there are no profiles, exit function
+		// if there are no profiles, exit function
 		if(!(obj.profiles)){
 			$('#noProfilesText').show();
 			$('#profileHeader').css("background-color", "#03A9FA");
@@ -325,38 +282,27 @@ var getProfiles = function(){
 		$('#noProfilesText').hide();
 
 		console.log('length of profiles array is:'+obj.profiles.length);
-		//set l to number of profiles
+		// set l to number of profiles
 		var l = obj.profiles.length;
-		//set variable to hold profile name
+		// set variable to hold profile name
 		var name;
-
-		//loop over each profile and append it to the profiles-holder
+		// loop over each profile and append it to the profiles-holder
 		for (i=0; i<l; i++){
 			console.log('adding '+obj.profiles[i]+" to profiles holder");
 			name = obj.profiles[i];
-			var btnHtml = "<a class='btn profile-btn off' id='"+name+"'>"+name+"</a>";
-			//prepend to profile-holder
-			$('.profile-holder').prepend(btnHtml);
-
+			var btnHtml = "<a class='profile-btn off' id='"+name.toLowerCase()+"'>"+name+"</a>";
+			// append to profile-holder
+			$('.profile-holder').append(btnHtml);
 		}
 	})
 }
 
 
-
-
-// remove profiles
+// remove all profiles from chrome.storage:
 $("#rmv").click(function(){
 	// a quick one-line removes all profiles
 	chrome.storage.sync.clear()
 })
-
-
-StorageArea.remove(a, function() {
-		console.log("success")
-	})
-
-//add/remove extensions from profiles
 
 
 

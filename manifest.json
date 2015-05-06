@@ -5,38 +5,18 @@
 
   "description": "A beautiful Google Chrome extension to turn on or off your other extensions quickly and easily without leaving your current tab",
 
-  "version": "0.2",
+  "version": "0.3",
 
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.google-analytics.com; object-src 'self'",
 
   "permissions": [
     "storage",
-    "management",
-    "tabs",
-    "system.memory",
-    "http://*/"
-  ],
-
-  "content_scripts": [
-    {
-      "matches": ["*://*/*"],
-      "js": ["myscript.js", "options.js"]
-    }
+    "management"
   ],
 
   "browser_action": {
     "default_icon": "app.png",
     "default_popup": "popup.html"
-  },
-  
-  "options_ui": {
-    // Required.
-    "page": "options.html",
-    // Recommended.
-    "chrome_style": false,
-    // Not recommended; only provided for backwards compatibility,
-    // and will be unsupported in a future version of Chrome (TBD).
-    "open_in_tab": true // this didn't work so I opened it in a new tab using target blank
   },
 
   "short_name": "Custom Chrome"

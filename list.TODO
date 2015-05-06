@@ -1,7 +1,7 @@
  Quick Extension Manager ToDo:
  ☐ Get profiles sorted (users can create, modify, and delete them)
  ☐ Setup Google Analytics
- ☐ New App Icon
+ ☐ New Extension Icon
  ☐ Clean up code, commenting, CSS tweaks
    ☐ Change search icon colour on when focusing on search input and move search icon into the input area
    ☐ Change from first result having margin-top TO activeTitle and inactiveTitle to having margin-bottom (so that it works for search results)
@@ -34,10 +34,25 @@ Issues:
    always on object {
            'always on': [
                  'dfgdfghgdhdfhdfghfghfh',      <---- These are extension id's
-                 'dfghfdhfdghfdhfdhdfhgd'.
+                 'dfghfdhfdghfdhfdhdfhgd',
                  fdghfhfhgfdghfdhdfghdfgh
            ]
    }
+
+
+
+   wouldn't it be easier to have it all in one object? that way if the user changes the name it only needs to change in one place vs your two (in addition to HTML ids as well)
+
+    profiles object: {
+           'profiles' : {
+                 'always on' : ['dfgdfghgdhdfhdfghfghfh',
+                                 'dfghfdhfdghfdhfdhdfhgd',
+                                  'fdghfhfhgfdghfdhdfghdfgh'],
+                 'web dev' : ['dfgdfghgdhdfhdfghfghfh',
+                                  'fdghfhfhgfdghfdhdfghdfgh'],
+                 'media' : ['dfgdfghgdhdfhdfghfghfh']
+           }
+    }
 
 
 
@@ -46,9 +61,18 @@ Chris:
  ✔ created handlebars template for use with extList @done (15-05-06 00:39)
  ✔ fleshed out addExtensions() function to populate the new extList modal [](./myscript.js":273") @done (15-05-06 01:29)
  ✔ add styles for extList  [](./style.css":81") @started(15-05-06 00:43) @done (15-05-06 01:29) @lasted(0:46)
+ ☐ what is this for? it's not console logging when adding extensions to profiles [](./myscript.js":163")
+ ☐ you broke changing profile appearances on click [](./myscript.js":117")
+ ☐ add this (I think it goes after $. but don't want to mess it up) [](./myscript.js":201")
+ ☐ 
 
 
 
 Future Features:
  ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
  ☐ Advanced option to see memory usage of each extension (next to switch)
+
+
+
+
+

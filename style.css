@@ -12,11 +12,20 @@ body {
 
 
 /* PROFILES */
-
 #profileHeader {
 	width: 100%;
 	height: 86px;
 	background-color: #f3f3f3;
+}
+
+#editBtn {
+	text-transform: uppercase;
+	font-size: 10px;
+	color: #000;
+	float: right;
+	margin-top: -15px;
+	cursor: pointer;
+	color: #9F9F9F;
 }
 
 #noProfilesText {
@@ -54,20 +63,20 @@ a #addAProfileText {
 	height: 36px;
 	line-height: 36px;
 	outline: 0;
-	margin:5px;
+	margin: 5px;
+	padding: 0 2rem;
 	text-transform: uppercase;
 	vertical-align: middle;
 	background-color: #DFDFDF;
+	cursor: pointer !important;
 }
 
 .on {
 	background-color: #81c784 !important;
-	cursor: pointer !important;
 	color: #fff;
 }
 
 .off {
-	cursor: pointer !important;
 	background-color: #DFDFDF;
 	/*color: #9F9F9F;*/
 	color: rgba(0,0,0,0.54);
@@ -75,8 +84,8 @@ a #addAProfileText {
 
 #profileSettings {
 	cursor: pointer;
-	
 }
+
 
 /* MODAL STYLES */
 
@@ -102,12 +111,12 @@ a #addAProfileText {
 
 .extList-name span {
 	font-size:20px;
-
 }
 
 .extList-toggle {
 	display: inline-block;
 }
+
 
 /* SEARCHBOX AND SETTINGS */
 
@@ -243,9 +252,11 @@ a.mdi-action-settings {
 span.lever::after {
 	background-color: #81c784;
 }
+
 .switch label input[type=checkbox]:checked+.lever:after {
 	background-color: #81c784;
 }
+
 .switch label input[type=checkbox]:checked+.lever {
 	background-color: #81c784;
 }
@@ -254,14 +265,10 @@ span.lever {
 	background-color: #DFDFDF;
 }
 
-/* Not working? */
-.switch label input[type=checkbox].lever {
-	background-color: #DFDFDF;
-}
-
 .switch label .lever {
 	background-color: #DFDFDF;
 }
+
 
 /* TOASTS */
 
