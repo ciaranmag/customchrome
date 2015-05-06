@@ -16,6 +16,7 @@ Issues:
      ☐ On modal close, sync.set() this new profile object to storage, with the array of extension id's within it. 
  ☐ changing profile appearances on click is broken due to dynamically injected HTML [](./myscript.js":120")
 
+
 Structure of saved profiles in cloud storage
 
 profiles = {
@@ -29,7 +30,7 @@ profiles = {
 
 new profile -> push it to profiles object   profiles["YouTube"] = []
 
-edit extensions -> add/remove from array of profile_name in profiles object 
+edit extensions
 add new array item ->  profiles["YouTube"].push("extensionID")
 remove array item  ->  var index = profiles["YouTube"].indexOf("extensionID");
                        profiles["YouTube"].splice(index, 1);
@@ -40,6 +41,8 @@ delete profile -> delete profiles["YouTube"];
 for profile naming
  ✔ limit the characters to minimum 1 and maximum (maybe 15) due to button width @done (15-05-07 00:26)
  ✔ only allow letters, numbers, and spaces, no underscores or symbols @done (15-05-07 00:35)
+ ☐ give user feedback when they use too few/many characters or restricted characters
+   "Profile names must be between 1 and 15 characters and only include letters, numbers, and spaces"
 
 Chris:
  ☐ add this (I think it goes after $ but don't want to mess it up) [](./myscript.js":205")
@@ -49,6 +52,16 @@ Chris:
 Future Features:
  ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
  ☐ Advanced option to see memory usage of each extension (next to switch)
+
+
+
+
+
+
+
+
+
+
 
 
 
