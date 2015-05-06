@@ -35,12 +35,7 @@
 	</div>
 </div>
 <a class="btn-floating btn-large waves-effect waves-light orange tooltipped" data-position="bottom" data-delay="50" data-tooltip="Add a profile" id='addProfile'><i class="mdi-content-add"></i></a>
-<form action='#'>
-				<p>
-					<input type="checkbox" checked="" id="{{ id }}" />
-					<label for="{{ id }}"></label>
-				</p>
-			</form>
+
 <!-- <div class="row">
   <div class="col s12">
     <div class="card-content profile-card-content black-text profile-holder">
@@ -137,18 +132,19 @@
 <!-- Handlebar Template Start -->
 <script id="extList-template" type="text/x-handlebars-template">
 	<div class='extList-holder'>
-		<div class='extList-img'>
-	 		<img src='{{ pic }}'>	
-		</div>
-		<div class='extList-name'>
-	 		<h5>{{ name }}</h5>
-		</div>
 		<div class='extList-toggle'>
-				<p>
-					<input type="checkbox"  id="{{ id }}" />
-					<label for="{{ id }}"></label>
-				</p>
-	 </div>
+			<p>
+				<input type="checkbox"  id="{{ name }}" appid={{ id }}/>
+				<label for="{{ name }}"></label>
+			</p>
+		</div>
+		<div class='extList-img'>
+			<img src='{{ pic }}'>	
+		</div>
+			<div class='extList-name'>
+			<h5>{{ name }}</h5>
+		</div>
+		
 	</div>
 </script>
 <!-- Handlebar Template End-->
