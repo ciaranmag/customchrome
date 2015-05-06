@@ -97,6 +97,12 @@ a #addAProfileText {
 	width:70%;
 	height:100%; 
 	display: inline-block;
+	padding-left: 5%;
+}
+
+.extList-name span {
+	font-size:20px;
+
 }
 
 .extList-toggle {

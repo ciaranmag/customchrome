@@ -10,13 +10,44 @@
 
 
 Issues:
+ ☐ Need to figure out exactly how profiles are managed re chrome.storage.sync
+   ☐ In myhead, there are multiple objects (different from how I was describing it earlier). so there is one object in storage called 'profiles'. we use that already when a new profile is created and we loop through it to populate the profiles holder.
+     ☐ And then, after the second modal is closed, another object is created in storage.sync with that profile's name, and an array of extension id's in that object. 
+     ☐ Yes we could assign these all to the profiles object, but I'm worried it might get a bit of a head melt. This might be a simpler way of doing things. 
+     ☐ So essentially on page load, we query the storage for the profiles object, and loop over it to fill profiles-holder, and fill an array in JS with those profiles
+     ☐  And then we use that array to query storage again for the extensions associated with each profile. get me? good. :) 
+
+ ☐ got checkboxes to work in extList, but listener function needs to be completed [](./myscript.js":197")
+     ☐ When a checkbox is toggled, get the extid ( stored in an attrbute in the html)
+     ☐ push this id to an array with the name of the profile we're working on.
+     ☐ On modal close, sync.set() this new profile object to storage, with the array of extension id's within it. 
+
+    profiles object: {
+           'profiles' : [
+                 'always on',
+                 'web dev',
+                 'media'
+           ]
+    }
+
+    And then we'd have individual objects for each of those profiles that we can query
+   always on object {
+           'always on': [
+                 'dfgdfghgdhdfhdfghfghfh',      <---- These are extension id's
+                 'dfghfdhfdghfdhfdhdfhgd'.
+                 fdghfhfhgfdghfdhdfghdfgh
+           ]
+   }
+
+
 
 Chris:
  ✔ add new modal for adding extensions to new pofile id=‘extList’ @done (15-05-06 00:37)
- ✔ created handlebars template for use with extListt @done (15-05-06 00:39)
+ ✔ created handlebars template for use with extList @done (15-05-06 00:39)
  ✔ fleshed out addExtensions() function to populate the new extList modal [](./myscript.js":273") @done (15-05-06 01:29)
  ✔ add styles for extList  [](./style.css":81") @started(15-05-06 00:43) @done (15-05-06 01:29) @lasted(0:46)
- ☐ ! can't get checkboxes to work, nothing happening on click, probably due to dynamically added content but have included id's and for's as per answer here: https://github.com/Dogfalo/materialize/issues/763
+
+
 
 Future Features:
  ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically

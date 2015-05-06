@@ -194,6 +194,15 @@ function extStateListener() { // turn on/off extensions when toggle is switched
 }
 
 
+function checkboxlistener() { // turn on/off extensions when toggle is switched
+	$('.extList-toggle input').change(
+		function(){
+			//get the extension id the user clicked
+			var id = $(this).attr('appid');
+			console.log(id);
+			
+		})
+}
 ////////////////  INCLUDE THESE IN #addProfile click function AFTER THE MODAL IS CLOSED
 //  $('#profileHeader').css("background-color", "#f3f3f3");
 //	$('#noProfilesText').hide();
