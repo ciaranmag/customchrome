@@ -28,14 +28,19 @@
 	<div class="row">
 	  <div class="col s12">
 	    <div class="card-content profile-card-content black-text profile-holder">
-	    <span id="noProfilesText">You don't have any profiles setup.<a id="addProfile"><span id="addAProfileText"> Add one now</span></a></span>
+<!-- 	    <span id="noProfilesText">You don't have any profiles setup.<a id="addProfile"><span id="addAProfileText"> Add one now</span></a></span> -->
 	    <!-- <button id="rmv">Remove</button> -->
 	    </div>
 	  </div>
 	</div>
 </div>
-<!-- <a class="btn-floating btn-large waves-effect waves-light orange tooltipped" data-position="bottom" data-delay="50" data-tooltip="Add a profile" id='addProfile'><i class="mdi-content-add"></i></a> -->
-
+<a class="btn-floating btn-large waves-effect waves-light orange tooltipped" data-position="bottom" data-delay="50" data-tooltip="Add a profile" id='addProfile'><i class="mdi-content-add"></i></a>
+<form action='#'>
+				<p>
+					<input type="checkbox" checked="" id="{{ id }}" />
+					<label for="{{ id }}"></label>
+				</p>
+			</form>
 <!-- <div class="row">
   <div class="col s12">
     <div class="card-content profile-card-content black-text profile-holder">
@@ -90,6 +95,18 @@
     </div>
   </div>
 
+<div id="addExts" class="modal">
+    <div class="modal-content">
+      <h4>Add extensions to</h4>
+      <p>The extensions you tick here will be turned on when this profile is active</p>
+      <div id='extList'>
+
+      </div>
+      <button class="btn waves-effect waves-light" id="addExts" name="action">Confirm
+  			</button>
+    </div>
+  </div>
+
 
 <!-- Handlebar Template Start -->
 <script id="entry-template" type="text/x-handlebars-template">
@@ -116,6 +133,26 @@
 </div>
 </script>
 <!-- Handlebar Template End-->
+
+<!-- Handlebar Template Start -->
+<script id="extList-template" type="text/x-handlebars-template">
+	<div class='extList-holder'>
+		<div class='extList-img'>
+	 		<img src='{{ pic }}'>	
+		</div>
+		<div class='extList-name'>
+	 		<h5>{{ name }}</h5>
+		</div>
+		<div class='extList-toggle'>
+				<p>
+					<input type="checkbox"  id="{{ id }}" />
+					<label for="{{ id }}"></label>
+				</p>
+	 </div>
+	</div>
+</script>
+<!-- Handlebar Template End-->
+
 
 	<script src="jquery-2.1.1.min.js"></script>
   <script src="handlebars-v3.0.1.js"></script>

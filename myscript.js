@@ -13,10 +13,13 @@ var profile5 = [];
 
 var profiles = [];
 
-// Handlebars.js
+// Handlebars for active and inactive lists
 var source   = $("#entry-template").html();
 var template = Handlebars.compile(source);
 
+// Handlebars for extList (modal popup for adding extensions to profiles)
+var extListSource   = $("#extList-template").html();
+var extListTemplate = Handlebars.compile(extListSource);
 
 
 $(document).ready(function(){
@@ -256,8 +259,37 @@ $('#nameSubmit').submit(
 		$('#name').val("");
 		//close modal:
 		$('#profilePrompt').closeModal();
+
+		//after half a second open the modal where the user will specify what extensions to add to profile
+		setTimeout(function(){
+			addExtensions(name);
+		}, 500)
 	}
 )
+
+
+//add extensions to new profile modal
+
+var addExtensions = function(name){
+	//open the modal
+	$('#addExts').openModal({
+			complete: function() {
+				//turn h4 text back to normal after modal is dismissed
+				$('#addExts h4').text(a);
+			}
+		});
+
+	//change H5 text to say "add extensions to [profile name]"
+	var a = $('#addExts h4').text();
+	$('#addExts h4').text(a + " " + name);
+
+
+	//loop over extArray to populate the list
+	extArray.forEach(function(ext){
+		//console.log(ext);
+		$('#extList').append(extListTemplate(ext));
+	})
+}
 
 
 //////////////////         OPTIONS.HTML
@@ -302,13 +334,7 @@ var getProfiles = function(){
 }
 
 
-//add extensions to new profile modal
-//loop over extArray to populate the list
-var populateModal = function(){
-	extArray.forEach(function(ext){
-		
-	})
-}
+
 
 // remove profiles
 $("#rmv").click(function(){

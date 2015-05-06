@@ -12,7 +12,11 @@
 Issues:
 
 Chris:
-
+ ✔ add new modal for adding extensions to new pofile id=‘extList’ @done (15-05-06 00:37)
+ ✔ created handlebars template for use with extListt @done (15-05-06 00:39)
+ ✔ fleshed out addExtensions() function to populate the new extList modal [](./myscript.js":273") @done (15-05-06 01:29)
+ ✔ add styles for extList  [](./style.css":81") @started(15-05-06 00:43) @done (15-05-06 01:29) @lasted(0:46)
+ ☐ ! can't get checkboxes to work, nothing happening on click, probably due to dynamically added content but have included id's and for's as per answer here: https://github.com/Dogfalo/materialize/issues/763
 
 Future Features:
  ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically

@@ -78,12 +78,31 @@ a #addAProfileText {
 	
 }
 
-/* MODAL FOR PROFILES */
+/* MODAL STYLES */
 
-#validatePrompt {
-	display:none;
+.extList-holder {
+	margin: 5px 0 5px 0;
 }
 
+.extList-img {
+	width:10%;
+	display: inline-block;
+}
+
+.extList-img img {
+	max-width:100%;
+}
+
+.extList-name {
+	width:70%;
+	height:100%; 
+	display: inline-block;
+}
+
+.extList-toggle {
+	width:10%;
+	display: inline-block;
+}
 
 /* SEARCHBOX AND SETTINGS */
 
