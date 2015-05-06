@@ -121,8 +121,9 @@ $(document).ready(function(){
 $(".profile-btn").click(function(){ // if a profile btn is clicked
 	console.log("see the click");
 	btnId = $(this).attr("id"); // find out which one and assign to btnId
+	btnIdConvert = btnId.split('_').join(' '); // lower case and replace underscore for space
 	if ($(this).hasClass("on")) { // if the btn is currently on then turn all extensions off
-		// window[btnId].forEach(function(extensionObj){
+		// window[btnIdConvert].forEach(function(extensionObj){
 		// 	chrome.management.setEnabled(extensionObj.id, false, function (){
 		// 		Materialize.toast(btnId+' is now off', 2000, 'ccToastOff');
 		// 	});
@@ -130,7 +131,7 @@ $(".profile-btn").click(function(){ // if a profile btn is clicked
 		$(this).removeClass("on").addClass("off");
 	}
 	else if ($(this).hasClass("off")) { // if the btn is currently off then turn all extensions on
-		// window[btnId].forEach(function(extensionObj){
+		// window[btnIdConvert].forEach(function(extensionObj){
 		// 	chrome.management.setEnabled(extensionObj.id, true, function (){
 		// 		Materialize.toast(btnId+' is now on', 2000, 'ccToastOn');
 		// 	});
@@ -191,7 +192,7 @@ $('#nameSubmit').submit(
 	function(e){
 		e.preventDefault();
 		// catch the name the user selected
-		var name = $('#name').val();
+		var name = $('#name').val().toLowerCase();
 		// check if it's empty
 		if (name === ""){
 			// name is empty, don't close modal and prompt user for name
@@ -213,16 +214,18 @@ $('#nameSubmit').submit(
 		if (typeof profiles === 'undefined') {
 			profiles = [name];
 		} else {
-			profiles.push(name);
+			// profiles.push(name); // old code - new code creates array too
+			profiles[name] = [];
 		}
 		
-		// push name to profiles array in storage.sync
+		// push name to profiles array in storage.sync - this is more of an overwrite isn't it?
 		chrome.storage.sync.set({'profiles':profiles}, function(){
 			console.log('storage.sync updated with new profile')
 		})
 
 		console.log('user is adding the '+name+' profile');
-		var btnHtml = "<a class='profile-btn off' id='"+name.toLowerCase()+"'>"+name.toString()+"</a>";
+		// HTML code for profile btn changing string to lower case and replacing spaces with underscores
+		var btnHtml = "<a class='profile-btn off' id='"+name.split(' ').join('_')+"'>"+name.toString()+"</a>";
 		// append new button with new profile name to profile-holder
 		$('.profile-holder').append(btnHtml);
 		// set profile name to user-defined profile name
@@ -257,10 +260,15 @@ var addExtensions = function(name){
 		// console.log(ext);
 		$('#extList').append(extListTemplate(ext));
 	})
-	$('#profileHeader').css("background-color", "#f3f3f3");
-	$('#editBtn').show();
-	$('#noProfilesText').hide();
 }
+
+
+// ADD THESE TO THE SELECTING EXTENSIONS FOR A PROFILE CLOSING MODAL STAGE
+// $('#profileHeader').css("background-color", "#f3f3f3");
+// $('#editBtn').show();
+// $('#noProfilesText').hide();
+
+
 
 
 // retrieve profiles from chrome.storage:

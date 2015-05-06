@@ -10,61 +10,39 @@
 
 
 Issues:
- ☐ Need to figure out exactly how profiles are managed re chrome.storage.sync
-   ☐ In myhead, there are multiple objects (different from how I was describing it earlier). so there is one object in storage called 'profiles'. we use that already when a new profile is created and we loop through it to populate the profiles holder.
-     ☐ And then, after the second modal is closed, another object is created in storage.sync with that profile's name, and an array of extension id's in that object. 
-     ☐ Yes we could assign these all to the profiles object, but I'm worried it might get a bit of a head melt. This might be a simpler way of doing things. 
-     ☐ So essentially on page load, we query the storage for the profiles object, and loop over it to fill profiles-holder, and fill an array in JS with those profiles
-     ☐  And then we use that array to query storage again for the extensions associated with each profile. get me? good. :) 
-
  ☐ got checkboxes to work in extList, but listener function needs to be completed [](./myscript.js":197")
      ☐ When a checkbox is toggled, get the extid ( stored in an attrbute in the html)
      ☐ push this id to an array with the name of the profile we're working on.
      ☐ On modal close, sync.set() this new profile object to storage, with the array of extension id's within it. 
+ ☐ changing profile appearances on click is broken due to dynamically injected HTML [](./myscript.js":120")
 
-    profiles object: {
-           'profiles' : [
-                 'always on',
-                 'web dev',
-                 'media'
-           ]
-    }
+Structure of saved profiles in cloud storage
 
-    And then we'd have individual objects for each of those profiles that we can query
-   always on object {
-           'always on': [
-                 'dfgdfghgdhdfhdfghfghfh',      <---- These are extension id's
+profiles = {
+  'always on' : ['dfgdfghgdhdfhdfghfghfh',
                  'dfghfdhfdghfdhfdhdfhgd',
-                 fdghfhfhgfdghfdhdfghdfgh
-           ]
-   }
+                  'fdghfhfhgfdghfdhdfghdfgh'],
+  'web dev' : ['dfgdfghgdhdfhdfghfghfh',
+                  'fdghfhfhgfdghfdhdfghdfgh'],
+  'media' : ['dfgdfghgdhdfhdfghfghfh']
+}
+
+new profile -> push it to profiles object   profiles["YouTube"] = []
+
+edit extensions -> add/remove from array of profile_name in profiles object 
+add new array item ->  profiles["YouTube"].push("extensionID")
+remove array item  ->  var index = profiles["YouTube"].indexOf("extensionID");
+                       profiles["YouTube"].splice(index, 1);
+
+delete profile -> delete profiles["YouTube"];
 
 
-
-   wouldn't it be easier to have it all in one object? that way if the user changes the name it only needs to change in one place vs your two (in addition to HTML ids as well)
-
-    profiles object: {
-           'profiles' : {
-                 'always on' : ['dfgdfghgdhdfhdfghfghfh',
-                                 'dfghfdhfdghfdhfdhdfhgd',
-                                  'fdghfhfhgfdghfdhdfghdfgh'],
-                 'web dev' : ['dfgdfghgdhdfhdfghfghfh',
-                                  'fdghfhfhgfdghfdhdfghdfgh'],
-                 'media' : ['dfgdfghgdhdfhdfghfghfh']
-           }
-    }
-
-
+for profile naming
+- limit the characters to (maybe 15) due to button width
+- only allow letters, numbers, and spaces, no underscores or symbols
 
 Chris:
- ✔ add new modal for adding extensions to new pofile id=‘extList’ @done (15-05-06 00:37)
- ✔ created handlebars template for use with extList @done (15-05-06 00:39)
- ✔ fleshed out addExtensions() function to populate the new extList modal [](./myscript.js":273") @done (15-05-06 01:29)
- ✔ add styles for extList  [](./style.css":81") @started(15-05-06 00:43) @done (15-05-06 01:29) @lasted(0:46)
- ☐ what is this for? it's not console logging when adding extensions to profiles [](./myscript.js":163")
- ☐ you broke changing profile appearances on click [](./myscript.js":117")
- ☐ add this (I think it goes after $. but don't want to mess it up) [](./myscript.js":201")
- ☐ 
+ ☐ add this (I think it goes after $ but don't want to mess it up) [](./myscript.js":205")
 
 
 
