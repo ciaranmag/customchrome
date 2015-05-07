@@ -29,8 +29,8 @@
 	    <div class="card-content profile-card-content black-text profile-holder">
 	    <a id="editBtn">edit</a>
 	    	<span id="noProfilesText">You don't have any profiles setup.<a id="addProfile"><span id="addAProfileText"> Add one now</span></a></span>
-	    <a class="profile-btn" id="rmv">Remove</a>
-	    <a class="profile-btn off" id="new">New</a>
+	    <!-- <a class="profile-btn" id="rmv">Remove</a> -->
+	    <!-- <a class="profile-btn off" id="new">New</a> -->
 	    </div>
 	  </div>
 	</div>
@@ -80,7 +80,7 @@
     <h4>Add New Profile</h4>
     <form id="nameSubmit">
       <div class="input-field col s6">
-        <input type="text" class="validate" id="name" min="1" max="15" pattern="[a-zA-z0-9\s]+">
+        <input type="text" class="validate" id="name" min="1" max="15" pattern="[a-zA-z0-9\s]+" autofocus>
         <label for="profileName">New Profile Name</label>
       </div>
       <button class="btn waves-effect waves-light" type="submit" name="action">Add
@@ -97,9 +97,28 @@
     <div id='extList'></div>
   </div>
   <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn ">Done</a>
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn" id="done">Done</a>
   </div>
 </div>
+
+<!-- Handlebar Template Start: add extensions to profiles in modal list -->
+<script id="extList-template" type="text/x-handlebars-template">
+	<div class='extList-holder'>
+		<div class='extList-toggle'>
+			<p>
+				<input type="checkbox"  id="{{ name }}" appid={{ id }}>
+				<label for="{{ name }}"></label>
+			</p>
+		</div>
+		<div class='extList-img'>
+			<img src='{{ pic }}'>	
+		</div>
+		<div class='extList-name'>
+			<span>{{ name }}</span>
+		</div>
+	</div>
+</script>
+<!-- Handlebar Template End-->
 
 
 <!-- Handlebar Template Start: active/inactive list -->
@@ -126,25 +145,6 @@
 	</div>
 
 </div>
-</script>
-<!-- Handlebar Template End-->
-
-<!-- Handlebar Template Start: add extensions to profiles in modal list -->
-<script id="extList-template" type="text/x-handlebars-template">
-	<div class='extList-holder'>
-		<div class='extList-toggle'>
-			<p>
-				<input type="checkbox"  id="{{ name }}" appid={{ id }}/>
-				<label for="{{ name }}"></label>
-			</p>
-		</div>
-		<div class='extList-img'>
-			<img src='{{ pic }}'>	
-		</div>
-		<div class='extList-name'>
-			<span>{{ name }}</span>
-		</div>
-	</div>
 </script>
 <!-- Handlebar Template End-->
 

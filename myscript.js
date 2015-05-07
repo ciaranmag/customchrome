@@ -2,21 +2,18 @@ var extArray = [];
 var activeExtensions = [];
 var inactiveExtensions = [];
 var btnId;
-var profilesHolder = {};
-var profiles = [];
+idList = [];
 
 // Handlebars for active and inactive lists
 var source   = $("#entry-template").html();
 var template = Handlebars.compile(source);
 
-// Handlebars for extList (modal popup for adding extensions to profiles)
+// Handlebars for extList (modal for adding extensions to profiles)
 var extListSource   = $("#extList-template").html();
 var extListTemplate = Handlebars.compile(extListSource);
 
 
 $(document).ready(function(){
-
-	$('#editBtn').hide();
 
 	// call function to check storage.sync for existing user profiles:
 	getProfiles();
@@ -159,32 +156,15 @@ function extStateListener() { // turn on/off extensions when toggle is switched
 }
 
 
-function checkboxlistener() { // turn on/off extensions when toggle is switched
-	$('.extList-toggle input').change(
-		function(){
-			//get the extension id the user clicked
-			var id = $(this).attr('appid');
-			console.log(id);
-			
-		})
-}
-
-
-// listen for addProfile button press
-// add a button to list 
-// prompt for profile name
-// set that name as button text
-// add that profile to the storage.sync object...
+// listen for addProfile button press, add a button to list, prompt for profile name, set that name as button text, add that profile to the storage.sync object
 $('#addProfile').click(
 	function(){
 		console.log('user is adding a profile');
 		//open modal
 		$('#profilePrompt').openModal({
 			complete: function() {
-
 				// function to run when modal is dismissed
 			},
-
 		});
 	});
 
@@ -192,40 +172,25 @@ $('#nameSubmit').submit(
 	function(e){
 		e.preventDefault();
 		// catch the name the user selected
-		var name = $('#name').val().toLowerCase();
+		name = $('#name').val().toLowerCase();
 		// check if it's empty
-		if (name === ""){
-			// name is empty, don't close modal and prompt user for name
-			console.log('name is empty, user must enter a (unique) name');
-			Materialize.toast('Your profile needs a name!', 2000, 'alert');
-			return;
-		}
+		// if (name === ""){
+		// 	// name is empty, don't close modal and prompt user for name
+		// 	console.log('name is empty, user must enter a (unique) name');
+		// 	Materialize.toast('Your profile needs a name!', 2000, 'alert');
+		// 	return;
+		// }
 
 		// check if it's the same name as an existing profile
-		// ADD .toLowerCase TO THIS TO MAKE SURE IT WORKS
-		if ($.inArray(name, profiles) != -1){
-			console.log('profile already exists');
-			Materialize.toast('Profile already exists!', 2000, 'alert');
-			return;
-		}
-
-		// check if it's the first profile to be added
-		// push name to profiles array
-		if (typeof profiles === 'undefined') {
-			profiles = [name];
-		} else {
-			// profiles.push(name); // old code - new code creates array too
-			profiles[name] = [];
-		}
-		
-		// push name to profiles array in storage.sync - this is more of an overwrite isn't it?
-		chrome.storage.sync.set({'profiles':profiles}, function(){
-			console.log('storage.sync updated with new profile')
-		})
+		// if ($.inArray(name, profiles) != -1){
+		// 	console.log('profile already exists');
+		// 	Materialize.toast('Profile already exists!', 2000, 'alert');
+		// 	return;
+		// }
 
 		console.log('user is adding the '+name+' profile');
 		// HTML code for profile btn changing string to lower case and replacing spaces with underscores
-		var btnHtml = "<a class='profile-btn off' id='"+name.split(' ').join('_')+"'>"+name.toString()+"</a>";
+		var btnHtml = "<a class='profile-btn off' id='"+name.split(' ').join('_')+"'>"+name+"</a>";
 		// append new button with new profile name to profile-holder
 		$('.profile-holder').append(btnHtml);
 		// set profile name to user-defined profile name
@@ -240,20 +205,25 @@ $('#nameSubmit').submit(
 	}
 )
 
+
 // add extensions to new profile modal
 var addExtensions = function(name){
 	// open the modal
 	$('#addExts').openModal({
-			complete: function() {
-				// turn h4 text back to normal after modal is dismissed
-				$('#addExts h4').text(a);
-			}
-		});
+		ready: function() {
+			checkboxlistener(name)
+		},
+		complete: function() {
+			// turn h4 text back to normal after modal is dismissed
+			$('#addExts h4').text(a);
+			$('#extList').html('');
+			submitThatShit();
+		}
+	});
 
-	// change H5 text to say "add extensions to [profile name]"
+	// change H4 text to say "add extensions to [profile name]"
 	var a = $('#addExts h4').text();
 	$('#addExts h4').text(a + " " + name);
-
 
 	// loop over extArray to populate the list
 	extArray.forEach(function(ext){
@@ -263,45 +233,56 @@ var addExtensions = function(name){
 }
 
 
-// ADD THESE TO THE SELECTING EXTENSIONS FOR A PROFILE CLOSING MODAL STAGE
-// $('#profileHeader').css("background-color", "#f3f3f3");
-// $('#editBtn').show();
-// $('#noProfilesText').hide();
+function checkboxlistener() { // turn on/off extensions when toggle is switched
+	$('.extList-toggle input').change(
+		function(){
+			//get the extension id the user clicked
+			var id = $(this).attr('appid');
+			idList.push(id)
+			console.log("single " + id)
+			console.log("all " + idList);
+		}
+	)
+}
 
-
+function submitThatShit() {
+	tempObj = {};
+	console.log("done")
+	tempObj[name] = idList;
+	chrome.storage.sync.set(tempObj, function () {
+	  console.log('Saved', name, idList);
+	})
+	// profilesHolder is now a replica of the cloud code - need to update profilesHolder after all edits and deletes too
+	chrome.storage.sync.get(function(obj){
+		profilesHolder = obj;
+	})
+}
 
 
 // retrieve profiles from chrome.storage:
 var getProfiles = function(){
 	// check storage for any profiles
-	chrome.storage.sync.get('profiles', function(obj){
-		// console.log(obj)
-
-		profiles = obj.profiles;
-
+	chrome.storage.sync.get(function(obj){
 		// if there are no profiles, exit function
-		if(!(obj.profiles)){
+		if ( Object.keys(obj).length === 0 ) {
 			$('#noProfilesText').show();
 			$('#profileHeader').css("background-color", "#03A9FA");
+			$('#editBtn').hide();
 			console.log('no profiles exist yet');
 			return;
 		}
 
 		$('#noProfilesText').hide();
+		$('#profileHeader').css("background-color", "#f3f3f3");
+		$('#editBtn').show();
 
-		console.log('length of profiles array is:'+obj.profiles.length);
-		// set l to number of profiles
-		var l = obj.profiles.length;
-		// set variable to hold profile name
-		var name;
-		// loop over each profile and append it to the profiles-holder
-		for (i=0; i<l; i++){
-			console.log('adding '+obj.profiles[i]+" to profiles holder");
-			name = obj.profiles[i];
+		var allKeys = Object.keys(obj);
+		for (var i = 0; i < allKeys.length; i++) {
+			var name = allKeys[i];
 			var btnHtml = "<a class='profile-btn off' id='"+name.toLowerCase()+"'>"+name+"</a>";
 			// append to profile-holder
 			$('.profile-holder').append(btnHtml);
-		}
+		};
 	})
 }
 
@@ -309,19 +290,6 @@ var getProfiles = function(){
 // remove all profiles from chrome.storage:
 $("#rmv").click(function(){
 	// a quick one-line removes all profiles
-	chrome.storage.sync.clear()
+	chrome.storage.sync.clear();
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
 
