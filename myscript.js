@@ -61,34 +61,66 @@ $(document).ready(function(){
 		});
 
 		extStateListener(); // run the function which listens for a change in a checkbox state
-		
 
-// THE BELOW FOR LOOP WAS CREATED BASED ON THE profilesHolder STRUCTURE BELOW
 
-		// profilesHolder = { // "profile1" etc. will be the user's custom name e.g. "Web Dev"
-		// 	"profile1": profile1,
-		// 	"profile2": profile2,
-		// 	"profile3": profile3,
-		// };
 
-		// profile1 =[
-		// 	extArray[0]
-		// ];
 
-		// the amount of extension profiles the user has
-		// var sizeOfProfilesHolder = Object.keys(profilesHolder).length;
 
-		// for (var i = 0; i < sizeOfProfilesHolder-1; i++) { // cycle through the profilesHolder
-		// 	for (key in profilesHolder){ // cycle through the extension profiles
-		// 		$("#" + key).addClass("on"); // default turn the profile btn to the on appearance
-		// 		for (var i = 0; i < profilesHolder[key].length; i++) { // cycle through the extensions within the profile
-		// 			if (profilesHolder[key][i]["enabled"] === false) { // if any of the extensions are turned off then the profile isn't fully on so give it the off appearance
-		// 				$("#" + key).removeClass("on");
-		// 				$("#" + key).addClass("off");
-		// 			}
-		// 		};
-		// 	}
-		// };
+
+
+chrome.storage.sync.get(function(obj){
+	// setting the profile buttons to on/off appearance
+	var sizeOfStoredObject = Object.keys(obj).length;
+	// console.log(sizeOfStoredObject);
+	console.log(sizeOfStoredObject);
+	for (var n = 0; n < sizeOfStoredObject; n++) { // cycle through the profilesHolder
+		// console.log(Object.keys(obj)[i])
+		for (key in obj) { // cycle through the extension profiles
+			$("#" + key).addClass("on").removeClass("off");
+			for (var n = 0; n < obj[key].length; n++) { // cycle through the extensions within the profile
+				for (i=0;i<extArray.length;i++) {
+					// console.log("this is the extension array with obj[key]["+n+"] ---" +obj[key][n]);
+					if (extArray[i]["id"] === obj[key][n]) {
+						if (extArray[i]["enabled"] === false) {
+							$("#" + key).removeClass("on").addClass("off");
+						}
+					}
+				}
+
+
+				// THIS NEXT SECTION NEEDS TO TAKE EACH EXTENSION ID FROM THE PROFILE'S ARRAY LIKE SO obj[key][i] AND FIND OUT WHETHER THE EXTENSION IS TURNED ON OR NOT THEN IF ANY OF THE EXTENSIONS ARE TURNED OFF THEN APPLY THE "off" CLASS TO THE BTN
+
+
+			}
+
+		}
+	}
+}) // close sync.get
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		$(".extId").hide(); // just here to reference each individual ext
 		$(".extState").hide(); // just here to reference each individual ext's state
@@ -115,27 +147,42 @@ $(document).ready(function(){
 
 
 // after clicking a profile button toggle it's appearance (on or off) and cycle through associated extensions turning them all on or off
-$(".profile-btn").click(function(){ // if a profile btn is clicked
-	console.log("see the click");
+$("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 	btnId = $(this).attr("id"); // find out which one and assign to btnId
 	btnIdConvert = btnId.split('_').join(' '); // lower case and replace underscore for space
 	if ($(this).hasClass("on")) { // if the btn is currently on then turn all extensions off
-		// window[btnIdConvert].forEach(function(extensionObj){
-		// 	chrome.management.setEnabled(extensionObj.id, false, function (){
-		// 		Materialize.toast(btnId+' is now off', 2000, 'ccToastOff');
-		// 	});
-		// })
-		$(this).removeClass("on").addClass("off");
+		chrome.storage.sync.get(function(obj){
+			Object.keys(obj).forEach(function(key){
+				if (key === btnIdConvert) {
+					for (var i = 0; i < obj[btnIdConvert].length; i++) {
+						chrome.management.setEnabled(obj[btnIdConvert][i], true, function (){
+								Materialize.toast(btnIdConvert+' is now on', 2000, 'ccToastOn')
+							}
+						)
+					}
+				}
+			})
+		})
+	$(this).removeClass("off").addClass("on");
 	}
+
 	else if ($(this).hasClass("off")) { // if the btn is currently off then turn all extensions on
-		// window[btnIdConvert].forEach(function(extensionObj){
-		// 	chrome.management.setEnabled(extensionObj.id, true, function (){
-		// 		Materialize.toast(btnId+' is now on', 2000, 'ccToastOn');
-		// 	});
-		// })
-		$(this).removeClass("off").addClass("on");
+		chrome.storage.sync.get(function(obj){
+			Object.keys(obj).forEach(function(key){
+				if (key === btnIdConvert) {
+					for (var i = 0; i < obj[btnIdConvert].length; i++) {
+						chrome.management.setEnabled(obj[btnIdConvert][i], true, function (){
+								Materialize.toast(btnIdConvert+' is now on', 2000, 'ccToastOn')
+							}
+						)
+					}
+				}
+			})
+		})
+	$(this).removeClass("off").addClass("on");
 	}
-});
+
+})
 
 
 function extStateListener() { // turn on/off extensions when toggle is switched
@@ -252,10 +299,6 @@ function submitThatShit() {
 	chrome.storage.sync.set(tempObj, function () {
 	  console.log('Saved', name, idList);
 	})
-	// profilesHolder is now a replica of the cloud code - need to update profilesHolder after all edits and deletes too
-	chrome.storage.sync.get(function(obj){
-		profilesHolder = obj;
-	})
 }
 
 
@@ -267,7 +310,7 @@ var getProfiles = function(){
 		if ( Object.keys(obj).length === 0 ) {
 			$('#noProfilesText').show();
 			$('#profileHeader').css("background-color", "#03A9FA");
-			$('#editBtn').hide();
+			$('#editBtn, .profileBtn1, .profileBtn2, .profileBtn3, .profileBtn4, .profileBtn5').hide();
 			console.log('no profiles exist yet');
 			return;
 		}

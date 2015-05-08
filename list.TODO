@@ -10,12 +10,11 @@
 
 
 Issues:
- ☐ got checkboxes to work in extList, but listener function needs to be completed [](./myscript.js":197")
-     ☐ When a checkbox is toggled, get the extid ( stored in an attrbute in the html)
-     ☐ push this id to an array with the name of the profile we're working on.
-     ☐ On modal close, sync.set() this new profile object to storage, with the array of extension id's within it. 
- ☐ changing profile appearances on click is broken due to dynamically injected HTML [](./myscript.js":120")
+for profile naming
+ ☐ give user feedback when they use too few/many characters or restricted characters
+   "Profile names must be between 1 and 15 characters and only include letters, numbers, and spaces"
 
+   
 
 Structure of saved profiles in cloud storage
 
@@ -38,14 +37,7 @@ remove array item  ->  var index = profiles["YouTube"].indexOf("extensionID");
 delete profile -> delete profiles["YouTube"];
 
 
-for profile naming
- ✔ limit the characters to minimum 1 and maximum (maybe 15) due to button width @done (15-05-07 00:26)
- ✔ only allow letters, numbers, and spaces, no underscores or symbols @done (15-05-07 00:35)
- ☐ give user feedback when they use too few/many characters or restricted characters
-   "Profile names must be between 1 and 15 characters and only include letters, numbers, and spaces"
-
 Chris:
- ✔ add this (I think it goes after $ but don't want to mess it up) [](./myscript.js":205") @done (15-05-07 12:29)
 
 
 
