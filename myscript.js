@@ -98,30 +98,6 @@ chrome.storage.sync.get(function(obj){
 }) // close sync.get
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		$(".extId").hide(); // just here to reference each individual ext
 		$(".extState").hide(); // just here to reference each individual ext's state
 
@@ -155,8 +131,8 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 			Object.keys(obj).forEach(function(key){
 				if (key === btnIdConvert) {
 					for (var i = 0; i < obj[btnIdConvert].length; i++) {
-						chrome.management.setEnabled(obj[btnIdConvert][i], true, function (){
-								Materialize.toast(btnIdConvert+' is now on', 2000, 'ccToastOn')
+						chrome.management.setEnabled(obj[btnIdConvert][i], false, function (){
+								Materialize.toast(btnIdConvert+' is now ff', 2000, 'ccToastOff')
 							}
 						)
 					}
