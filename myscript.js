@@ -2,7 +2,7 @@ var extArray = [];
 var activeExtensions = [];
 var inactiveExtensions = [];
 var btnId;
-idList = [];
+var idList = [];
 
 // Handlebars for active and inactive lists
 var source   = $("#entry-template").html();
@@ -124,7 +124,7 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 	$(this).removeClass("on").addClass("off"); // change profile btn to "off" appearance
 	setTimeout(function(){
 		location.reload(false); // adding false lets the page reload from the cache
-	}, 500)
+	}, 1000)
 	}
 
 	else if ($(this).hasClass("off")) { // if the btn is currently off then turn all extensions on
@@ -141,7 +141,7 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 	$(this).removeClass("off").addClass("on"); // change profile btn to "on" appearance
 	setTimeout(function(){
 		location.reload(false); // adding false lets the page reload from the cache
-	}, 500)
+	}, 1000)
 	}
 
 })
@@ -155,14 +155,14 @@ function extStateListener() { // turn on/off extensions when toggle is switched
 				Materialize.toast(name+' is now on', 2000, 'ccToastOn');
 				setTimeout(function(){
 					location.reload(false);
-				}, 500)
+				}, 1000)
 			});
 		} else {
 			chrome.management.setEnabled(id, false, function (){
 				Materialize.toast(name+' is now off', 2000, 'ccToastOff');
 				setTimeout(function(){
 					location.reload(false);
-				}, 500)
+				}, 1000)
 			});
 		}
 	})
@@ -172,8 +172,7 @@ function extStateListener() { // turn on/off extensions when toggle is switched
 $('#addProfile').click(
 	function(){
 		$('#profilePrompt').openModal({
-			complete: function() { // function to run when modal is dismissed
-			},
+			complete: function() {}, // function to run when modal is dismissed
 		});
 	});
 
@@ -220,7 +219,7 @@ function addExtensions(name) { // add extensions to new profile modal
 	});
 
 	var a = $('#addExts h4').text();
-	$('#addExts h4').text(a + " " + name); // change H4 text to say "add extensions to [profile name]"
+	$('#addExts h4').text(a + name); // change H4 text to say "add extensions to [profile name]"
 	extArray.forEach(function(ext){ // loop over extArray to populate the list
 		$('#extList').append(extListTemplate(ext));
 	})
@@ -229,7 +228,7 @@ function addExtensions(name) { // add extensions to new profile modal
 function checkboxlistener() { // turn on/off extensions when toggle is switched
 	$('.extList-toggle input').change(function(){
 		var id = $(this).attr('appid'); //get the extension id the user clicked
-		idList.push(id)
+		idList.push(id);
 	})
 }
 
@@ -246,15 +245,14 @@ function getProfiles() { // check storage for any profiles
 		if ( Object.keys(obj).length === 0 ) { // if there are no profiles, exit function
 			$('#noProfilesText').show();
 			$('#profileHeader').css("background-color", "#03A9FA");
-			$('#editBtn, .profileBtn1, .profileBtn2, .profileBtn3, .profileBtn4, .profileBtn5').hide();
+			$('#editBtn').hide();
 			console.log('no profiles exist yet');
 			return;
 		}
 
 		$('#noProfilesText').hide();
 		$('#profileHeader').css("background-color", "#f3f3f3");
-		$('#editBtn').show();
-		$('#addProfileBox').show();
+		$('#editBtn, #addProfileBox').show();
 
 		var allKeys = Object.keys(obj);
 		for (var i = 0; i < allKeys.length; i++) {
@@ -265,11 +263,9 @@ function getProfiles() { // check storage for any profiles
 	})
 }
 
-
 $("body").on("click","#addProfileBox",function(){ // box next to existing profiles to add a new profile
 	$('#profilePrompt').openModal({
-		complete: function() { // function to run when modal is dismissed
-		},
+		complete: function() {}, // function to run when modal is dismissed
 	});
 })
 

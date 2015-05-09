@@ -3,29 +3,29 @@
  ☐ Setup Google Analytics
  ☐ New Extension Icon
  ☐ Clean up code, commenting, CSS tweaks
-   ☐ Change search icon colour on when focusing on search input and move search icon into the input area
-   ☐ Change from first result having margin-top TO activeTitle and inactiveTitle to having margin-bottom (so that it works for search results)
-   ☐ Look at loading times of each file - try to improve them
-   ☐ Clean up manifest permissions
+	 ☐ Change search icon colour on when focusing on search input and move search icon into the input area
+	 ☐ Change from first result having margin-top TO activeTitle and inactiveTitle to having margin-bottom (so that it works for search results)
+	 ☐ Look at loading times of each file - try to improve them
+	 ☐ Clean up manifest permissions
 
 
 Issues:
 for profile naming
  ☐ give user feedback when they use too few/many characters or restricted characters
- ☐ only show addProfileBox if number of profiles is between 1 and 4
+ ☐ only show addProfileBox if number of profiles is between 1 and 4 and add it to the right of existing profile buttons
  ☐ immediately after adding the first profile remove the blue styling and add text
  ☐ fix checkboxListener - needs to remove id if clicked twice
-   
+	 
 
 Structure of saved profiles in cloud storage
 
 profiles = {
-  'always on' : ['dfgdfghgdhdfhdfghfghfh',
-                 'dfghfdhfdghfdhfdhdfhgd',
-                  'fdghfhfhgfdghfdhdfghdfgh'],
-  'web dev' : ['dfgdfghgdhdfhdfghfghfh',
-                  'fdghfhfhgfdghfdhdfghdfgh'],
-  'media' : ['dfgdfghgdhdfhdfghfghfh']
+	'always on' : ['dfgdfghgdhdfhdfghfghfh',
+								 'dfghfdhfdghfdhfdhdfhgd',
+									'fdghfhfhgfdghfdhdfghdfgh'],
+	'web dev' : ['dfgdfghgdhdfhdfghfghfh',
+									'fdghfhfhgfdghfdhdfghdfgh'],
+	'media' : ['dfgdfghgdhdfhdfghfghfh']
 }
 
 new profile -> push it to profiles object   profiles["YouTube"] = []
@@ -33,7 +33,7 @@ new profile -> push it to profiles object   profiles["YouTube"] = []
 edit extensions
 add new array item ->  profiles["YouTube"].push("extensionID")
 remove array item  ->  var index = profiles["YouTube"].indexOf("extensionID");
-                       profiles["YouTube"].splice(index, 1);
+											 profiles["YouTube"].splice(index, 1);
 
 delete profile -> delete profiles["YouTube"];
 

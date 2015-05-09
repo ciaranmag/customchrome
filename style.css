@@ -51,7 +51,10 @@ a #addAProfileText {
 	font-weight: bold;
 }
 
-#addProfileBox {}
+#addProfileBox {
+	font-size: 16px;
+	color: rgba(0,0,0,0.54);
+}
 
 .profile-card-content {
 	padding: 20px 0px 0px 0px !important;
@@ -298,7 +301,7 @@ span.lever {
 
 .ccToastOff {
 	background-color: #DFDFDF;
-	color: #9F9F9F;
+	color: rgba(0,0,0,0.54);
 }
 
 .deleteAll {
