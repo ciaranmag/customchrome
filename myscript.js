@@ -122,7 +122,9 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 			})
 		})
 	$(this).removeClass("on").addClass("off"); // change profile btn to "off" appearance
-	location.reload(false); // adding false lets the page reload from the cache
+	setTimeout(function(){
+		location.reload(false); // adding false lets the page reload from the cache
+	}, 500)
 	}
 
 	else if ($(this).hasClass("off")) { // if the btn is currently off then turn all extensions on
@@ -137,7 +139,9 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 			})
 		})
 	$(this).removeClass("off").addClass("on"); // change profile btn to "on" appearance
-	location.reload(false); // adding false lets the page reload from the cache
+	setTimeout(function(){
+		location.reload(false); // adding false lets the page reload from the cache
+	}, 500)
 	}
 
 })
@@ -149,10 +153,16 @@ function extStateListener() { // turn on/off extensions when toggle is switched
 		if($(this).is(':checked')){
 			chrome.management.setEnabled(id, true, function (){
 				Materialize.toast(name+' is now on', 2000, 'ccToastOn');
+				setTimeout(function(){
+					location.reload(false);
+				}, 500)
 			});
 		} else {
 			chrome.management.setEnabled(id, false, function (){
 				Materialize.toast(name+' is now off', 2000, 'ccToastOff');
+				setTimeout(function(){
+					location.reload(false);
+				}, 500)
 			});
 		}
 	})
@@ -255,26 +265,24 @@ function getProfiles() { // check storage for any profiles
 	})
 }
 
-$("body").on("click","#addProfileBox",function(){
-		$('#profilePrompt').openModal({
-			complete: function() { // function to run when modal is dismissed
-			},
-		});
+
+$("body").on("click","#addProfileBox",function(){ // box next to existing profiles to add a new profile
+	$('#profilePrompt').openModal({
+		complete: function() { // function to run when modal is dismissed
+		},
+	});
 })
 
-$("body").on("click","#editBtn",function(){
+$("body").on("click","#editBtn",function(){ // show edit profile options and remove all
 	$('#removeAllBtn').show()
 })
 
-$("body").on("click","#removeAllBtn",function(){
+$("body").on("click","#removeAllBtn",function(){ // remove all profiles
 	chrome.storage.sync.clear()
-	location.reload(false)
+	Materialize.toast('Deleting your profiles...', 2000, 'deleteAll')
+	setTimeout(function(){
+		location.reload(false); // adding false lets the page reload from the cache
+	}, 1000)
 })
 
-
-// temp button to remove all profiles from chrome.storage:
-$("#rmv").click(function(){
-	// a quick one-line removes all profiles
-	
-})
 

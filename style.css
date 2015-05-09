@@ -89,10 +89,6 @@ a #addAProfileText {
 	color: rgba(0,0,0,0.54);
 }
 
-/*#profileSettings {
-	cursor: pointer;
-}*/
-
 
 /* MODAL STYLES */
 
@@ -124,6 +120,18 @@ a #addAProfileText {
 	display: inline-block;
 }
 
+#addActionBtn {
+	text-align: right;
+}
+
+#addSubmit {
+	box-shadow: none;
+}
+
+#done {
+	margin-right: 20px;
+	box-shadow: none;
+}
 
 /* SEARCHBOX AND SETTINGS */
 
@@ -281,7 +289,7 @@ span.lever {
 
 .alert {
 	background-color: orange;
-	color:white;
+	color: white;
 }
 
 .ccToastOn {
@@ -293,6 +301,10 @@ span.lever {
 	color: #9F9F9F;
 }
 
+.deleteAll {
+	background-color: #e53935;
+	color: white;
+}
 
 
 

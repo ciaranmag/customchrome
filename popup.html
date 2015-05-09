@@ -30,7 +30,7 @@
 	    <a id="removeAllBtn">remove all</a>
 	    <a id="editBtn">edit</a>
 	    	<span id="noProfilesText">You don't have any profiles setup.<a id="addProfile"><span id="addAProfileText"> Add one now</span></a></span>
-	    	<a class='' id='addProfileBox'>+</a>
+	    	<a id='addProfileBox'>+</a>
 	    </div>
 	  </div>
 	</div>
@@ -39,7 +39,6 @@
 <div class="searchbox-holder">
 	<i id="search-icon" class="mdi-action-search"></i>
 	<input type="text" id="searchbox">
-	<!-- <i class="mdi-action-settings"></i> -->
 </div>
 
 <div class="allExtensionsContainer">
@@ -70,7 +69,9 @@
         <input type="text" class="validate" id="name" min="1" max="15" pattern="[a-zA-z0-9\s]+" autofocus>
         <label for="profileName">New Profile Name</label>
       </div>
-      <button class="btn waves-effect waves-light" type="submit" name="action">Add</button>
+      <div id="addActionBtn">
+      <button class="btn waves-effect waves-light" id="addSubmit" type="submit" name="action">Add</button>
+      </div>
 		</form>
   </div>
 </div>

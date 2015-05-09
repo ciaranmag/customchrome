@@ -12,8 +12,9 @@
 Issues:
 for profile naming
  ☐ give user feedback when they use too few/many characters or restricted characters
- ☐ need a button to add a new profile when there are existing profiles setup (code is easy, more of a what's the best design implementation - maybe a box next to existing profiles, same size but with a '+' symbol on it)
-
+ ☐ only show addProfileBox if number of profiles is between 1 and 4
+ ☐ immediately after adding the first profile remove the blue styling and add text
+ ☐ fix checkboxListener - needs to remove id if clicked twice
    
 
 Structure of saved profiles in cloud storage
@@ -44,6 +45,7 @@ Chris:
 Future Features:
  ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
  ☐ Advanced option to see memory usage of each extension (next to switch)
+ ☐ Have an option to make sure certain extensions are off when using a profile
 
 
 
