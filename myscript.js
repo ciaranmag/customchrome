@@ -18,6 +18,7 @@ $(document).ready(function(){
 	getProfiles(); // call function to check storage.sync for existing user profiles
 
 	$('.modal-trigger').leanModal();
+	$('#removeAllBtn, #addProfileBox').hide();
 
 	chrome.management.getAll(function(info) {
 		// info is a list of all user installed apps, extensions etc push extensions to extArray
@@ -243,6 +244,7 @@ function getProfiles() { // check storage for any profiles
 		$('#noProfilesText').hide();
 		$('#profileHeader').css("background-color", "#f3f3f3");
 		$('#editBtn').show();
+		$('#addProfileBox').show();
 
 		var allKeys = Object.keys(obj);
 		for (var i = 0; i < allKeys.length; i++) {
@@ -253,9 +255,26 @@ function getProfiles() { // check storage for any profiles
 	})
 }
 
+$("body").on("click","#addProfileBox",function(){
+		$('#profilePrompt').openModal({
+			complete: function() { // function to run when modal is dismissed
+			},
+		});
+})
+
+$("body").on("click","#editBtn",function(){
+	$('#removeAllBtn').show()
+})
+
+$("body").on("click","#removeAllBtn",function(){
+	chrome.storage.sync.clear()
+	location.reload(false)
+})
+
+
 // temp button to remove all profiles from chrome.storage:
 $("#rmv").click(function(){
 	// a quick one-line removes all profiles
-	chrome.storage.sync.clear();
+	
 })
 

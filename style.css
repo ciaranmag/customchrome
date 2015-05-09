@@ -19,15 +19,22 @@ body {
 	background-color: #f3f3f3;
 }
 
+#removeAllBtn,
 #editBtn {
 	text-transform: uppercase;
 	font-size: 10px;
-	color: #000;
 	float: right;
 	margin-top: -15px;
 	cursor: pointer;
 	color: #9F9F9F;
 }
+
+#removeAllBtn {
+	margin-right: 40px;
+	color: red;
+}
+
+#editBtn {}
 
 #noProfilesText {
 	font-size: 16px;
@@ -44,6 +51,8 @@ a #addAProfileText {
 	font-weight: bold;
 }
 
+#addProfileBox {}
+
 .profile-card-content {
 	padding: 20px 0px 0px 0px !important;
 }
@@ -52,6 +61,7 @@ a #addAProfileText {
 	text-align: center;
 }
 
+#addProfileBox,
 .profile-btn,
 .profile-btn:hover {
 	box-shadow: none;
