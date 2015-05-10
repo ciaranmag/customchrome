@@ -1,0 +1,32 @@
+html,
+body {
+	width: 100%;
+}
+
+body {
+	background-color: #f3f3f3;
+	font-family: 'Roboto', sans-serif;
+	margin: 0;
+}
+
+#header {
+	height: 250px;
+	background-color: #03A9FA;
+}
+
+#headerText {
+	margin: 0;
+	padding-top: 80px;
+	font-size: 68px;
+	text-align: center;
+	color: #DFDFDF;
+}
+
+#img-holder {
+	margin-top: 50px;
+	text-align: center;
+}
+
+img {
+	border: 2px solid #d3d3d3;
+}
