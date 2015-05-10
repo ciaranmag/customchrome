@@ -12,40 +12,19 @@
 Issues:
 for profile naming
  ☐ give user feedback when they use too few/many characters or restricted characters
- ☐ only show addProfileBox if number of profiles is between 1 and 4 and add it to the right of existing profile buttons
- ☐ immediately after adding the first profile remove the blue styling and add text
  ☐ fix checkboxListener - needs to remove id if clicked twice
-	 
-
-Structure of saved profiles in cloud storage
-
-profiles = {
-	'always on' : ['dfgdfghgdhdfhdfghfghfh',
-								 'dfghfdhfdghfdhfdhdfhgd',
-									'fdghfhfhgfdghfdhdfghdfgh'],
-	'web dev' : ['dfgdfghgdhdfhdfghfghfh',
-									'fdghfhfhgfdghfdhdfghdfgh'],
-	'media' : ['dfgdfghgdhdfhdfghfghfh']
-}
-
-new profile -> push it to profiles object   profiles["YouTube"] = []
-
-edit extensions
-add new array item ->  profiles["YouTube"].push("extensionID")
-remove array item  ->  var index = profiles["YouTube"].indexOf("extensionID");
-											 profiles["YouTube"].splice(index, 1);
-
-delete profile -> delete profiles["YouTube"];
 
 
 Chris:
-
+	☐	is this complete function needed inside #addProfile click? .\myscript.js:173
+	☐	will you look into stopping the scond modal in #nameSubmit please .\myscript.js:193
+	☐	any mockup ideas for a logo? some sort of double 'C' or a settings cog in Google's four colours?
 
 
 Future Features:
  ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
  ☐ Advanced option to see memory usage of each extension (next to switch)
- ☐ Have an option to make sure certain extensions are off when using a profile
+ ☐ Have an option to make sure certain extensions are off when using a profile e.g. turn off ad blockers and social blockers when using "Web Dev" profile but record their state before the change and re-instate it after profile is turned off
 
 
 

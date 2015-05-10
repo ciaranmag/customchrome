@@ -65,12 +65,10 @@ $(document).ready(function(){
 			// setting the profile buttons to on/off appearance
 			var sizeOfStoredObject = Object.keys(obj).length;
 			for (var n = 0; n < sizeOfStoredObject; n++) { // cycle through the profilesHolder
-				// console.log(Object.keys(obj)[i])
 				for (key in obj) { // cycle through the extension profiles
 					$("#" + key).addClass("on").removeClass("off");
 					for (var n = 0; n < obj[key].length; n++) { // cycle through the extensions within the profile
 						for (i=0;i<extArray.length;i++) {
-							// console.log("this is the extension array with obj[key]["+n+"] ---" +obj[key][n]);
 							if (extArray[i]["id"] === obj[key][n]) {
 								if (extArray[i]["enabled"] === false) {
 									$("#" + key).removeClass("on").addClass("off");
@@ -181,24 +179,25 @@ $('#nameSubmit').submit(
 		e.preventDefault();
 		name = $('#name').val().toLowerCase(); // catch the profile name the user entered
 		// // check if it's a valid name
-		// if (name ????){ // regex error
-		// // name doesn't match regex rules, don't close modal and prompt user for name
+		
+		// var reg = /[a-zA-z0-9\s]+/;
+		// var patt = new RegExp(/[a-zA-z0-9\s]+/);
+
+		// if ( patt.test(name) === false ) {
+		// 	console.log("damn")
 		// 	Materialize.toast('Profile names must be between 1 and 15 characters and only include letters, numbers, and spaces', 3000, 'alert');
 		// 	return;
 		// }
+		
+		chrome.storage.sync.get(function(obj){
+			if ($.inArray(name, Object.keys(obj)) != -1){
+				Materialize.toast('Profile name already exists!', 2000, 'alert');
+				return;
+				// NEED TO STOP SECOND MODAL HERE!
+			}
+		})
 
-		// // check if it's the same name as an existing profile
-		// if ($.inArray(name, profiles) != -1){ // schema has changed so this needs to change - check keys instead of profiles array
-		// 	console.log('profile already exists');
-		// 	Materialize.toast('Profile already exists!', 2000, 'alert');
-		// 	return;
-		// }
 
-		console.log('user is adding the '+name+' profile');
-		// HTML code for profile btn changing string to lower case and replacing spaces with underscores
-		var btnHtml = "<a class='profile-btn off' id='"+name.split(' ').join('_')+"'>"+name+"</a>";
-		$('.profile-holder').append(btnHtml); // append new button with new profile name to profile-holder
-		$('#name').val(""); // set profile name to user-defined profile name
 		$('#profilePrompt').closeModal();
 		setTimeout(function(){
 			addExtensions(name);
@@ -237,6 +236,18 @@ function submitThatShit() {
 	tempObj[name] = idList;
 	chrome.storage.sync.set(tempObj, function () {
 	  console.log('Saved', name, idList);
+	  chrome.storage.sync.get(function(obj){
+	  	if ( Object.keys(obj).length === 1 ) {
+	  		$('#noProfilesText').hide();
+				$('#profileHeader').css("background-color", "#f3f3f3");
+				$('#editBtn').show();
+				$('#addProfileBox').show();
+	  	}
+			// HTML code for profile btn changing string to lower case and replacing spaces with underscores
+			var btnHtml = "<a class='profile-btn off' id='"+name.split(' ').join('_')+"'>"+name+"</a>";
+			$('.profile-holder').append(btnHtml); // append new button with new profile name to profile-holder
+			$('#name').val(""); // set profile name to user-defined profile name
+	  })
 	})
 }
 
@@ -250,9 +261,14 @@ function getProfiles() { // check storage for any profiles
 			return;
 		}
 
+		// if there are between 1 and 4 profiles show addProfileBox
+		if ( Object.keys(obj).length >= 1 && Object.keys(obj).length <= 4 ) {
+			$('#addProfileBox').show();
+		}
+
 		$('#noProfilesText').hide();
 		$('#profileHeader').css("background-color", "#f3f3f3");
-		$('#editBtn, #addProfileBox').show();
+		$('#editBtn').show();
 
 		var allKeys = Object.keys(obj);
 		for (var i = 0; i < allKeys.length; i++) {
