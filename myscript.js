@@ -116,9 +116,9 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 						chrome.management.setEnabled(obj[btnIdConvert][i], false, function (){})
 					}
 				}
-				Materialize.toast(btnIdConvert+' is now off', 2000, 'ccToastOff')
 			})
 		})
+	Materialize.toast(btnIdConvert+' is now off', 2000, 'ccToastOff')
 	$(this).removeClass("on").addClass("off"); // change profile btn to "off" appearance
 	setTimeout(function(){
 		location.reload(false); // adding false lets the page reload from the cache
@@ -133,9 +133,9 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 						chrome.management.setEnabled(obj[btnIdConvert][i], true, function (){})
 					}
 				}
-				Materialize.toast(btnIdConvert+' is now on', 2000, 'ccToastOn')
 			})
 		})
+	Materialize.toast(btnIdConvert+' is now on', 2000, 'ccToastOn')
 	$(this).removeClass("off").addClass("on"); // change profile btn to "on" appearance
 	setTimeout(function(){
 		location.reload(false); // adding false lets the page reload from the cache
@@ -247,6 +247,27 @@ function submitThatShit() {
 			var btnHtml = "<a class='profile-btn off' id='"+name.split(' ').join('_')+"'>"+name+"</a>";
 			$('.profile-holder').append(btnHtml); // append new button with new profile name to profile-holder
 			$('#name').val(""); // set profile name to user-defined profile name
+
+
+			// check if all those extensions are already on to make sure the profile button has the correct on/off appearance
+
+			// setting the profile buttons to on/off appearance
+			var sizeOfStoredObject = Object.keys(obj).length;
+			for (var n = 0; n < sizeOfStoredObject; n++) { // cycle through the profilesHolder
+				for (key in obj) { // cycle through the extension profiles
+					$("#" + key).addClass("on").removeClass("off");
+					for (var n = 0; n < obj[key].length; n++) { // cycle through the extensions within the profile
+						for (i=0;i<extArray.length;i++) {
+							if (extArray[i]["id"] === obj[key][n]) {
+								if (extArray[i]["enabled"] === false) {
+									$("#" + key).removeClass("on").addClass("off");
+								}
+							}
+						}
+					}
+				}
+			}
+
 	  })
 	})
 }
