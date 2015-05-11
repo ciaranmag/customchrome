@@ -3,6 +3,7 @@ var activeExtensions = [];
 var inactiveExtensions = [];
 var btnId;
 var idList = [];
+var ttArray = [];
 
 // Handlebars for active and inactive lists
 var source   = $("#entry-template").html();
@@ -100,6 +101,11 @@ $(document).ready(function(){
 			});
 	});
 	$('.searchbox').focus();
+tooltipGenerator();
+
+setTimeout(function(){
+	$('.tooltipped').tooltip();
+}, 1000)
 
 }); // close $(document).ready
 
@@ -151,16 +157,10 @@ function extStateListener() { // turn on/off extensions when toggle is switched
 		if($(this).is(':checked')){
 			chrome.management.setEnabled(id, true, function (){
 				Materialize.toast(name+' is now on', 2000, 'ccToastOn');
-				setTimeout(function(){
-					location.reload(false);
-				}, 1000)
 			});
 		} else {
 			chrome.management.setEnabled(id, false, function (){
 				Materialize.toast(name+' is now off', 2000, 'ccToastOff');
-				setTimeout(function(){
-					location.reload(false);
-				}, 1000)
 			});
 		}
 	})
@@ -169,9 +169,7 @@ function extStateListener() { // turn on/off extensions when toggle is switched
 // listen for addProfile button press, add a button to HTML, prompt for profile name, set that name as button text, add that profile to the storage.sync object
 $('#addProfile').click(
 	function(){
-		$('#profilePrompt').openModal({
-			complete: function() {}, // function to run when modal is dismissed
-		});
+		$('#profilePrompt').openModal();
 	});
 
 $('#nameSubmit').submit(
@@ -193,15 +191,17 @@ $('#nameSubmit').submit(
 			if ($.inArray(name, Object.keys(obj)) != -1){
 				Materialize.toast('Profile name already exists!', 2000, 'alert');
 				return;
-				// NEED TO STOP SECOND MODAL HERE!
+			} else {
+				//profilename doesn't exists yet
+				//proceed with selecting extensions for the new profile 
+				$('#profilePrompt').closeModal();
+				// after half a second open the modal, user can specify what extensions to add to profile
+				setTimeout(function(){
+						addExtensions(name);
+					}, 500) 
 			}
 		})
 
-
-		$('#profilePrompt').closeModal();
-		setTimeout(function(){
-			addExtensions(name);
-		}, 500) // after half a second open the modal, user can specify what extensions to add to profile
 	}
 )
 
@@ -248,6 +248,14 @@ function submitThatShit() {
 			$('.profile-holder').append(btnHtml); // append new button with new profile name to profile-holder
 			$('#name').val(""); // set profile name to user-defined profile name
 	  })
+	  // idList = []; //emptying out idList so that extensions aren't added to future profiles
+
+tooltipGenerator();
+
+setTimeout(function(){
+	$('.tooltipped').tooltip();
+}, 1000)
+
 	})
 }
 
@@ -273,16 +281,14 @@ function getProfiles() { // check storage for any profiles
 		var allKeys = Object.keys(obj);
 		for (var i = 0; i < allKeys.length; i++) {
 			var name = allKeys[i];
-			var btnHtml = "<a class='profile-btn off' id='"+name.toLowerCase()+"'>"+name+"</a>";
+			var btnHtml = "<a class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</a>";
 			$('.profile-holder').append(btnHtml); // append to profile-holder
 		};
 	})
 }
 
 $("body").on("click","#addProfileBox",function(){ // box next to existing profiles to add a new profile
-	$('#profilePrompt').openModal({
-		complete: function() {}, // function to run when modal is dismissed
-	});
+	$('#profilePrompt').openModal();
 })
 
 $("body").on("click","#editBtn",function(){ // show edit profile options and remove all
@@ -296,5 +302,41 @@ $("body").on("click","#removeAllBtn",function(){ // remove all profiles
 		location.reload(false); // adding false lets the page reload from the cache
 	}, 1000)
 })
+
+
+var tooltipGenerator = function(){
+	//make a call to sync to get the profiles currently stored.
+	chrome.storage.sync.get(function(obj){
+		//looping over all the profiles returned from storage
+		Object.keys(obj).forEach(function(key){
+			//looping over each extension id in the profile
+			for (var i = 0; i < obj[key].length; i++) {
+				console.log("here: " + obj[key][i]);
+				var id = obj[key][i];
+				//looping over the extArray, when id in profile matches an id in the extArray, get the shortname and push to ttArray
+				console.log(extArray)
+				extArray.forEach(function(entry) {
+					console.log(entry)
+					if (entry.id === id) {
+						ttArray.push(entry.shortName);
+						console.log("tt: " + ttArray);
+					}
+				})
+			}
+			var proNameId = key.split(' ').join('_')
+			console.log("there: " + proNameId, ttArray);
+			//find the appropriate profile button and set the data-tooltip attribute with ttArray as value
+			$("#" + proNameId).attr('data-tooltip',ttArray).attr('data-position','bottom').attr('delay', 50).addClass("tooltipped");
+			//use ttArray to add a tooltip to the profile button in question
+
+			//initialise tooltips again:
+			// $("#" + proNameId).tooltip({delay: 50});
+		})
+	})
+}
+
+
+
+
 
 
