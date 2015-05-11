@@ -1,7 +1,5 @@
  Quick Extension Manager ToDo:
- ☐ Get profiles sorted (users can create, modify, and delete them)
  ☐ Setup Google Analytics
- ☐ New Extension Icon
  ☐ Clean up code, commenting, CSS tweaks
 	 ☐ Change search icon colour on when focusing on search input and move search icon into the input area
 	 ☐ Change from first result having margin-top TO activeTitle and inactiveTitle to having margin-bottom (so that it works for search results)
@@ -10,9 +8,10 @@
 
 
 Issues:
-for profile naming
- ☐ give user feedback when they use too few/many characters or restricted characters
- ☐ fix checkboxListener - needs to remove id if clicked twice
+  ☐ for profile naming give user feedback when they use too few/many characters or restricted characters
+  ☐ fix checkboxListener - needs to remove id if clicked twice
+  ☐ get profiles sorted (modify, and individually delete them)
+  ☐ display profile tooltips vertically (have tried <br> "\n" "&lt;br /&gt;" "&#013;")
 
 
 Chris:

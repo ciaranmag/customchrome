@@ -101,8 +101,8 @@ $(document).ready(function(){
 			});
 	});
 	$('.searchbox').focus();
-tooltipGenerator();
 
+tooltipGenerator();
 setTimeout(function(){
 	$('.tooltipped').tooltip();
 }, 1000)
@@ -192,16 +192,14 @@ $('#nameSubmit').submit(
 				Materialize.toast('Profile name already exists!', 2000, 'alert');
 				return;
 			} else {
-				//profilename doesn't exists yet
-				//proceed with selecting extensions for the new profile 
+				// profilename doesn't exists yet, proceed with selecting extensions for the new profile 
 				$('#profilePrompt').closeModal();
 				// after half a second open the modal, user can specify what extensions to add to profile
 				setTimeout(function(){
 						addExtensions(name);
-					}, 500) 
+				}, 500) 
 			}
 		})
-
 	}
 )
 
@@ -250,11 +248,10 @@ function submitThatShit() {
 	  })
 	  // idList = []; //emptying out idList so that extensions aren't added to future profiles
 
-tooltipGenerator();
-
-setTimeout(function(){
-	$('.tooltipped').tooltip();
-}, 1000)
+		tooltipGenerator();
+		setTimeout(function(){
+			$('.tooltipped').tooltip();
+		}, 1000)
 
 	})
 }
@@ -311,26 +308,20 @@ var tooltipGenerator = function(){
 		Object.keys(obj).forEach(function(key){
 			//looping over each extension id in the profile
 			for (var i = 0; i < obj[key].length; i++) {
-				console.log("here: " + obj[key][i]);
 				var id = obj[key][i];
 				//looping over the extArray, when id in profile matches an id in the extArray, get the shortname and push to ttArray
-				console.log(extArray)
-				extArray.forEach(function(entry) {
-					console.log(entry)
-					if (entry.id === id) {
-						ttArray.push(entry.shortName);
-						console.log("tt: " + ttArray);
+				for (var i = 0; i < extArray.length; i++) {
+					if (extArray[i].id === id) {
+						ttArray.push(extArray[i].shortName);
+						break;
 					}
-				})
+				};
 			}
 			var proNameId = key.split(' ').join('_')
-			console.log("there: " + proNameId, ttArray);
+			// console.log("tooltip info: " + proNameId, ttArray);
 			//find the appropriate profile button and set the data-tooltip attribute with ttArray as value
 			$("#" + proNameId).attr('data-tooltip',ttArray).attr('data-position','bottom').attr('delay', 50).addClass("tooltipped");
-			//use ttArray to add a tooltip to the profile button in question
-
-			//initialise tooltips again:
-			// $("#" + proNameId).tooltip({delay: 50});
+			ttArray =[];
 		})
 	})
 }
