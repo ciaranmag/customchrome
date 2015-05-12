@@ -1,11 +1,18 @@
  ToDo For Release v1:
- ☐ get profiles sorted (modify, and individually delete them)
+ ☐ get profiles sorted modify individually
+ ☐ get profiles sorted delete individually
+ ✔ remove tooltips @done (15-05-12 18:51)
  ☐ change from first result having margin-top TO activeTitle and inactiveTitle to having margin-bottom (so that it works for search results)
  ☐ fix checkboxListener - needs to remove id if clicked twice
  ☐ for profile naming give user feedback when they use too few/many characters or restricted characters
  ☐ add Google Analytics
- ☐ Clean up code, commenting, CSS tweaks
- ☐ Look at loading times of each file - try to improve them
+ ☐ clean up code, commenting, CSS tweaks
+ ☐ look at loading times of each file - try to improve them
+ ☐ wrap a form around addexts modal so that pressing enter on keyboard submits the extensions
+ ☐ get the js regex working
+ ☐ website - responsive (bootstrap), add screenshot, add example use cases
+ ☐ after creating a 5th profile with the '+' box hide the '+' box
+ ☐ edit btn shows delete all on first click but doesn't hide it on the second (toggle won't work here, will need to give it a class and then show/hide based on that)
 
 
 Issues that can wait:

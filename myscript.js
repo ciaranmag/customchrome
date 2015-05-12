@@ -236,18 +236,23 @@ function submitThatShit() {
 	chrome.storage.sync.set(tempObj, function () {
 	  console.log('Saved', name, idList);
 	  chrome.storage.sync.get(function(obj){
-	  	if ( Object.keys(obj).length === 1 ) {
+	  	var allKeys = Object.keys(obj);
+	  	if ( allKeys.length === 1 ) {
 	  		$('#noProfilesText').hide();
 				$('#profileHeader').css("background-color", "#f3f3f3");
 				$('#editBtn').show();
 				$('#addProfileBox').show();
 	  	}
+	  	else if ( allKeys.length >= 5 ) {
+				$('#addProfileBox').hide();
+			}
+	  	
 			// HTML code for profile btn changing string to lower case and replacing spaces with underscores
 			var btnHtml = "<a class='profile-btn off' id='"+name.split(' ').join('_')+"'>"+name+"</a>";
 			$('.profile-holder').append(btnHtml); // append new button with new profile name to profile-holder
 			$('#name').val(""); // set profile name to user-defined profile name
 	  })
-	  // idList = []; //emptying out idList so that extensions aren't added to future profiles
+	  idList = []; //emptying out idList so that extensions aren't added to future profiles
 
 		// tooltipGenerator();
 		// setTimeout(function(){
@@ -259,7 +264,9 @@ function submitThatShit() {
 
 function getProfiles() { // check storage for any profiles
 	chrome.storage.sync.get(function(obj){
-		if ( Object.keys(obj).length === 0 ) { // if there are no profiles, exit function
+		var allKeys = Object.keys(obj);
+
+		if ( allKeys.length === 0 ) { // if there are no profiles, exit function
 			$('#noProfilesText').show();
 			$('#profileHeader').css("background-color", "#03A9FA");
 			$('#editBtn').hide();
@@ -267,20 +274,20 @@ function getProfiles() { // check storage for any profiles
 		}
 
 		// if there are between 1 and 4 profiles show addProfileBox
-		if ( Object.keys(obj).length >= 1 && Object.keys(obj).length <= 4 ) {
+		else if ( allKeys.length >= 1 && allKeys.length <= 4 ) {
 			$('#addProfileBox').show();
 		}
+
 
 		$('#noProfilesText').hide();
 		$('#profileHeader').css("background-color", "#f3f3f3");
 		$('#editBtn').show();
 
-		var allKeys = Object.keys(obj);
 		for (var i = 0; i < allKeys.length; i++) {
-			var name = allKeys[i];
-			var btnHtml = "<a class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</a>";
+			var name = allKeys[i],
+					btnHtml = "<a class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</a>";
 			$('.profile-holder').append(btnHtml); // append to profile-holder
-		};
+		}
 	})
 }
 
@@ -294,11 +301,31 @@ $("body").on("click","#editBtn",function(){ // show edit profile options and rem
 
 $("body").on("click","#removeAllBtn",function(){ // remove all profiles
 	chrome.storage.sync.clear()
-	Materialize.toast('Deleting your profiles...', 2000, 'deleteAll')
+	Materialize.toast('Deleting your profiles...', 2000, 'deleteToast')
 	setTimeout(function(){
 		location.reload(false); // adding false lets the page reload from the cache
 	}, 1000)
 })
+
+
+
+
+$("body").on("click","#delete-" + name.toLowerCase().split(' ').join('_'),function(){ // remove associated profile
+	var nameOfProfile // get profile name from id of previous button and parse 
+	chrome.storage.sync.remove(nameOfProfile)
+	Materialize.toast('Deleting ' + nameOfProfile, 2000, 'deleteToast')
+	setTimeout(function(){
+		location.reload(false); // adding false lets the page reload from the cache
+	}, 1000)
+})
+
+// delete button needs to be created with id delete+name
+// append to button after created
+// hide button
+// display button after clicking
+// btnHtml = "<a class='delete-btn' id='#delete-"+name.toLowerCase().split(' ').join('_')+"'>delete</a>";
+
+
 
 
 // var tooltipGenerator = function(){
