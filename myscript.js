@@ -1,17 +1,18 @@
-var extArray = [];
-var activeExtensions = [];
-var inactiveExtensions = [];
-var btnId;
-var idList = [];
-var ttArray = [];
+// Declare variables using 'var' once minifying the code
+
+var extArray = [],
+activeExtensions = [],
+inactiveExtensions = [],
+btnId,
+idList = [],
 
 // Handlebars for active and inactive lists
-var source   = $("#entry-template").html();
-var template = Handlebars.compile(source);
+source   = $("#entry-template").html(),
+template = Handlebars.compile(source),
 
 // Handlebars for extList (modal for adding extensions to profiles)
-var extListSource   = $("#extList-template").html();
-var extListTemplate = Handlebars.compile(extListSource);
+extListSource   = $("#extList-template").html(),
+extListTemplate = Handlebars.compile(extListSource);
 
 
 $(document).ready(function(){
@@ -69,7 +70,7 @@ $(document).ready(function(){
 				for (key in obj) { // cycle through the extension profiles
 					$("#" + key).addClass("on").removeClass("off");
 					for (var n = 0; n < obj[key].length; n++) { // cycle through the extensions within the profile
-						for (i=0;i<extArray.length;i++) {
+						for (var i=0;i<extArray.length;i++) {
 							if (extArray[i]["id"] === obj[key][n]) {
 								if (extArray[i]["enabled"] === false) {
 									$("#" + key).removeClass("on").addClass("off");
@@ -102,10 +103,10 @@ $(document).ready(function(){
 	});
 	$('.searchbox').focus();
 
-tooltipGenerator();
-setTimeout(function(){
-	$('.tooltipped').tooltip();
-}, 1000)
+// tooltipGenerator();
+// setTimeout(function(){
+// 	$('.tooltipped').tooltip();
+// }, 1000)
 
 }); // close $(document).ready
 
@@ -152,8 +153,8 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 
 function extStateListener() { // turn on/off extensions when toggle is switched
 	$('.js-switch').change(function(){
-		var id = $(this).parents('.switch').attr('id'); // get the app id
-		var name = $(this).parents('.switch').attr('name'); // get the app name
+		var id = $(this).parents('.switch').attr('id'), // get the app id
+				name = $(this).parents('.switch').attr('name'); // get the app name
 		if($(this).is(':checked')){
 			chrome.management.setEnabled(id, true, function (){
 				Materialize.toast(name+' is now on', 2000, 'ccToastOn');
@@ -248,10 +249,10 @@ function submitThatShit() {
 	  })
 	  // idList = []; //emptying out idList so that extensions aren't added to future profiles
 
-		tooltipGenerator();
-		setTimeout(function(){
-			$('.tooltipped').tooltip();
-		}, 1000)
+		// tooltipGenerator();
+		// setTimeout(function(){
+		// 	$('.tooltipped').tooltip();
+		// }, 1000)
 
 	})
 }
@@ -262,7 +263,6 @@ function getProfiles() { // check storage for any profiles
 			$('#noProfilesText').show();
 			$('#profileHeader').css("background-color", "#03A9FA");
 			$('#editBtn').hide();
-			console.log('no profiles exist yet');
 			return;
 		}
 
@@ -301,30 +301,31 @@ $("body").on("click","#removeAllBtn",function(){ // remove all profiles
 })
 
 
-var tooltipGenerator = function(){
-	//make a call to sync to get the profiles currently stored.
-	chrome.storage.sync.get(function(obj){
-		//looping over all the profiles returned from storage
-		Object.keys(obj).forEach(function(key){
-			//looping over each extension id in the profile
-			for (var i = 0; i < obj[key].length; i++) {
-				var id = obj[key][i];
-				//looping over the extArray, when id in profile matches an id in the extArray, get the shortname and push to ttArray
-				for (var i = 0; i < extArray.length; i++) {
-					if (extArray[i].id === id) {
-						ttArray.push(extArray[i].shortName);
-						break;
-					}
-				};
-			}
-			var proNameId = key.split(' ').join('_')
-			// console.log("tooltip info: " + proNameId, ttArray);
-			//find the appropriate profile button and set the data-tooltip attribute with ttArray as value
-			$("#" + proNameId).attr('data-tooltip',ttArray).attr('data-position','bottom').attr('delay', 50).addClass("tooltipped");
-			ttArray =[];
-		})
-	})
-}
+// var tooltipGenerator = function(){
+// 	var ttArray = [];
+// 	//make a call to sync to get the profiles currently stored.
+// 	chrome.storage.sync.get(function(obj){
+// 		//looping over all the profiles returned from storage
+// 		Object.keys(obj).forEach(function(key){
+// 			//looping over each extension id in the profile
+// 			for (var i = 0; i < obj[key].length; i++) {
+// 				var id = obj[key][i];
+// 				//looping over the extArray, when id in profile matches an id in the extArray, get the shortname and push to ttArray
+// 				for (var i = 0; i < extArray.length; i++) {
+// 					if (extArray[i].id === id) {
+// 						ttArray.push(extArray[i].shortName);
+// 						break;
+// 					}
+// 				};
+// 			}
+// 			var proNameId = key.split(' ').join('_')
+// 			// console.log("tooltip info: " + proNameId, ttArray);
+// 			//find the appropriate profile button and set the data-tooltip attribute with ttArray as value
+// 			$("#" + proNameId).attr('data-tooltip',ttArray).attr('data-position','bottom').attr('delay', 50).addClass("tooltipped");
+// 			ttArray =[];
+// 		})
+// 	})
+// }
 
 
 

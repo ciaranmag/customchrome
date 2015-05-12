@@ -1,20 +1,16 @@
- Quick Extension Manager ToDo:
- ☐ Setup Google Analytics
+ ToDo For Release v1:
+ ☐ get profiles sorted (modify, and individually delete them)
+ ☐ change from first result having margin-top TO activeTitle and inactiveTitle to having margin-bottom (so that it works for search results)
+ ☐ fix checkboxListener - needs to remove id if clicked twice
+ ☐ for profile naming give user feedback when they use too few/many characters or restricted characters
+ ☐ add Google Analytics
  ☐ Clean up code, commenting, CSS tweaks
-	 ☐ Change search icon colour on when focusing on search input and move search icon into the input area
-	 ☐ Change from first result having margin-top TO activeTitle and inactiveTitle to having margin-bottom (so that it works for search results)
-	 ☐ Look at loading times of each file - try to improve them
-	 ☐ Clean up manifest permissions
+ ☐ Look at loading times of each file - try to improve them
 
 
-Issues:
-  ☐ for profile naming give user feedback when they use too few/many characters or restricted characters
-  ☐ fix checkboxListener - needs to remove id if clicked twice
-  ☐ get profiles sorted (modify, and individually delete them)
-  ☐ display profile tooltips vertically (have tried <br> "\n" "&lt;br /&gt;" "&#013;")
-
-
-Chris:
+Issues that can wait:
+ ☐ display profile tooltips vertically (have tried <br> "\n" "&lt;br /&gt;" "&#013;")
+ ☐ Change search icon colour on when focusing on search input and move search icon into the input area
 
 
 Future Features:
