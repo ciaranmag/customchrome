@@ -226,6 +226,11 @@ function addExtensions(name) { // add extensions to new profile modal
 function checkboxlistener() { // turn on/off extensions when toggle is switched
 	$('.extList-toggle input').change(function(){
 		var id = $(this).attr('appid'); //get the extension id the user clicked
+		if ($.inArray(id, idList) != -1){
+			var index = idList.indexOf(id);
+			idList.splice(index, 1);
+			return;
+		}
 		idList.push(id);
 	})
 }
@@ -233,6 +238,9 @@ function checkboxlistener() { // turn on/off extensions when toggle is switched
 function submitThatShit() {
 	tempObj = {};
 	tempObj[name] = idList;
+	if (idList.length === 0) {
+		return;
+	};
 	chrome.storage.sync.set(tempObj, function () {
 	  console.log('Saved', name, idList);
 	  chrome.storage.sync.get(function(obj){
@@ -296,7 +304,14 @@ $("body").on("click","#addProfileBox",function(){ // box next to existing profil
 })
 
 $("body").on("click","#editBtn",function(){ // show edit profile options and remove all
-	$('#removeAllBtn').show()
+	if ($(this).hasClass("editHidden")) {
+		$('#removeAllBtn').show();
+		$(".editHidden").removeClass("editHidden").addClass("editShown");
+	}
+	else if ($(this).hasClass("editShown")) {
+		$('#removeAllBtn').hide();
+		$(".editShown").removeClass("editShown").addClass("editHidden");
+	}
 })
 
 $("body").on("click","#removeAllBtn",function(){ // remove all profiles

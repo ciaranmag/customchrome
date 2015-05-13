@@ -28,7 +28,7 @@
 	  <div class="col s12">
 	    <div class="card-content profile-card-content black-text profile-holder">
 	    <a id="removeAllBtn" data-position="bottom" data-delay="50" data-tooltip="Delete all profiles">delete all</a>
-	    <a id="editBtn" data-position="bottom" data-delay="50" data-tooltip="Edit profiles">edit</a>
+	    <a class="editHidden" id="editBtn" data-position="bottom" data-delay="50" data-tooltip="Edit profiles">edit</a>
 	    <span id="noProfilesText">You don't have any profiles setup.<a id="addProfile"><span id="addAProfileText"> Add one now</span></a></span>
 	    <a id='addProfileBox' class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Add a new profile">+</a>
 <!-- 	    <a class="profile-btn off" id="test_test">test test</a>
@@ -69,7 +69,7 @@
     <h4>Add New Profile</h4>
     <form id="nameSubmit">
       <div class="input-field col s6">
-        <input type="text" class="validate" id="name" min="1" max="15" pattern="[a-zA-z0-9\s]+" autofocus>
+        <input type="text" class="validate" id="name" min="1" max="15" pattern="[a-zA-z0-9\s]+" autofocus oninvalid="setCustomValidity('Plz enter on Alphabets ')" title="This is an error message" onchange="try{setCustomValidity('')}catch(e){}">
         <label for="profileName">New Profile Name</label>
       </div>
       <div id="addActionBtn">
@@ -78,6 +78,24 @@
 		</form>
   </div>
 </div>
+
+
+<!-- form attempt -->
+<!-- <div id="addExts" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <h4>Add extensions to </h4>
+    <form id="extensionsSubmit">
+    <p>The extensions you tick here will be turned on when this profile is active</p>
+    <div id='extList'></div>
+  
+	  <div class="modal-footer">
+	    <a href="#!" class="modal-action modal-close waves-effect waves-green btn" id="done">Done</a>
+	  </div>
+	  </form>
+  </div>
+</div> -->
+
+
 
 <!-- Modal html: new profile extensions list -->
 <div id="addExts" class="modal modal-fixed-footer">
