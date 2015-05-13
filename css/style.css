@@ -9,20 +9,49 @@ body {
 	margin: 0;
 }
 
-#header {
-	height: 250px;
+.jumbotron {
 	background-color: #03A9FA;
+}
+
+#logo {
+	width: 50px;
 }
 
 #headerText {
 	margin: 0;
-	padding-top: 80px;
-	font-size: 68px;
+	padding-top: 60px;
+	font-size: 4em;
 	text-align: center;
 	color: #DFDFDF;
 }
 
-#img-holder {
-	margin-top: 50px;
+.tagline {
 	text-align: center;
+	color: #f3f3f3;
+}
+
+.screenshotHolder {
+	margin-top: 20px;
+	text-align: center;
+}
+
+#screenshot {
+	width: 90%;
+}
+
+.profileHeader {
+	text-align: center;
+	color: #03A9FA;
+}
+
+#example {
+	margin-top: 20px;
+	color: #AAA;
+}
+
+@media (min-width: 992px) {
+	#logo {
+		width: 100px;
+	}
+
 }
