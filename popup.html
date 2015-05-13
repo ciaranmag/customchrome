@@ -79,26 +79,24 @@
   </div>
 </div>
 
-
-<!-- form attempt -->
-<!-- <div id="addExts" class="modal modal-fixed-footer">
+<!-- Modal html: new profile extensions list -->
+<div id="addExts" class="modal modal-fixed-footer">
+<form id="extSubmit">
   <div class="modal-content">
     <h4>Add extensions to </h4>
-    <form id="extensionsSubmit">
     <p>The extensions you tick here will be turned on when this profile is active</p>
     <div id='extList'></div>
-  
-	  <div class="modal-footer">
-	    <a href="#!" class="modal-action modal-close waves-effect waves-green btn" id="done">Done</a>
-	  </div>
-	  </form>
   </div>
-</div> -->
+  <div class="modal-footer">
+  	<button class="btn waves-effect waves-light" id="addSubmit" type="submit" name="action">Add</button>
+  </div>
+</form>
+</div>
 
 
 
 <!-- Modal html: new profile extensions list -->
-<div id="addExts" class="modal modal-fixed-footer">
+<!-- <div id="addExts" class="modal modal-fixed-footer">
   <div class="modal-content">
     <h4>Add extensions to </h4>
     <p>The extensions you tick here will be turned on when this profile is active</p>
@@ -107,7 +105,7 @@
   <div class="modal-footer">
     <a href="#!" class="modal-action modal-close waves-effect waves-green btn" id="done">Done</a>
   </div>
-</div>
+</div> -->
 
 <!-- Handlebar Template Start: add extensions to profiles in modal list -->
 <script id="extList-template" type="text/x-handlebars-template">

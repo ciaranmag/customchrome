@@ -123,8 +123,8 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 						chrome.management.setEnabled(obj[btnIdConvert][i], false, function (){})
 					}
 				}
-				Materialize.toast(btnIdConvert+' is now off', 2000, 'ccToastOff')
 			})
+			Materialize.toast(btnIdConvert+' is now off', 2000, 'ccToastOff')
 		})
 	$(this).removeClass("on").addClass("off"); // change profile btn to "off" appearance
 	setTimeout(function(){
@@ -140,8 +140,8 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 						chrome.management.setEnabled(obj[btnIdConvert][i], true, function (){})
 					}
 				}
-				Materialize.toast(btnIdConvert+' is now on', 2000, 'ccToastOn')
 			})
+			Materialize.toast(btnIdConvert+' is now on', 2000, 'ccToastOn')
 		})
 	$(this).removeClass("off").addClass("on"); // change profile btn to "on" appearance
 	setTimeout(function(){
@@ -206,13 +206,9 @@ $('#nameSubmit').submit(
 
 function addExtensions(name) { // add extensions to new profile modal
 	$('#addExts').openModal({
+		dismissible: false,
 		ready: function() {
 			checkboxlistener(name)
-		},
-		complete: function() {
-			$('#addExts h4').text(a); // turn h4 text back to normal after modal is dismissed
-			$('#extList').html('');
-			submitThatShit();
 		}
 	});
 
@@ -234,6 +230,23 @@ function checkboxlistener() { // turn on/off extensions when toggle is switched
 		idList.push(id);
 	})
 }
+
+$('#extSubmit').submit(
+	function(e){
+		e.preventDefault(); //preventing default submit button behaviour
+		//if no extension are selected, show toast warning and do not close modal
+		if(idList.length === 0){
+			Materialize.toast('You must select at least one extension for this profile', 2000, 'alert');
+		} else {
+			//extensions were selected 
+		submitThatShit(); //submitting extensions to memory
+		$('#addExts h4').text("Add extensions to "); // turn h4 text back to normal after modal is dismissed
+		$('#extList').html('');
+		Materialize.toast(name+' profile added', 2000, 'ccToastOn');
+		$('#addExts').closeModal(); //close the modal
+		}
+	}
+)
 
 function submitThatShit() {
 	tempObj = {};
