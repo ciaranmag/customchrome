@@ -4,12 +4,12 @@
  ☐ change from first result having margin-top TO activeTitle and inactiveTitle to having margin-bottom (so that it works for search results)
  ☐ for profile naming give user feedback when they use too few/many characters or restricted characters
  ☐ add Google Analytics
- ☐ clean up code, commenting, CSS tweaks, minify
  ☐ get the js regex working
  ☐ website - add screenshot, add example use cases
 
 
 Issues that can wait:
+ ☐ clean up code, commenting, CSS tweaks, minify
  ☐ display profile tooltips vertically (have tried <br> "\n" "&lt;br /&gt;" "&#013;")
  ☐ Change search icon colour on when focusing on search input and move search icon into the input area
 

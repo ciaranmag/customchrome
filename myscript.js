@@ -14,6 +14,10 @@ template = Handlebars.compile(source),
 extListSource   = $("#extList-template").html(),
 extListTemplate = Handlebars.compile(extListSource);
 
+// Handlebars for profileList (modal for editing profiles)
+profileListSource   = $("#profileList-template").html(),
+profileListTemplate = Handlebars.compile(profileListSource);
+
 
 $(document).ready(function(){
 
@@ -317,14 +321,28 @@ $("body").on("click","#addProfileBox",function(){ // box next to existing profil
 })
 
 $("body").on("click","#editBtn",function(){ // show edit profile options and remove all
-	if ($(this).hasClass("editHidden")) {
-		$('#removeAllBtn').show();
-		$(".editHidden").removeClass("editHidden").addClass("editShown");
-	}
-	else if ($(this).hasClass("editShown")) {
-		$('#removeAllBtn').hide();
-		$(".editShown").removeClass("editShown").addClass("editHidden");
-	}
+	// if ($(this).hasClass("editHidden")) {
+	// 	$('#removeAllBtn').show();
+	// 	$(".editHidden").removeClass("editHidden").addClass("editShown");
+	// }
+	// else if ($(this).hasClass("editShown")) {
+	// 	$('#removeAllBtn').hide();
+	// 	$(".editShown").removeClass("editShown").addClass("editHidden");
+	// }
+
+
+$('#editProfiles').openModal({
+	dismissible: false,
+	ready: function() {}
+});
+
+
+chrome.storage.sync.get(function(obj){
+	for (var i = 0; i < Object.keys(obj).length; i++) {
+		$('#profileList').append(profileListTemplate(Object.keys(obj)[i]));
+	};
+})
+
 })
 
 $("body").on("click","#removeAllBtn",function(){ // remove all profiles

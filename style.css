@@ -136,6 +136,24 @@ a #addAProfileText {
 	box-shadow: none;
 }
 
+
+.profileList-holder {
+	margin: 5px 0 5px 0;
+}
+
+.profileList-name {
+	width:70%;
+	height:100%; 
+	display: inline-block;
+	padding-left: 5%;
+}
+
+.profileList-name span {
+	font-size: 20px;
+}
+
+
+
 /* SEARCHBOX AND SETTINGS */
 
 .searchbox-holder {
