@@ -36,6 +36,11 @@ body {
 
 #editBtn {}
 
+.edit, .delete {
+	margin:0 2% 0 2%;
+	cursor:pointer;
+}
+
 #noProfilesText {
 	font-size: 16px;
 	color: #fff;
@@ -142,7 +147,7 @@ a #addAProfileText {
 }
 
 .profileList-name {
-	width:70%;
+	width:65%;
 	height:100%; 
 	display: inline-block;
 	padding-left: 5%;

@@ -108,12 +108,21 @@
 </form>
 </div>
 
+<div id="confirmDelete" class="modal">
+    <div class="modal-content">
+      <h4>Really?</h4>
+      <p>Are you sure you want to delete </p>
+      <p>This is irreversible...</p>
+    </div>
+    <div class="modal-footer">
+    	<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+      <a href="#!" id='deleteProfile' class=" modal-action modal-close waves-effect waves-green btn-flat">Yep, delete!</a>
+    </div>
+  </div>
+
 <!-- Handlebar Template Start: edit profiles in modal -->
 <script id="profileList-template" type="text/x-handlebars-template">
-// var name = {{this}};
-// var new_name = name.split(' ').join('_');
-// $('yo').addClass("delete-" +new_name);
-	<div class='profileList-holder'>
+	<div class='profileList-holder' profile="{{this}}">
 		<div class='profileList-name'>
 			<span>{{this}}</span>
 		</div>

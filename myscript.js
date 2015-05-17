@@ -331,17 +331,17 @@ $("body").on("click","#editBtn",function(){ // show edit profile options and rem
 	// }
 
 
-$('#editProfiles').openModal({
-	dismissible: false,
-	ready: function() {}
-});
+	$('#editProfiles').openModal({
+		dismissible: false,
+		ready: function() {},
+	});
 
 
-chrome.storage.sync.get(function(obj){
-	for (var i = 0; i < Object.keys(obj).length; i++) {
-		$('#profileList').append(profileListTemplate(Object.keys(obj)[i]));
-	};
-})
+	chrome.storage.sync.get(function(obj){
+		for (var i = 0; i < Object.keys(obj).length; i++) {
+			$('#profileList').append(profileListTemplate(Object.keys(obj)[i]));
+		};
+	})
 
 })
 
@@ -399,6 +399,70 @@ $("body").on("click","#delete-" + name.toLowerCase().split(' ').join('_'),functi
 // 		})
 // 	})
 // }
+
+
+
+
+
+$("body").on("click",".delete",function(){
+	//when a profile delete button is clicked:
+	//get the name of the profile being deleted
+	var profile = $(this).parent().attr('profile');
+	//swap spaces for underscores:
+	var profileUs = profile.toLowerCase().split(' ').join('_');
+	console.log('user wants to delete',profileUs);
+
+	//close the current modal, and clear out the profilesList
+	$('#editProfiles').closeModal();
+	$('#profileList').html('');
+
+	//wait half a second, open a new confirm/cancel modal
+	setTimeout(function(){
+		confirmDelete(profile);
+	}, 500)
+})
+
+
+var confirmDelete = function(profile){
+	//function for confirming profile delete
+
+	//open the modal and insert the profile name into the first p element
+	$('#confirmDelete').openModal({
+		complete: function(){
+			$('#confirmDelete p').eq(0).html('Are you sure you want to delete ');
+		}
+	});
+
+	$('#confirmDelete p').eq(0).append(profile);
+	//on confirm
+		//delete profile from storage, refresh page?
+		//show toast confirming profile delete
+	//on cancel
+		//close the modal and do nothing
+	$("body").on("click","#deleteProfile",function(){
+		//delete the selected profile
+		console.log('trying to remove ',profile," from storage");
+		chrome.storage.sync.remove(profile);
+		Materialize.toast('Deleting ' + profile, 2000, 'deleteToast')
+		setTimeout(function(){
+			location.reload(false);
+		}, 1000)
+	})
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
