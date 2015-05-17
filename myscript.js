@@ -72,12 +72,13 @@ $(document).ready(function(){
 			var sizeOfStoredObject = Object.keys(obj).length;
 			for (var n = 0; n < sizeOfStoredObject; n++) { // cycle through the profilesHolder
 				for (key in obj) { // cycle through the extension profiles
-					$("#" + key).addClass("on").removeClass("off");
+					keyUs = key.split(' ').join('_');
+					$("#" + keyUs).addClass("on").removeClass("off");
 					for (var n = 0; n < obj[key].length; n++) { // cycle through the extensions within the profile
 						for (var i=0;i<extArray.length;i++) {
 							if (extArray[i]["id"] === obj[key][n]) {
 								if (extArray[i]["enabled"] === false) {
-									$("#" + key).removeClass("on").addClass("off");
+									$("#" + keyUs).removeClass("on").addClass("off");
 								}
 							}
 						}
@@ -117,7 +118,8 @@ $(document).ready(function(){
 // after clicking a profile button toggle it's appearance (on or off) and cycle through associated extensions turning them all on or off
 $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 	btnId = $(this).attr("id"); // find out which one and assign to btnId
-	btnIdConvert = btnId.split('_').join(' '); // lower case and replace underscore for space
+	//btnIdConvert = btnId.split('_').join(' '); // lower case and replace underscore for space
+	btnIdConvert = $(this).text();
 
 	if ($(this).hasClass("on")) { // if the btn is currently on then turn all extensions off
 		chrome.storage.sync.get(function(obj){
@@ -311,7 +313,7 @@ function getProfiles() { // check storage for any profiles
 
 		for (var i = 0; i < allKeys.length; i++) {
 			var name = allKeys[i],
-					btnHtml = "<a class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</a>";
+			btnHtml = "<a class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</a>";
 			$('.profile-holder').append(btnHtml); // append to profile-holder
 		}
 	})
