@@ -188,6 +188,10 @@ a.mdi-action-settings {
 	margin-right: -22px;
 }
 
+#noResults {
+	display:none;
+}
+
 
 /* EXTENSIONS */
 

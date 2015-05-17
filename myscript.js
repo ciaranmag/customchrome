@@ -94,18 +94,37 @@ $(document).ready(function(){
 
 	// Search
 	$("#searchbox").keyup(function(){
-			// Retrieve the input field text
-			var filter = $(this).val();
-			// Loop through the extensions
-			$(".extName").each(function(){
-				var h = $(this).parents('.extBlock'); //setting h as the extension's holding div
-				if ($(this).text().search(new RegExp(filter, "i")) < 0) { // searching extName for the #searchbox's contents if it doesn't match then fadeOut the holding div
-					h.fadeOut(); //fade the parent div out if no match found
-				} else {
-					h.fadeIn(); // show the list item if the phrase matches
-				}
-			});
+		// Retrieve the input field text
+		var filter = $(this).val();
+		// Loop through the extensions
+		$(".extName").each(function(){
+			var h = $(this).parents('.extBlock'); //setting h as the extension's holding div
+			if ($(this).text().search(new RegExp(filter, "i")) < 0) { // searching extName for the #searchbox's contents if it doesn't match then fadeOut the holding div
+				h.fadeOut(); //fade the parent div out if no match found
+			} else {
+				h.fadeIn(); // show the list item if the phrase matches
+			}
+		});
+
+		setTimeout(function(){
+			if ( $(".extName:visible").length === 0){
+				$("#noResults").fadeIn();
+				$('#activeExtensions').parent().css('visibility','hidden');
+				$('#inactiveExtensions').parent().css('visibility','hidden');
+			} else {
+				$("#noResults").hide();
+				$('#activeExtensions').parent().css('visibility','visible');
+				$('#inactiveExtensions').parent().css('visibility','visible');
+			}
+		}, 550)
+		
 	});
+
+	$('#searchbox').keyup(function(){
+		
+		
+	})
+
 	$('.searchbox').focus();
 
 // tooltipGenerator();
@@ -114,6 +133,8 @@ $(document).ready(function(){
 // }, 1000)
 
 }); // close $(document).ready
+
+
 
 // after clicking a profile button toggle it's appearance (on or off) and cycle through associated extensions turning them all on or off
 $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
