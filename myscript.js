@@ -232,6 +232,7 @@ function checkboxlistener() { // turn on/off extensions when toggle is switched
 			return;
 		}
 		idList.push(id);
+		console.log('idList is now ',idList);
 	})
 }
 
@@ -429,11 +430,11 @@ var confirmDelete = function(profile){
 	//open the modal and insert the profile name into the first p element
 	$('#confirmDelete').openModal({
 		complete: function(){
-			$('#confirmDelete p').eq(0).html('Are you sure you want to delete ');
+			$('#confirmDelete h6').html('Are you sure you want to delete ');
 		}
 	});
 
-	$('#confirmDelete p').eq(0).append(profile);
+	$('#confirmDelete h6').append(profile);
 	//on confirm
 		//delete profile from storage, refresh page?
 		//show toast confirming profile delete
@@ -453,15 +454,151 @@ var confirmDelete = function(profile){
 
 
 
+//when an edit profile button is clicked
+	//get profile name
+	//pass it to a function to open a modal where user can"
+		//toggle on and off extensions that add/remove them from the array object
+		//fills in an input field with the name that can be edited by user
+	//save button adds profile to Storage. 
+	//cancel button disregards changes
+
+//so we need:
+	// a modal, similar to the addectensions modal, but with an input field for editing profile name
+	//a function to fill that modal with the extensions
+	//some logic to tick or untick the boxes as appropriate
+	//populate an array that can be used. 
 
 
 
+var profileName;
+$("body").on("click",".edit",function(){
+	//get profile name
+	var profile = $(this).parent().attr('profile');
+	console.log('user is editing: ',profile);
+
+	//set extName as profile name, for use later when submitting
+	profileName = profile;
+
+	//close the current modal, and clear out the profilesList
+	$('#editProfiles').closeModal();
+	$('#profileList').html('');
+
+	//prefill the profile name input with the current profile name
+	$('#editProfileName').val(profile);
 
 
+	//populate list with all extensions:
+	extArray.forEach(function(ext){ // loop over extArray to populate the list
+		$('#editExtList').append(extListTemplate(ext));
+	})
 
 
+	//get the profile form memory, and populate the idList with the resulting array
+	chrome.storage.sync.get(profile,function(obj){
+		idList = obj[profile];
+		//console.log('idList: ',idList);
+
+		//loop over each id in idList and set the appropriate extension input as active?
+		idList.forEach(function(id) {
+			//find input with this id and add .prop('checked', true);
+			$('#editExtList input[appid="'+id+'"]').prop('checked', true);
+		});
+
+		//start listening for checkbox changes:
+		checkboxlistener();
+	})
+	
+
+	//save button adds profile to Storage. 
+	//cancel button disregards changes
+
+	//wait half a second, open a new confirm/cancel modal
+	setTimeout(function(){
+		$('#editExts').openModal({
+			dismissible: false
+		});
+	}, 500)
+})
 
 
+$("#editExtSubmit").submit(
+	function(e){
+		e.preventDefault(); //preventing default submit button behaviour
+
+		//if no extension are selected, show toast warning and return
+		if(idList.length === 0){
+			Materialize.toast('You must select at least one extension for this profile', 2000, 'alert');
+			return;
+		}
+
+
+		//if user has deleted the profile name, prompt them to enter something and return
+		if($('#editProfileName').val()===''){
+			Materialize.toast('You must enter a name for this profile', 2000, 'alert');
+			return;
+		}
+
+		var newName = $('#editProfileName').val().toLowerCase();
+
+
+		if(profileName === $('#editProfileName').val()){
+			//user has NOT changed the profile name, so we can just set the idList as the profile 
+			chrome.storage.sync.remove(profileName, function(){
+				//remove old profile button
+				//reload to remove old profile button
+				Materialize.toast(name+' profile successfully edited', 1000, 'ccToastOn');
+				setTimeout(function(){
+					location.reload(false);
+
+					//clear out the editExtList
+					$('#editExtList').html('');
+
+					//set new profile in storage with idList as array
+					name = newName;
+					submitThatShit();
+				}, 1000)
+					
+			});
+
+			
+
+			
+			$('#editExts').closeModal(); //close the modal
+			
+		} else {
+			//user has updated the profile name
+			//check if profile with this new name already exists
+			chrome.storage.sync.get(function(obj){
+				if ($.inArray(newName, Object.keys(obj)) != -1){
+					Materialize.toast('Profile name already exists!', 2000, 'alert');
+				} else {
+					//new name is ok
+					//delete old name from storage
+					console.log('deleting old profile, '+profileName);
+					chrome.storage.sync.remove(profileName, function(){
+						//reload to remove old profile button
+						Materialize.toast(name+' profile successfully edited', 1000, 'ccToastOn');
+						setTimeout(function(){
+							location.reload(false);
+
+							//clear out the editExtList
+							$('#editExtList').html('');
+
+							//set new profile in storage with idList as array
+							name = newName;
+							submitThatShit();
+						}, 1000)
+					});
+
+					//set new profile in storage with idList as array
+					
+				}
+			})
+		}
+
+		
+	}
+)
 
 
 

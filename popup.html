@@ -93,6 +93,22 @@
 </form>
 </div>
 
+<!-- Modal html: edit profile extensions list -->
+<div id="editExts" class="modal modal-fixed-footer">
+<form id="editExtSubmit">
+  <div class="modal-content">
+  	<label for="editProfileName">Edit Profile Name</label>
+  	<input type="text" class="validate" id="editProfileName" min="1" max="15" pattern="[a-zA-z0-9\s]+" autofocus oninvalid="setCustomValidity('Plz enter on Alphabets ')" title="This is an error message" onchange="try{setCustomValidity('')}catch(e){}">
+    <p>The extensions you tick here will be turned on when this profile is active</p>
+    <div id='editExtList'></div>
+  </div>
+  <div class="modal-footer">
+  	<button class="btn waves-effect waves-light" id="editExtsSubmit" type="submit" name="action">Save Changes</button>
+  </div>
+</form>
+</div>
+
+
 
 <!-- Edit Profiles Modal: List of Profiles -->
 <div id="editProfiles" class="modal modal-fixed-footer">
@@ -111,7 +127,7 @@
 <div id="confirmDelete" class="modal">
     <div class="modal-content">
       <h4>Really?</h4>
-      <p>Are you sure you want to delete </p>
+      <h6>Are you sure you want to delete </h6>
       <p>This is irreversible...</p>
     </div>
     <div class="modal-footer">
