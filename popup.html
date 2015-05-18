@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Quick Extension Manager</title>
+  <title>Custom Chrome</title>
 	<!-- <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto'> -->
   <link rel="stylesheet" href="materialize/materialize.min.css">
   <link rel="stylesheet" href="style.css">
@@ -22,7 +22,6 @@
 
 	<!-- Google Analytics -->
 	<script src="analytics.js"></script>
-
 </head>
 
 <body>
@@ -31,9 +30,9 @@
 	<div class="row">
 	  <div class="col s12">
 	    <div class="card-content profile-card-content black-text profile-holder">
-	    <a class="editHidden" id="editBtn" data-position="bottom" data-delay="50" data-tooltip="Edit profiles">edit</a>
+	    <button id="editBtn" data-position="bottom" data-delay="50" data-tooltip="Edit profiles">edit</button>
 	    <span id="noProfilesText">You don't have any profiles setup.<a id="addProfile"><span id="addAProfileText"> Add one now</span></a></span>
-	    <a id='addProfileBox' class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Add a new profile">+</a>
+	    <button id='addProfileBox' class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Add a new profile">+</button>
 	    </div>
 	  </div>
 	</div>
@@ -112,7 +111,7 @@
 <form id="editExtSubmit">
   <div class="modal-content">
   	<label for="editProfileName">Edit Profile Name</label>
-  	<input type="text" class="validate" id="editProfileName" min="1" max="15" pattern="[a-zA-z0-9\s]+" autofocus oninvalid="setCustomValidity('Plz enter on Alphabets ')" title="This is an error message" onchange="try{setCustomValidity('')}catch(e){}">
+  	<input type="text" id="editProfileName" pattern="[a-zA-z0-9\s]{1,15}" autofocus>
     <p>The extensions you tick here will be turned on when this profile is active</p>
     <div id='editExtList'></div>
   </div>
@@ -121,7 +120,6 @@
   </div>
 </form>
 </div>
-
 
 
 <!-- Edit Profiles Modal: List of Profiles -->

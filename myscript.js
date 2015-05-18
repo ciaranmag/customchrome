@@ -106,6 +106,7 @@ $(document).ready(function(){
 			}
 		});
 
+		// no results - show card
 		setTimeout(function(){
 			if ( $(".extName:visible").length === 0 ){
 				$("#noResults").fadeIn();
@@ -122,9 +123,7 @@ $(document).ready(function(){
 
 	$('#searchbox').keyup(function(){
 		
-		
 	})
-
 	$('.searchbox').focus();
 
 // tooltipGenerator();
@@ -205,16 +204,6 @@ $('#nameSubmit').submit(
 		e.preventDefault();
 
 		name = $('#name').val().toLowerCase(); // catch the profile name the user entered
-		// // check if it's a valid name
-		
-		// var reg = /[a-zA-z0-9\s]+/;
-		// var patt = new RegExp(/[a-zA-z0-9\s]+/);
-
-		// if ( patt.test(name) === false ) {
-		// 	console.log("damn")
-		// 	Materialize.toast('Profile names must be between 1 and 15 characters and only include letters, numbers, and spaces', 3000, 'alert');
-		// 	return;
-		// }
 		
 		chrome.storage.sync.get(function(obj){
 			if ($.inArray(name, Object.keys(obj)) != -1){
@@ -328,7 +317,6 @@ function getProfiles() { // check storage for any profiles
 			$('#addProfileBox').show();
 		}
 
-
 		$('#noProfilesText').hide();
 		$('#profileHeader').css("background-color", "#f3f3f3");
 		$('#editBtn').show();
@@ -341,7 +329,7 @@ function getProfiles() { // check storage for any profiles
 	})
 }
 
-$("body").on("click","#addProfileBox",function(){ // box next to existing profiles to add a new profile
+$("body").on("click","#addProfileBox",function(){ // add a new profile box
 	$('#profilePrompt').openModal();
 })
 
@@ -368,51 +356,9 @@ $("body").on("click","#removeAllBtn",function(){ // remove all profiles
 })
 
 
-$("body").on("click","#delete-" + name.toLowerCase().split(' ').join('_'),function(){ // remove associated profile
-	var nameOfProfile // get profile name from id of previous button and parse 
-	chrome.storage.sync.remove(nameOfProfile)
-	Materialize.toast('Deleting ' + nameOfProfile, 2000, 'deleteToast')
-	setTimeout(function(){
-		location.reload(false); // adding false lets the page reload from the cache
-	}, 1000)
-})
-
-
-// var tooltipGenerator = function(){
-// 	var ttArray = [];
-// 	//make a call to sync to get the profiles currently stored.
-// 	chrome.storage.sync.get(function(obj){
-// 		//looping over all the profiles returned from storage
-// 		Object.keys(obj).forEach(function(key){
-// 			//looping over each extension id in the profile
-// 			for (var i = 0; i < obj[key].length; i++) {
-// 				var id = obj[key][i];
-// 				//looping over the extArray, when id in profile matches an id in the extArray, get the shortname and push to ttArray
-// 				for (var i = 0; i < extArray.length; i++) {
-// 					if (extArray[i].id === id) {
-// 						ttArray.push(extArray[i].shortName);
-// 						break;
-// 					}
-// 				};
-// 			}
-// 			var proNameId = key.split(' ').join('_')
-// 			// console.log("tooltip info: " + proNameId, ttArray);
-// 			//find the appropriate profile button and set the data-tooltip attribute with ttArray as value
-// 			$("#" + proNameId).attr('data-tooltip',ttArray).attr('data-position','bottom').attr('delay', 50).addClass("tooltipped");
-// 			ttArray =[];
-// 		})
-// 	})
-// }
-
-
-
 $("body").on("click",".delete",function(){
-	//when a profile delete button is clicked:
-	//get the name of the profile being deleted
+	//when a profile delete button is clicked, get the name of the profile being deleted
 	var profile = $(this).parent().attr('profile');
-	//swap spaces for underscores:
-	var profileUs = profile.toLowerCase().split(' ').join('_');
-	console.log('user wants to delete',profileUs);
 
 	//close the current modal, and clear out the profilesList
 	$('#editProfiles').closeModal();
@@ -437,8 +383,7 @@ var confirmDelete = function(profile){
 
 	$('#confirmDelete h6').append(profile);
 	//on confirm
-		//delete profile from storage, refresh page?
-		//show toast confirming profile delete
+		//delete profile from storage, show toast confirming profile delete
 	//on cancel
 		//close the modal and do nothing
 	$("body").on("click","#deleteProfile",function(){
@@ -453,14 +398,12 @@ var confirmDelete = function(profile){
 }
 
 
+
 var profileName;
 $("body").on("click",".edit",function(){
 	//get profile name
 	var profile = $(this).parent().attr('profile');
 	console.log('user is editing: ',profile);
-
-	//set extName as profile name, for use later when submitting
-	profileName = profile;
 
 	//close the current modal, and clear out the profilesList
 	$('#editProfiles').closeModal();
@@ -469,12 +412,10 @@ $("body").on("click",".edit",function(){
 	//prefill the profile name input with the current profile name
 	$('#editProfileName').val(profile);
 
-
 	//populate list with all extensions:
 	extArray.forEach(function(ext){ // loop over extArray to populate the list
 		$('#editExtList').append(extListTemplate(ext));
 	})
-
 
 	//get the profile form memory, and populate the idList with the resulting array
 	chrome.storage.sync.get(profile,function(obj){
@@ -514,7 +455,6 @@ $("#editExtSubmit").submit(
 			return;
 		}
 
-
 		//if user has deleted the profile name, prompt them to enter something and return
 		if($('#editProfileName').val()===''){
 			Materialize.toast('You must enter a name for this profile', 2000, 'alert');
@@ -523,12 +463,9 @@ $("#editExtSubmit").submit(
 
 		var newName = $('#editProfileName').val().toLowerCase();
 
-
 		if(profileName === $('#editProfileName').val()){
-			//user has NOT changed the profile name, so we can just set the idList as the profile 
+			// user has NOT changed the profile name, so we can just set the idList as the profile
 			chrome.storage.sync.remove(profileName, function(){
-				//remove old profile button
-				//reload to remove old profile button
 				Materialize.toast(name+' profile successfully edited', 1000, 'ccToastOn');
 				setTimeout(function(){
 					location.reload(false);
@@ -539,27 +476,22 @@ $("#editExtSubmit").submit(
 					//set new profile in storage with idList as array
 					name = newName;
 					submitThatShit();
-				}, 1000)
-					
-			});
-
-			
-
-			
+				}, 1000)	
+			});			
 			$('#editExts').closeModal(); //close the modal
-			
-		} else {
-			//user has updated the profile name
-			//check if profile with this new name already exists
+
+		} 
+
+		else {
+			//user has updated the profile name, check if profile with this new name already exists
 			chrome.storage.sync.get(function(obj){
 				if ($.inArray(newName, Object.keys(obj)) != -1){
 					Materialize.toast('Profile name already exists!', 2000, 'alert');
-				} else {
-					//new name is ok
-					//delete old name from storage
+				} 
+				else {
+					//new name is ok, delete old name from storage
 					console.log('deleting old profile, '+profileName);
 					chrome.storage.sync.remove(profileName, function(){
-						//reload to remove old profile button
 						Materialize.toast(name+' profile successfully edited', 1000, 'ccToastOn');
 						setTimeout(function(){
 							location.reload(false);
@@ -572,14 +504,9 @@ $("#editExtSubmit").submit(
 							submitThatShit();
 						}, 1000)
 					});
-
-					//set new profile in storage with idList as array
-					
 				}
 			})
 		}
-
-		
 	}
 )
 
@@ -597,9 +524,33 @@ for (var i = 0; i < buttons.length; i++) {
   buttons[i].addEventListener('click', trackButtonClick);
 }
 
+// TOOLTIPS
 
-
-
+// var tooltipGenerator = function(){
+// 	var ttArray = [];
+// 	//make a call to sync to get the profiles currently stored.
+// 	chrome.storage.sync.get(function(obj){
+// 		//looping over all the profiles returned from storage
+// 		Object.keys(obj).forEach(function(key){
+// 			//looping over each extension id in the profile
+// 			for (var i = 0; i < obj[key].length; i++) {
+// 				var id = obj[key][i];
+// 				//looping over the extArray, when id in profile matches an id in the extArray, get the shortname and push to ttArray
+// 				for (var i = 0; i < extArray.length; i++) {
+// 					if (extArray[i].id === id) {
+// 						ttArray.push(extArray[i].shortName);
+// 						break;
+// 					}
+// 				};
+// 			}
+// 			var proNameId = key.split(' ').join('_')
+// 			// console.log("tooltip info: " + proNameId, ttArray);
+// 			//find the appropriate profile button and set the data-tooltip attribute with ttArray as value
+// 			$("#" + proNameId).attr('data-tooltip',ttArray).attr('data-position','bottom').attr('delay', 50).addClass("tooltipped");
+// 			ttArray =[];
+// 		})
+// 	})
+// }
 
 
 

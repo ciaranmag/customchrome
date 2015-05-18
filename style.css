@@ -37,10 +37,9 @@ button {
 	margin-top: -15px;
 	cursor: pointer;
 	color: #9F9F9F;
+	background: none;
+	border: none;
 }
-
-
-#editBtn {}
 
 .edit, .delete {
 	margin:0 2% 0 2%;
@@ -77,8 +76,8 @@ a #addAProfileText {
 
 #addProfileBox,
 .profile-btn,
-.profile-btn:hover {
-	box-shadow: none;
+.profile-btn:hover,
+.profile-btn:focus {
 	border: none;
 	border-radius: 2px;
 	display: inline-block;
