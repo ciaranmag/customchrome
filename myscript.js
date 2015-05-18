@@ -107,7 +107,7 @@ $(document).ready(function(){
 		});
 
 		setTimeout(function(){
-			if ( $(".extName:visible").length === 0){
+			if ( $(".extName:visible").length === 0 ){
 				$("#noResults").fadeIn();
 				$('#activeExtensions').parent().css('visibility','hidden');
 				$('#inactiveExtensions').parent().css('visibility','hidden');
@@ -203,6 +203,7 @@ $('#addProfile').click(
 $('#nameSubmit').submit(
 	function(e){
 		e.preventDefault();
+
 		name = $('#name').val().toLowerCase(); // catch the profile name the user entered
 		// // check if it's a valid name
 		
@@ -297,7 +298,7 @@ function submitThatShit() {
 			}
 	  	
 			// HTML code for profile btn changing string to lower case and replacing spaces with underscores
-			var btnHtml = "<a class='profile-btn off' id='"+name.split(' ').join('_')+"'>"+name+"</a>";
+			var btnHtml = "<button class='profile-btn off' id='"+name.split(' ').join('_')+"'>"+name+"</button>";
 			$('.profile-holder').append(btnHtml); // append new button with new profile name to profile-holder
 			$('#name').val(""); // set profile name to user-defined profile name
 	  })
@@ -334,7 +335,7 @@ function getProfiles() { // check storage for any profiles
 
 		for (var i = 0; i < allKeys.length; i++) {
 			var name = allKeys[i],
-			btnHtml = "<a class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</a>";
+			btnHtml = "<button class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
 			$('.profile-holder').append(btnHtml); // append to profile-holder
 		}
 	})
@@ -344,22 +345,11 @@ $("body").on("click","#addProfileBox",function(){ // box next to existing profil
 	$('#profilePrompt').openModal();
 })
 
-$("body").on("click","#editBtn",function(){ // show edit profile options and remove all
-	// if ($(this).hasClass("editHidden")) {
-	// 	$('#removeAllBtn').show();
-	// 	$(".editHidden").removeClass("editHidden").addClass("editShown");
-	// }
-	// else if ($(this).hasClass("editShown")) {
-	// 	$('#removeAllBtn').hide();
-	// 	$(".editShown").removeClass("editShown").addClass("editHidden");
-	// }
-
-
+$("body").on("click","#editBtn",function(){ 
 	$('#editProfiles').openModal({
 		dismissible: false,
 		ready: function() {},
 	});
-
 
 	chrome.storage.sync.get(function(obj){
 		for (var i = 0; i < Object.keys(obj).length; i++) {
@@ -378,8 +368,6 @@ $("body").on("click","#removeAllBtn",function(){ // remove all profiles
 })
 
 
-
-
 $("body").on("click","#delete-" + name.toLowerCase().split(' ').join('_'),function(){ // remove associated profile
 	var nameOfProfile // get profile name from id of previous button and parse 
 	chrome.storage.sync.remove(nameOfProfile)
@@ -388,14 +376,6 @@ $("body").on("click","#delete-" + name.toLowerCase().split(' ').join('_'),functi
 		location.reload(false); // adding false lets the page reload from the cache
 	}, 1000)
 })
-
-// delete button needs to be created with id delete+name
-// append to button after created
-// hide button
-// display button after clicking
-// btnHtml = "<a class='delete-btn' id='#delete-"+name.toLowerCase().split(' ').join('_')+"'>delete</a>";
-
-
 
 
 // var tooltipGenerator = function(){
@@ -423,8 +403,6 @@ $("body").on("click","#delete-" + name.toLowerCase().split(' ').join('_'),functi
 // 		})
 // 	})
 // }
-
-
 
 
 
@@ -473,24 +451,6 @@ var confirmDelete = function(profile){
 		}, 1000)
 	})
 }
-
-
-
-
-//when an edit profile button is clicked
-	//get profile name
-	//pass it to a function to open a modal where user can"
-		//toggle on and off extensions that add/remove them from the array object
-		//fills in an input field with the name that can be edited by user
-	//save button adds profile to Storage. 
-	//cancel button disregards changes
-
-//so we need:
-	// a modal, similar to the addectensions modal, but with an input field for editing profile name
-	//a function to fill that modal with the extensions
-	//some logic to tick or untick the boxes as appropriate
-	//populate an array that can be used. 
-
 
 
 var profileName;
@@ -622,6 +582,25 @@ $("#editExtSubmit").submit(
 		
 	}
 )
+
+
+// GOOGLE ANALYTICS
+
+// Write a function that sends click events to Google Analytics:
+function trackButtonClick(e) {
+  _gaq.push(['_trackEvent', e.target.id, 'clicked']);
+};
+
+// And use it as an event handler for each button's click:
+var buttons = document.querySelectorAll('button');
+for (var i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener('click', trackButtonClick);
+}
+
+
+
+
+
 
 
 

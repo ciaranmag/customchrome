@@ -5,9 +5,9 @@
 
   "description": "A beautiful Google Chrome extension to turn on or off your other extensions quickly and easily without leaving your current tab",
 
-  "version": "0.50",
+  "version": "0.60",
 
-  "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.google-analytics.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'self'",
 
   "permissions": [
     "storage",

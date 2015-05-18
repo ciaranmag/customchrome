@@ -21,16 +21,7 @@
 	</style>
 
 	<!-- Google Analytics -->
-	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','https://ssl.google-analytics.com/ga.js','ga');
-
-	  ga('create', 'UA-63091029-1', 'auto');
-	  ga('send', 'pageview');
-
-	</script>
+	<script src="analytics.js"></script>
 
 </head>
 
@@ -92,7 +83,7 @@
     <h4>Add New Profile</h4>
     <form id="nameSubmit">
       <div class="input-field col s6">
-        <input type="text" class="validate" id="name" min="1" max="15" pattern="[a-zA-z0-9\s]+" autofocus oninvalid="setCustomValidity('Plz enter on Alphabets ')" title="This is an error message" onchange="try{setCustomValidity('')}catch(e){}">
+        <input type="text" class="validate" id="name" pattern="[a-zA-z0-9\s]{1,15}" autofocus>
         <label for="profileName">New Profile Name</label>
       </div>
       <div id="addActionBtn">
@@ -166,8 +157,8 @@
 		<div class='profileList-name'>
 			<span>{{this}}</span>
 		</div>
-		<span class="edit {{this}}">EDIT</span>
-		<span class="delete {{this}}">DELETE</span>
+		<button class="btn waves-effect waves-light grey edit {{this}}">EDIT</button>
+		<button class="btn waves-effect waves-light red delete {{this}}">DELETE</button>
 	</div>
 </script>
 <!-- Handlebar Template End-->

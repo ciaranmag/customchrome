@@ -1,7 +1,5 @@
  ToDo For Release v1:
  ☐ for profile naming give user feedback when they use too few/many characters or restricted characters
- ☐ get the js regex working
- ☐ add Google Analytics - not working
 
 
 Issues that can wait:
@@ -15,6 +13,7 @@ Future Features:
  ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
  ☐ Advanced option to see memory usage of each extension (next to switch)
  ☐ Have an option to make sure certain extensions are off when using a profile e.g. turn off ad blockers and social blockers when using "Web Dev" profile but record their state before the change and re-instate it after profile is turned off
+ ☐ Backup profiles so they can be restored if Custom Chrome is uninstalled
 
 
 
