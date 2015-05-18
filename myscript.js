@@ -24,7 +24,7 @@ $(document).ready(function(){
 	getProfiles(); // call function to check storage.sync for existing user profiles
 
 	$('.modal-trigger').leanModal();
-	$('#removeAllBtn, #addProfileBox').hide();
+	$('#addProfileBox').hide();
 
 	chrome.management.getAll(function(info) {
 		// info is a list of all user installed apps, extensions etc push extensions to extArray

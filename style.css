@@ -10,6 +10,9 @@ body {
 	font-family: 'Roboto', sans-serif;
 }
 
+button {
+	box-shadow: none !important;
+}
 
 /* PROFILES */
 
@@ -19,7 +22,14 @@ body {
 	background-color: #f3f3f3;
 }
 
-#removeAllBtn,
+#removeAllBtn {
+	text-transform: uppercase;
+	font-size: 10px;
+	float: left;
+	cursor: pointer;
+	color: #fff;
+}
+
 #editBtn {
 	text-transform: uppercase;
 	font-size: 10px;
@@ -29,10 +39,6 @@ body {
 	color: #9F9F9F;
 }
 
-#removeAllBtn {
-	margin-right: 40px;
-	color: red;
-}
 
 #editBtn {}
 
@@ -247,10 +253,6 @@ a.mdi-action-settings {
 	vertical-align: top;
 }
 
-.extBlock:first-of-type {
-	margin-top: 30px !important;
-}
-
 .activeTitleDiv {
 	background-color: #81c784;
 }
@@ -319,7 +321,7 @@ span.lever {
 /* TOASTS */
 
 .alert {
-	background-color: orange;
+	background-color: #ffab00;
 	color: white;
 }
 
@@ -336,16 +338,6 @@ span.lever {
 	background-color: #e53935;
 	color: white;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
