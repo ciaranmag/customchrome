@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
 
-  "name": "Custom Chrome",
+  "name": "Custom Chrome - Extension Manager",
 
-  "description": "A beautiful Google Chrome extension to turn on or off your other extensions quickly and easily without leaving your current tab",
+  "description": "A beautiful Google Chrome extension manager to turn on/off other extensions quickly and easily without leaving your current tab",
 
   "version": "0.81",
 
