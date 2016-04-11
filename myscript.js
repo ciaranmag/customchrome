@@ -124,7 +124,7 @@ $(document).ready(function(){
 	$('#searchbox').keyup(function(){
 		
 	})
-	$('.searchbox').focus();
+	$('#searchbox').focus();
 
 // tooltipGenerator();
 // setTimeout(function(){
@@ -551,11 +551,5 @@ for (var i = 0; i < buttons.length; i++) {
 // 		})
 // 	})
 // }
-
-
-
-
-
-
 
 
