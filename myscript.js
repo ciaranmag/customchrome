@@ -1,3 +1,5 @@
+//change test for git
+
 // Declare variables using 'var' once minifying the code
 
 var extArray = [],
