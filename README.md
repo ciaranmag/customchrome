@@ -1,3 +1,2 @@
 # customchrome
-A beautiful Google Chrome extension to turn on or off your other extensions quickly and easily
-
+A beautiful Google Chrome extension manager to turn on/off your other extensions quickly and easily without leaving your current tab
