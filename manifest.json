@@ -14,12 +14,12 @@
     "management"
   ],
 
-  "icons": { "16": "googleCog16.png",
-           "48": "googleCog48.png",
-          "128": "googleCog128.png" },
+  "icons": { "16": "images/googleCog16.png",
+           "48": "images/googleCog48.png",
+          "128": "images/googleCog128.png" },
 
   "browser_action": {
-    "default_icon": "googleCog128.png",
+    "default_icon": "images/googleCog128.png",
     "default_popup": "popup.html"
   },
 
