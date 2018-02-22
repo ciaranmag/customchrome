@@ -222,7 +222,7 @@ a.mdi-action-settings {
 }
 
 .lefty {
-	width: 84%;
+	width: 79%;
 	display: inline-block;
 	height: 100%;
 	vertical-align: middle;
@@ -230,7 +230,7 @@ a.mdi-action-settings {
 
 .righty {
 	display: inline-block;
-	width: 15%;
+	width: 20%;
 }
 
 .picHolder {
@@ -300,6 +300,19 @@ span.lever::after {
 	background-color: #81c784;
 }
 
+.switch label {
+	display: inline-block;
+}
+
+.switch label .lever {
+	margin:0 !important;
+}
+
+.switch .dropdown-button {
+	display: inline-block;
+	padding:0 15px 0 22px!important;
+}
+
 .switch label input[type=checkbox]:checked+.lever:after {
 	background-color: #81c784;
 }
@@ -337,12 +350,6 @@ span.lever {
 	background-color: #e53935;
 	color: white;
 }
-
-
-
-
-
-
 
 
 

@@ -90,6 +90,20 @@ $(document).ready(function(){
 		$(".extId").hide(); // just here to reference each individual ext
 		$(".extState").hide(); // just here to reference each individual ext's state
 
+		// init dropdowns
+		// currently just contains uninstall
+		$('.dropdown-button').dropdown({
+		      inDuration: 300,
+		      outDuration: 225,
+		      constrainWidth: false, // Does not change width of dropdown to that of the activator
+		      hover: false, // Activate on hover
+		      gutter: 0, // Spacing from edge
+		      belowOrigin: true, // Displays dropdown below the button
+		      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+		      stopPropagation: false // Stops event propagation
+		    }
+		  );
+
 	}); // close chrome.management.getAll
 
 	// Search
@@ -502,6 +516,35 @@ $("#editExtSubmit").submit(
 		}
 	}
 )
+
+
+$("body").on("click",".uninstallExt",function(e){
+
+	// User wants to uninstall an extension
+	// relevant docs:
+	// https://developer.chrome.com/extensions/management#method-uninstall
+
+	// prevent default
+	e.preventDefault();
+
+	// get extension ID
+	let id = $(this).parents('.switch').attr('id');
+
+	// uninstall, with native confirm dialog
+	// even with false, an extension uninstalling an extension
+	// will always trigger the native confirm dialog
+	chrome.management.uninstall(id, {"showConfirmDialog": false}, ()=>{
+
+		// do something when user has confirmed or denied?
+		// will we need to refresh the list?
+		// nope, the extension closes the popup.html anyway so nothing to worry about...
+
+	})
+
+
+
+})
+
 
 
 // GOOGLE ANALYTICS

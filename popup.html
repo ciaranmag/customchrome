@@ -4,7 +4,7 @@
   <title>Custom Chrome</title>
   <link rel="stylesheet" href="resources/materialize/materialize.min.css">
   <link rel="stylesheet" href="style.css">
-	<style type="text/css">
+	<!-- <style type="text/css">
 	@font-face {
 		font-family: 'material-design-icons';
 		src: url('resources/materialize/material-design-icons/material-design-icons.eot');
@@ -17,7 +17,8 @@
 		font-family: 'Roboto';
 		src: url('resources/font/roboto/Roboto-Regular.ttf') format('truetype');
 	}
-	</style>
+	</style> -->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 	<!-- Google Analytics -->
 	<script src="analytics.js"></script>
@@ -38,7 +39,7 @@
 </div>
 
 <div class="searchbox-holder">
-	<i id="search-icon" class="mdi-action-search"></i>
+	<i id="search-icon" class="material-icons">search</i>
 	<input type="text" id="searchbox" tabindex="1">
 </div>
 
@@ -181,6 +182,11 @@
 	      <input type="checkbox" {{stringEnabled}} class="js-switch">
 	      <span class="lever"></span>
 	    </label>
+	    <a class='dropdown-button btn-flat' href='#' data-activates='dropdown{{id}}'><i class="material-icons">more_vert</i></a>
+
+	    <ul id='dropdown{{id}}' class='dropdown-content'>
+	       <li class="uninstallExt"><a href="#!">Uninstall</a></li>
+	     </ul>
 	  </div>
 	</div>
 
