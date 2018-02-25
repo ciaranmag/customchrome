@@ -373,5 +373,10 @@ span.lever {
   position: relative;
 }
 
+.row.ext-links .link {
+	padding: 5px 15px;
+	display: inline-block;
+}
+
 
 
