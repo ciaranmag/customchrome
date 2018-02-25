@@ -546,7 +546,10 @@ $("body").on("click",".uninstallExt",function(e){
 $("body").on("click",".show-ext-links",function(e){
 
 	// User wants to show the extension links
+	console.log('e:', e);
 
+	// Figure out if icon was clicked or containing element
+	if(e.target)
 	// prevent default
 	e.preventDefault();
 
@@ -557,8 +560,8 @@ $("body").on("click",".show-ext-links",function(e){
 	extLinks.slideDown();
 
 	// hide down arrow, show up arrow
-	$(e.target).parent().hide();
-	$(e.target).parent().siblings('.hide-ext-links').show();
+	$(e.currentTarget).hide();
+	$(e.currentTarget).siblings('.hide-ext-links').show();
 
 })
 
@@ -576,8 +579,8 @@ $("body").on("click",".hide-ext-links",function(e){
 	extLinks.slideUp();
 
 	// hide down arrow, show up arrow
-	$(e.target).parent().hide();
-	$(e.target).parent().siblings('.show-ext-links').show();
+	$(e.currentTarget).hide();
+	$(e.currentTarget).siblings('.show-ext-links').show();
 
 })
 
