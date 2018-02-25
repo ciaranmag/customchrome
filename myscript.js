@@ -32,7 +32,7 @@ $(document).ready(function(){
 		info.forEach(function(entry) {
 			if(entry.type === "extension"){
 				extArray.push(entry);
-				console.log(entry);
+				// console.log(entry);
 			}
 		});
 
@@ -201,6 +201,12 @@ $('#nameSubmit').submit(
 		e.preventDefault();
 
 		name = $('#name').val().toLowerCase(); // catch the profile name the user entered
+
+		if(!name.length){
+			Materialize.toast('Enter at least one digit', 2000, 'alert');
+			return
+		}
+		
 
 		chrome.storage.sync.get(function(obj){
 			if ($.inArray(name, Object.keys(obj)) != -1){
