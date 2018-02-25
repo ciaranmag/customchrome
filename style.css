@@ -366,5 +366,11 @@ span.lever {
 	color:grey;
 }
 
+.row.ext-links .material-icons {
+	font-size: 20px;
+  bottom: -3px;
+  position: relative;
+}
+
 
 

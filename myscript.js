@@ -529,7 +529,7 @@ $("body").on("click",".uninstallExt",function(e){
 	e.preventDefault();
 
 	// get extension ID
-	let id = $(this).parents('.switch').attr('id');
+	let id = $(e.currentTarget).parents('.ext-links').attr('data-extId');
 
 	// uninstall, with native confirm dialog
 	// even with false, an extension uninstalling an extension
