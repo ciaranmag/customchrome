@@ -4,10 +4,11 @@ body, html {
 }
 
 body {
-	width: 600px;
+	max-width: 600px;
 	height: 100%;
 	background-color: #f3f3f3;
 	font-family: 'Roboto', sans-serif;
+	margin: auto;
 }
 
 button {

@@ -32,6 +32,7 @@ $(document).ready(function(){
 		info.forEach(function(entry) {
 			if(entry.type === "extension"){
 				extArray.push(entry);
+				console.log(entry);
 			}
 		});
 
