@@ -541,8 +541,29 @@ $("body").on("click",".uninstallExt",function(e){
 		// nope, the extension closes the popup.html anyway so nothing to worry about...
 
 	})
+})
 
+$("body").on("click",".show-ext-links",function(e){
 
+	// User wants to show the extension links
+
+	// prevent default
+	e.preventDefault();
+
+	console.log('e:', e);
+
+	// get extension ID
+	let id = $(this).parents('.switch').attr('id');
+
+	// get refrence to relevant ext-links element
+	let extLinks = $(this).parents('.righty').siblings('.container').find('.ext-links')
+
+	// Show ext-links
+	extLinks.slideDown();
+
+	// hide down arrow, show up arrow
+	$(e.target).parent().hide();
+	$(e.target).parent().siblings('.hide-ext-links').show();
 
 })
 

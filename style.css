@@ -308,8 +308,13 @@ span.lever::after {
 	margin:0 !important;
 }
 
-.switch .dropdown-button {
+.switch .show-ext-links {
 	display: inline-block;
+	padding:0 15px 0 22px!important;
+}
+
+.switch .hide-ext-links {
+	display: none;
 	padding:0 15px 0 22px!important;
 }
 
@@ -349,6 +354,16 @@ span.lever {
 .deleteToast {
 	background-color: #e53935;
 	color: white;
+}
+
+.row.ext-links {
+	text-align:right;
+	padding-top:10px;
+	display: none;
+}
+
+.row.ext-links a {
+	color:grey;
 }
 
 

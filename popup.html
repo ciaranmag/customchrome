@@ -182,13 +182,24 @@
 	      <input type="checkbox" {{stringEnabled}} class="js-switch">
 	      <span class="lever"></span>
 	    </label>
-	    <a class='dropdown-button btn-flat' href='#' data-activates='dropdown{{id}}'><i class="material-icons">more_vert</i></a>
+	    <a class='btn-flat show-ext-links' href='#'><i class="material-icons">arrow_drop_down</i></a>
+	    <a class='btn-flat hide-ext-links' href='#'><i class="material-icons">arrow_drop_up</i></a>
 
-	    <ul id='dropdown{{id}}' class='dropdown-content'>
+<!-- 	    <ul id='dropdown{{id}}' class='dropdown-content'>
 	       <li class="uninstallExt"><a href="#!">Uninstall</a></li>
-	     </ul>
+	     </ul> -->
 	  </div>
 	</div>
+
+
+	<div class="container">
+		<div class="row ext-links" data-extId="{{id}}">
+			<div class="col s3 offset-s3">Reviews</div>
+			<div class="col s3">Feedback</div>
+			<div class="col s3"><a href="#!"><i class="material-icons">delete</i>Uninstall</a></div>
+		</div>
+	</div>
+	
 
 </div>
 </script>
