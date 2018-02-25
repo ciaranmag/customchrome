@@ -550,11 +550,6 @@ $("body").on("click",".show-ext-links",function(e){
 	// prevent default
 	e.preventDefault();
 
-	console.log('e:', e);
-
-	// get extension ID
-	let id = $(this).parents('.switch').attr('id');
-
 	// get refrence to relevant ext-links element
 	let extLinks = $(this).parents('.righty').siblings('.container').find('.ext-links')
 
@@ -564,6 +559,25 @@ $("body").on("click",".show-ext-links",function(e){
 	// hide down arrow, show up arrow
 	$(e.target).parent().hide();
 	$(e.target).parent().siblings('.hide-ext-links').show();
+
+})
+
+$("body").on("click",".hide-ext-links",function(e){
+
+	// User wants to hide the extension links
+
+	// prevent default
+	e.preventDefault();
+
+	// get refrence to relevant ext-links element
+	let extLinks = $(this).parents('.righty').siblings('.container').find('.ext-links')
+
+	// Show ext-links
+	extLinks.slideUp();
+
+	// hide down arrow, show up arrow
+	$(e.target).parent().hide();
+	$(e.target).parent().siblings('.show-ext-links').show();
 
 })
 
