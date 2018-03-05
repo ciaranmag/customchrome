@@ -5,6 +5,7 @@ activeExtensions = [],
 inactiveExtensions = [],
 btnId,
 idList = [],
+profileList,
 
 // Handlebars for active and inactive lists
 source   = $("#entry-template").html(),
@@ -24,7 +25,8 @@ $(document).ready(function(){
 
 	// console.log('page loaded')
 
-	getProfiles(); // call function to check storage.sync for existing user profiles
+	// call function to check storage.sync for existing user profiles
+	getProfiles(); 
 
 	$('.modal-trigger').leanModal();
 	$('#addProfileBox').hide();
@@ -193,7 +195,7 @@ function extStateListener() { // turn on/off extensions when toggle is switched
 }
 
 // listen for addProfile button press, add a button to HTML, prompt for profile name, set that name as button text, add that profile to the storage.sync object
-$('#addProfile').click(
+$('.addProfile').click(
 	function(){
 		$('#profilePrompt').openModal();
 	});
@@ -202,14 +204,16 @@ $('#nameSubmit').submit(
 	function(e){
 		e.preventDefault();
 
-		name = $('#name').val().toLowerCase(); // catch the profile name the user entered
+		// catch the profile name the user entered
+		name = $('#name').val().toLowerCase(); 
 
+		// Check for at least one character
 		if(!name.length){
 			Materialize.toast('Enter at least one character', 2000, 'alert');
 			return
 		}
 		
-
+		// save profile to storage
 		chrome.storage.sync.get(function(obj){
 			if ($.inArray(name, Object.keys(obj)) != -1){
 				Materialize.toast('Profile name already exists!', 2000, 'alert');
@@ -217,6 +221,13 @@ $('#nameSubmit').submit(
 			} else {
 				// profilename doesn't exists yet, proceed with selecting extensions for the new profile
 				$('#profilePrompt').closeModal();
+
+				// Make sure profileHeader is visible
+				$('#profileHeader').slideDown();
+
+				// Make sure options box is closed
+				$('.settings-row').slideUp();
+
 				// after half a second open the modal, user can specify what extensions to add to profile
 				setTimeout(function(){
 						addExtensions(name);
@@ -272,7 +283,10 @@ $('#extSubmit').submit(
 );
 
 function submitThatShit() {
+	debugger
 	tempObj = {};
+	// profile name is in a global variable 'name'
+	// extension id's are in a global variable 'idList'
 	tempObj[name] = idList;
 	if (idList.length === 0) {
 		return;
@@ -308,11 +322,13 @@ function submitThatShit() {
 
 function getProfiles() { // check storage for any profiles
 	chrome.storage.sync.get(function(obj){
+
 		let allKeys = Object.keys(obj);
 
-		if ( allKeys.length === 0 ) { // if there are no profiles, exit function
+		if ( allKeys.length === 0 ) { 
+			// if there are no profiles, exit function
 			$('#noProfilesText').show();
-			$('#profileHeader').css("background-color", "#03A9FA");
+			// $('#profileHeader').css("background-color", "#03A9FA");
 			$('#editBtn').hide();
 			return;
 		}
@@ -323,12 +339,22 @@ function getProfiles() { // check storage for any profiles
 		}
 
 		$('#noProfilesText').hide();
+		$('#profileOnboarding').hide();
 		$('#profileHeader').css("background-color", "#f3f3f3");
 		$('#editBtn').show();
 
+		// Run check for profiles Dismissed profile
+		if (allKeys.length === 1 && allKeys[0] === 'profilesDismissedFuckkkaaaaaa') {
+			// User has no profiles, and has dismissed profiles prompt
+			$('#profileHeader').hide();
+			return
+		}
+
 		for (let i = 0; i < allKeys.length; i++) {
-			let name = allKeys[i],
-			btnHtml = "<button class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
+			let name = allKeys[i];
+			console.log('name:', name)
+			if (name === 'profilesDismissedFuckkkaaaaaa') continue
+			let btnHtml = "<button class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
 			$('.profile-holder').append(btnHtml); // append to profile-holder
 		}
 	});
@@ -346,6 +372,7 @@ $("body").on("click","#editBtn",function(){
 
 	chrome.storage.sync.get(function(obj){
 		for (let i = 0; i < Object.keys(obj).length; i++) {
+			if(Object.keys(obj)[i] === 'profilesDismissedFuckkkaaaaaa') continue
 			$('#profileList').append(profileListTemplate(Object.keys(obj)[i]));
 		}
 	});
@@ -579,6 +606,39 @@ $("body").on("click",".hide-ext-links",function(e){
 
 })
 
+$("body").on("click","#dismissProfilePrompt",function(e){
+
+	// User wants to dismiss the profiles onboarding
+
+	// prevent default
+	e.preventDefault();
+
+	// Hide call to actions, copy and buttons
+	$('#profileHeader').hide();
+
+	// Show user the modal to tell them they can still add a profile from the options modal
+	$('#confirmDismissProfilePrompt').openModal();
+
+	// Save this to chrome storage so we can use it on next page load and not show the profileheader again UNTIL user resets it in options page....?
+	let obj = {
+		"profilesDismissedFuckkkaaaaaa": true
+	}
+
+	chrome.storage.sync.set(obj, function () {
+	  console.log('Saved, profilesModal dismissed');
+	});
+
+})
+
+$("body").on("click",".settings-icon",function(e){
+
+	// User wants to toggle options div
+	// prevent default
+	e.preventDefault();
+	
+	// Slide options div in
+	$('.settings-row').slideToggle();
+})
 
 
 // GOOGLE ANALYTICS

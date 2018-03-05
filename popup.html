@@ -25,13 +25,30 @@
 </head>
 
 <body>
+	
+	
+	<!-- Settings button in top right -->
+	<a href="!#" class="settings-icon tooltipped" data-position="left" data-delay="50" data-tooltip="Options"><i class="material-icons grey-text">settings</i></a>
+	
+
+	<div class="row settings-row">
+		<div class="col s12">
+			<!-- Options div -->
+			<h4>Options</h4>
+			<!-- <p><input type="checkbox" id="test5" />
+      <label for="test5">Compact mode</label></p> -->
+			<p><a class="addProfile waves-effect waves-light btn">Create Profile</a></p>
+			<p><button id="editBtn" class="waves-effect waves-light btn" data-position="bottom" data-delay="50" data-tooltip="Edit profiles">Edit Profiles</button></p>
+
+		</div>
+	</div>
 
 <div id="profileHeader">
 	<div class="row">
 	  <div class="col s12">
 	    <div class="card-content profile-card-content black-text profile-holder">
-	    <button id="editBtn" data-position="bottom" data-delay="50" data-tooltip="Edit profiles">edit</button>
-	    <span id="noProfilesText">You don't have any profiles setup.<a id="addProfile"><span id="addAProfileText"> Add one now</span></a></span>
+	    <p id="noProfilesText">You don't have any profiles setup.</p>
+	    <p id="profileOnboarding"><a class="addProfile waves-effect waves-light btn">Create Profile</a><a id="dismissProfilePrompt" class="waves-effect waves-light btn grey lighten-3 grey-text text-darken-2">Dismiss</a></p>
 	    <button id='addProfileBox' class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Add a new profile">+</button>
 	    </div>
 	  </div>
@@ -139,15 +156,23 @@
 
 <div id="confirmDelete" class="modal">
     <div class="modal-content">
-      <h4>Really?</h4>
-      <h6>Are you sure you want to delete </h6>
-      <p>This is irreversible...</p>
+        <h4>Really?</h4>
+        <h6>Are you sure you want to delete </h6>
+        <p>This is irreversible...</p>
     </div>
     <div class="modal-footer">
-    	<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-      <a href="#!" id='deleteProfile' class=" modal-action modal-close waves-effect waves-green btn-flat">Yep, delete!</a>
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+        <a href="#!" id='deleteProfile' class=" modal-action modal-close waves-effect waves-green btn-flat">Yep, delete!</a>
     </div>
-  </div>
+</div>
+
+<div id="confirmDismissProfilePrompt" class="modal">
+    <div class="modal-content">
+        <p>You can still add a profile from the options panel (click gear icon in top right)</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Ok!</a>
+    </di
 
 <!-- Handlebar Template Start: edit profiles in modal -->
 <script id="profileList-template" type="text/x-handlebars-template">
