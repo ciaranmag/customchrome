@@ -22,6 +22,8 @@ profileListTemplate = Handlebars.compile(profileListSource);
 
 $(document).ready(function(){
 
+	// console.log('page loaded')
+
 	getProfiles(); // call function to check storage.sync for existing user profiles
 
 	$('.modal-trigger').leanModal();
@@ -203,7 +205,7 @@ $('#nameSubmit').submit(
 		name = $('#name').val().toLowerCase(); // catch the profile name the user entered
 
 		if(!name.length){
-			Materialize.toast('Enter at least one digit', 2000, 'alert');
+			Materialize.toast('Enter at least one character', 2000, 'alert');
 			return
 		}
 		
