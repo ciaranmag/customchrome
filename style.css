@@ -232,6 +232,7 @@ a.mdi-action-settings {
 .righty {
 	display: inline-block;
 	width: 20%;
+	text-align: right;
 }
 
 .picHolder {
@@ -378,5 +379,9 @@ span.lever {
 	display: inline-block;
 }
 
+.uninstallExt {
+	/*font-weight: bold;*/
+	font-size: 1.3em;
+}
 
 
