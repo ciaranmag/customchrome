@@ -140,42 +140,44 @@ $(document).ready(function(){
 
 // after clicking a profile button toggle it's appearance (on or off) and cycle through associated extensions turning them all on or off
 $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
+
 	btnId = $(this).attr("id"); // find out which one and assign to btnId
 	//btnIdConvert = btnId.split('_').join(' '); // lower case and replace underscore for space
 	btnIdConvert = $(this).text();
 
-	if ($(this).hasClass("on")) { // if the btn is currently on then turn all extensions off
-		chrome.storage.sync.get(function(obj){
-			Object.keys(obj).forEach(function(key){
-				if (key === btnIdConvert) {
-					for (let i = 0; i < obj[btnIdConvert].length; i++) {
-						chrome.management.setEnabled(obj[btnIdConvert][i], false, function (){});
-					}
-				}
-			});
-			Materialize.toast(btnIdConvert+' is now off', 2000, 'ccToastOff');
-		});
-	$(this).removeClass("on").addClass("off"); // change profile btn to "off" appearance
-	setTimeout(function(){
-		location.reload(false); // adding false lets the page reload from the cache
-	}, 1000);
-	}
+	if ($(this).hasClass("on")) { 
+	// if the btn is currently on then turn all extensions off
 
-	else if ($(this).hasClass("off")) { // if the btn is currently off then turn all extensions on
-		chrome.storage.sync.get(function(obj){
-			Object.keys(obj).forEach(function(key){
-				if (key === btnIdConvert) {
-					for (let i = 0; i < obj[btnIdConvert].length; i++) {
-						chrome.management.setEnabled(obj[btnIdConvert][i], true, function (){});
-					}
-				}
-			});
-			Materialize.toast(btnIdConvert+' is now on', 2000, 'ccToastOn');
-		});
-	$(this).removeClass("off").addClass("on"); // change profile btn to "on" appearance
-	setTimeout(function(){
-		location.reload(false); // adding false lets the page reload from the cache
-	}, 1000);
+		user.profiles[btnIdConvert].forEach(function(extensionId){
+			console.log('enabling extension:', extensionId);
+			chrome.management.setEnabled(extensionId, false);
+		})
+
+		Materialize.toast(btnIdConvert+' is now off', 2000, 'ccToastOff');
+
+
+		// change profile btn to "off" appearance
+		$(this).removeClass("on").addClass("off"); 
+		setTimeout(function(){
+			// adding false lets the page reload from the cache
+			location.reload(false); 
+		}, 1000);
+	} else if ($(this).hasClass("off")) { 
+		// if the btn is currently off then turn all extensions on
+
+		user.profiles[btnIdConvert].forEach(function(extensionId){
+			console.log('enabling extension:', extensionId);
+			chrome.management.setEnabled(extensionId, true);
+		})
+
+		Materialize.toast(btnIdConvert+' is now on', 2000, 'ccToastOn');
+
+		// change profile btn to "on" appearance
+		$(this).removeClass("off").addClass("on"); 
+		setTimeout(function(){
+			// adding false lets the page reload from the cache
+			location.reload(false); 
+		}, 1000);
 	}
 
 });
@@ -286,38 +288,25 @@ $('#extSubmit').submit(
 
 function submitThatShit() {
 
-	tempObj = {};
 	// profile name is in a global variable 'name'
 	// extension id's are in a global variable 'idList'
-	tempObj[name] = idList;
+	// tempObj[name] = idList;
 	if (idList.length === 0) {
 		return;
 	}
-	chrome.storage.sync.set(tempObj, function () {
+
+	// set new profile on user obj, with idlist as array
+	user.profiles[name] = idList;
+
+	chrome.storage.sync.set(user, function () {
 	  console.log('Saved', name, idList);
-	  chrome.storage.sync.get(function(obj){
-	  	let allKeys = Object.keys(obj);
-	  	if ( allKeys.length === 1 ) {
-	  		$('#noProfilesText').hide();
-				$('#profileHeader').css("background-color", "#f3f3f3");
-				$('#editBtn').show();
-				$('#addProfileBox').show();
-	  	}
-	  	else if ( allKeys.length >= 5 ) {
-				$('#addProfileBox').hide();
-			}
 
-			// HTML code for profile btn changing string to lower case and replacing spaces with underscores
-			let btnHtml = "<button class='profile-btn off' id='"+name.split(' ').join('_')+"'>"+name+"</button>";
-			$('.profile-holder').append(btnHtml); // append new button with new profile name to profile-holder
-			$('#name').val(""); // set profile name to user-defined profile name
-	  });
-	  idList = []; //emptying out idList so that extensions aren't added to future profiles
+	  // get user data again, re-fill profiles
+	  getUserData();
 
-		// tooltipGenerator();
-		// setTimeout(function(){
-		// 	$('.tooltipped').tooltip();
-		// }, 1000)
+	  //emptying out idList so that extensions aren't added to future profiles
+	  idList = []; 
+
 
 	});
 }
@@ -350,6 +339,14 @@ function getUserData() {
 
 		}
 
+		// check if user has dismissed profiles prompt
+		if(user.dismissedProfilesPrompt){
+			// User has no profiles, and has dismissed profiles prompt
+			$('#profileHeader').hide();
+			// hide edit button (in options slide-down)
+			$('#editBtn').hide();
+		}
+
 		let allProfiles = Object.keys(obj.profiles);
 
 		if ( allProfiles.length === 0 ) { 
@@ -370,20 +367,18 @@ function getUserData() {
 		$('#profileHeader').css("background-color", "#f3f3f3");
 		$('#editBtn').show();
 
-		// Run check for profiles Dismissed profile
-		if (allProfiles.length === 1 && allProfiles[0] === 'profilesDismissedFuckkkaaaaaa') {
-			// User has no profiles, and has dismissed profiles prompt
-			$('#profileHeader').hide();
-			// hide edit button (in options slide-down)
-			$('#editBtn').hide();
-			return
-		}
+		// clear out html in profile-holder first
+		$('.profile-holder').html('');
 
+		// loop over all profiles
+		// append them to the div
 		for (let i = 0; i < allProfiles.length; i++) {
 			let name = allProfiles[i];
-			console.log('name:', name)
+			// console.log('name:', name)
 			let btnHtml = "<button class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
-			$('.profile-holder').append(btnHtml); // append to profile-holder
+			
+			// append to profile-holder
+			$('.profile-holder').append(btnHtml); 
 		}
 	});
 }
@@ -400,7 +395,6 @@ $("body").on("click","#editBtn",function(){
 
 	chrome.storage.sync.get(function(obj){
 		for (let i = 0; i < Object.keys(obj).length; i++) {
-			if(Object.keys(obj)[i] === 'profilesDismissedFuckkkaaaaaa') continue
 			$('#profileList').append(profileListTemplate(Object.keys(obj)[i]));
 		}
 	});
@@ -648,11 +642,9 @@ $("body").on("click","#dismissProfilePrompt",function(e){
 	$('#confirmDismissProfilePrompt').openModal();
 
 	// Save this to chrome storage so we can use it on next page load and not show the profileheader again UNTIL user resets it in options page....?
-	let obj = {
-		"profilesDismissedFuckkkaaaaaa": true
-	}
+	user.dismissedProfilesPrompt = true
 
-	chrome.storage.sync.set(obj, function () {
+	chrome.storage.sync.set(user, function () {
 	  console.log('Saved, profilesModal dismissed');
 	});
 
