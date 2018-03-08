@@ -5,7 +5,7 @@ activeExtensions = [],
 inactiveExtensions = [],
 btnId,
 idList = [],
-profileList,
+user = {};
 
 // Handlebars for active and inactive lists
 source   = $("#entry-template").html(),
@@ -28,8 +28,7 @@ $(document).ready(function(){
 	// listen for compact styles toggle change
 	compactStylesListener()
 
-	// call function to check storage.sync for existing user profiles
-	getProfiles(); 
+	getUserData(); 
 
 	$('.modal-trigger').leanModal();
 	$('#addProfileBox').hide();
@@ -286,7 +285,7 @@ $('#extSubmit').submit(
 );
 
 function submitThatShit() {
-	debugger
+
 	tempObj = {};
 	// profile name is in a global variable 'name'
 	// extension id's are in a global variable 'idList'
@@ -323,12 +322,37 @@ function submitThatShit() {
 	});
 }
 
-function getProfiles() { // check storage for any profiles
+// check storage for user data
+function getUserData() { 
 	chrome.storage.sync.get(function(obj){
 
-		let allKeys = Object.keys(obj);
+		// There should be a "profiles" property
+		// we can check for that and assume that 
+		// if it doesn't exist, then they're on the old version
+		if(!obj.hasOwnProperty('profiles')){
+			console.log('migrating user data...')
+			fixStorage(obj);
+			return
+		}
 
-		if ( allKeys.length === 0 ) { 
+		// at this point, we're on the new data structure
+
+		// set global user obj
+		user = obj;
+
+		// check if user has compact styles checked
+		if(user.compactStyles){
+			// toggle switch to on state
+			$('.compact-styles-switch').attr('checked', true);
+
+			// enable compact styles stylesheet
+			$('#compactStylesheet')[0]['disabled'] = false;
+
+		}
+
+		let allProfiles = Object.keys(obj.profiles);
+
+		if ( allProfiles.length === 0 ) { 
 			// if there are no profiles, exit function
 			$('#noProfilesText').show();
 			// $('#profileHeader').css("background-color", "#03A9FA");
@@ -337,7 +361,7 @@ function getProfiles() { // check storage for any profiles
 		}
 
 		// if there are between 1 and 4 profiles show addProfileBox
-		else if ( allKeys.length >= 1 && allKeys.length <= 4 ) {
+		else if ( allProfiles.length >= 1 && allProfiles.length <= 4 ) {
 			$('#addProfileBox').show();
 		}
 
@@ -347,7 +371,7 @@ function getProfiles() { // check storage for any profiles
 		$('#editBtn').show();
 
 		// Run check for profiles Dismissed profile
-		if (allKeys.length === 1 && allKeys[0] === 'profilesDismissedFuckkkaaaaaa') {
+		if (allProfiles.length === 1 && allProfiles[0] === 'profilesDismissedFuckkkaaaaaa') {
 			// User has no profiles, and has dismissed profiles prompt
 			$('#profileHeader').hide();
 			// hide edit button (in options slide-down)
@@ -355,10 +379,9 @@ function getProfiles() { // check storage for any profiles
 			return
 		}
 
-		for (let i = 0; i < allKeys.length; i++) {
-			let name = allKeys[i];
+		for (let i = 0; i < allProfiles.length; i++) {
+			let name = allProfiles[i];
 			console.log('name:', name)
-			if (name === 'profilesDismissedFuckkkaaaaaa') continue
 			let btnHtml = "<button class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
 			$('.profile-holder').append(btnHtml); // append to profile-holder
 		}
@@ -648,7 +671,6 @@ $("body").on("click",".settings-icon",function(e){
 
 
 function compactStylesListener() { 
-	
 
 	// turn on/off compact styles
 	$('.compact-styles-switch').change(function(){
@@ -660,9 +682,45 @@ function compactStylesListener() {
 
 		// Toggle disabled attribute
 		sheet.disabled = !sheet.disabled;
+
+		// save current state to storage
+		user.compactStyles = !sheet.disabled;
+		console.log("saving user:", user);
+		chrome.storage.sync.set(user);
 		
 	});
 }
+
+/* 
+This function are for moving from v0.82 -> v0.83
+We were storing profiles on the global sync object. We need to put them into a profiles property
+We also need to add properties for compactStyles and dismissedProfilesPrompt
+*/
+
+function fixStorage(profiles){
+
+	console.log('migrating data with:', profiles);
+
+	// create new object
+	let newObj = {
+		"profiles": profiles || [],
+		"dismissedProfilesPrompt": false,
+		"compactStyles": false
+	}
+
+	// clear the storage (We should have everything we need in the newObj)
+	chrome.storage.sync.clear();
+
+	chrome.storage.sync.set(newObj, function(){
+		console.log('new object saved, user is "migrated"')
+	})
+
+	getUserData();
+
+}
+
+
+
 
 // GOOGLE ANALYTICS
 
