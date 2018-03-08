@@ -194,13 +194,13 @@ $(document).ready(function(){
 				$('#activeExtensions').parent().css('visibility','visible');
 				$('#inactiveExtensions').parent().css('visibility','visible');
 			}
-		}, 550);
+		}, 350);
 
 	});
 
-	// $('#searchbox').keyup(function(){
+	$('#searchbox').keyup(function(){
 
-	// });
+	});
 	$('#searchbox').focus();
 
 }); // close $(document).ready
