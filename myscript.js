@@ -347,6 +347,8 @@ function getProfiles() { // check storage for any profiles
 		if (allKeys.length === 1 && allKeys[0] === 'profilesDismissedFuckkkaaaaaa') {
 			// User has no profiles, and has dismissed profiles prompt
 			$('#profileHeader').hide();
+			// hide edit button (in options slide-down)
+			$('#editBtn').hide();
 			return
 		}
 
