@@ -25,6 +25,9 @@ $(document).ready(function(){
 
 	// console.log('page loaded')
 
+	// listen for compact styles toggle change
+	compactStylesListener()
+
 	// call function to check storage.sync for existing user profiles
 	getProfiles(); 
 
@@ -179,7 +182,7 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 });
 
 function extStateListener() { // turn on/off extensions when toggle is switched
-	$('.js-switch').change(function(){
+	$('.state-switch').change(function(){
 		let id = $(this).parents('.switch').attr('id'), // get the app id
 				name = $(this).parents('.switch').attr('name'); // get the app name
 		if($(this).is(':checked')){
@@ -642,6 +645,24 @@ $("body").on("click",".settings-icon",function(e){
 	$('.settings-row').slideToggle();
 })
 
+
+
+function compactStylesListener() { 
+	
+
+	// turn on/off compact styles
+	$('.compact-styles-switch').change(function(){
+
+		// get reference to stylesheet
+		let sheet = $('#compactStylesheet')[0];
+
+		console.log('toggling styles, disabled:',sheet.disabled);
+
+		// Toggle disabled attribute
+		sheet.disabled = !sheet.disabled;
+		
+	});
+}
 
 // GOOGLE ANALYTICS
 

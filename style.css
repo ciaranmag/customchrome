@@ -5,7 +5,6 @@ body, html {
 
 body {
 	width: 600px;
-	max-width: 600px;
 	height: 100%;
 	background-color: #f3f3f3;
 	font-family: 'Roboto', sans-serif;
@@ -295,29 +294,29 @@ span.lever::after {
 	background-color: #81c784;
 }
 
-.switch label {
+.ext-switch label {
 	display: inline-block;
 }
 
-.switch label .lever {
+.ext-switch label .lever {
 	margin:0 !important;
 }
 
-.switch .show-ext-links {
+.ext-switch .show-ext-links {
 	display: inline-block;
 	padding:0 15px 0 22px!important;
 }
 
-.switch .hide-ext-links {
+.ext-switch .hide-ext-links {
 	display: none;
 	padding:0 15px 0 22px!important;
 }
 
-.switch label input[type=checkbox]:checked+.lever:after {
+.ext-switch label input[type=checkbox]:checked+.lever:after {
 	background-color: #81c784;
 }
 
-.switch label input[type=checkbox]:checked+.lever {
+.ext-switch label input[type=checkbox]:checked+.lever {
 	background-color: #81c784;
 }
 
@@ -325,7 +324,7 @@ span.lever {
 	background-color: #DFDFDF;
 }
 
-.switch label .lever {
+.ext-switch label .lever {
 	background-color: #DFDFDF;
 }
 
@@ -382,5 +381,18 @@ span.lever {
 	display: none;
 }
 
+.settings-row .btn-large {
+	line-height:50px;
+	width:35px;
+	height:35px;
+}
+
+.settings-row .btn-large i {
+	line-height: 35.5px;
+}
+
+.settings-row .btn-switch {
+	margin-left:20px;
+}
 
 
