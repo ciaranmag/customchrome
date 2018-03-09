@@ -404,16 +404,17 @@ let confirmDelete = function(profile){
 
 let profileName;
 $("body").on("click",".edit",function(){
+	
 	//get profile name
-	let profile = $(this).parent().attr('profile');
-	console.log('user is editing: ',profile);
+	profileName = $(this).parent().attr('profile');
+	console.log('user is editing: ',profileName);
 
 	//close the current modal, and clear out the profilesList
 	$('#editProfiles').closeModal();
 	$('#profileList').html('');
 
 	//prefill the profile name input with the current profile name
-	$('#editProfileName').val(profile);
+	$('#editProfileName').val(profileName);
 
 	//populate list with all extensions:
 	extArray.forEach(function(ext){ // loop over extArray to populate the list
@@ -421,9 +422,11 @@ $("body").on("click",".edit",function(){
 	});
 
 	//get the profile form memory, and populate the idList with the resulting array
-	chrome.storage.sync.get(profile,function(obj){
-		idList = obj[profile];
-		//console.log('idList: ',idList);
+	chrome.storage.sync.get(profileName,function(obj){
+		
+		idList = obj[profileName];
+
+		console.log('got extensions for this profile:', idList);
 
 		//loop over each id in idList and set the appropriate extension input as active?
 		idList.forEach(function(id) {
