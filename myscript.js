@@ -1,6 +1,7 @@
 
 // Declare variables
 let extArray = [],
+appArray =[],
 activeExtensions = [],
 inactiveExtensions = [],
 btnId,
@@ -31,14 +32,17 @@ $(document).ready(function(){
 
 	chrome.management.getAll(function(info) {
 		// info is a list of all user installed apps, extensions etc push extensions to extArray
+		
+		// MANAGEMENT OF USER'S EXTENSIONS
+
 		info.forEach(function(entry) {
 			if(entry.type === "extension"){
 				extArray.push(entry);
-				// console.log(entry);
+				console.log(entry);
 			}
 		});
 
-		// Sort extArray in alphabetical order based on the extensions names
+		// Sort extArray in alphabetical order based on the extension names
 		extArray.sort(function(a, b) {
 			return a.name.localeCompare(b.name);
 		});
@@ -46,7 +50,7 @@ $(document).ready(function(){
 		extArray.forEach(function(entry) {
 			// extension icons are stored in entry.icons, but not all extensions have icons
 			if (entry.icons === undefined) {
-				imgsrc = 'icon-128.png';  // if there aren't any icons, set a default
+				imgsrc = 'images/icon-128.png';  // if there aren't any icons, set a default
 			} else {
 				// if there is an array of icons, we want the highest res one (which is the last one in the array) so get the array length (-1) to get the last icon then set that item's url as our app icon url
 				imgsrc = entry.icons[entry.icons.length-1].url;
@@ -94,6 +98,75 @@ $(document).ready(function(){
 		$(".extId").hide(); // just here to reference each individual ext
 		$(".extState").hide(); // just here to reference each individual ext's state
 
+
+		// MANAGEMENT OF USER'S APPS
+
+		// info.forEach(function(entry) {
+		// 	if(entry.type === "packaged_app" || entry.type === "hosted_app" || entry.type === "legacy_packaged_app" || entry.type === "theme"){
+		// 		extArray.push(entry);
+		// 		console.log("App:", entry);
+		// 	}
+		// });
+
+		// Sort appArray in alphabetical order based on the app names
+		// appArray.sort(function(a, b) {
+		// 	return a.name.localeCompare(b.name);
+		// });
+
+		// appArray.forEach(function(entry) {
+		// 	// app icons are stored in entry.icons, but not all apps have icons
+		// 	if (entry.icons === undefined) {
+		// 		imgsrc = 'images/icon-128.png';  // if there aren't any icons, set a default
+		// 	} else {
+		// 		// if there is an array of icons, we want the highest res one (which is the last one in the array) so get the array length (-1) to get the last icon then set that item's url as our app icon url
+		// 		imgsrc = entry.icons[entry.icons.length-1].url;
+		// 	}
+		// 	entry.pic = imgsrc; // setting the url we got earlier as entry.pic
+
+		// 	let state = entry.enabled;
+		// 	if(state === true){ // set switches to either on or off
+		// 		state = "checked";
+		// 	} else {
+		// 		state = "";
+		// 	}
+		// 	entry.stringEnabled = state;
+
+		// 	// divide the apps into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
+		// 	if (entry.enabled) {
+		// 		$('#activeApps').append(template(entry));
+		// 	} else {
+		// 		$('#inactiveApps').append(template(entry));
+		// 	}
+		// }); // close appArray.forEach
+
+		// CREATE THIS FUCTION
+		// appStateListener(); // run the function which listens for a change in a checkbox state
+
+		// // ARE WE DOING PROFILES FOR APPS?
+		// chrome.storage.sync.get(function(obj){
+		// 	// setting the profile buttons to on/off appearance
+		// 	let sizeOfStoredObject = Object.keys(obj).length;
+		// 	for (let n = 0; n < sizeOfStoredObject; n++) { // cycle through the profilesHolder
+		// 		for (let key in obj) { // cycle through the extension profiles
+		// 			keyUs = key.split(' ').join('_');
+		// 			$("#" + keyUs).addClass("on").removeClass("off");
+		// 			for (let n = 0; n < obj[key].length; n++) { // cycle through the apps within the profile
+		// 				for (let i=0;i<extArray.length;i++) {
+		// 					if (extArray[i]["id"] === obj[key][n]) {
+		// 						if (extArray[i]["enabled"] === false) {
+		// 							$("#" + keyUs).removeClass("on").addClass("off");
+		// 						}
+		// 					}
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// }); // close chrome.storage.sync.get
+
+		// $(".appId").hide(); // just here to reference each individual ext
+		// $(".appState").hide(); // just here to reference each individual ext's state
+
+
 	}); // close chrome.management.getAll
 
 	// Search
@@ -121,7 +194,7 @@ $(document).ready(function(){
 				$('#activeExtensions').parent().css('visibility','visible');
 				$('#inactiveExtensions').parent().css('visibility','visible');
 			}
-		}, 550);
+		}, 350);
 
 	});
 
