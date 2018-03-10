@@ -6,6 +6,7 @@ activeExtensions = [],
 inactiveExtensions = [],
 btnId,
 idList = [],
+user = {};
 
 // Handlebars for active and inactive lists
 source   = $("#entry-template").html(),
@@ -24,6 +25,11 @@ profileListTemplate = Handlebars.compile(profileListSource);
 $(function() {
 	// call function to check storage.sync for existing user profiles
 	getProfiles(); 
+
+	// listen for compact styles toggle change
+	compactStylesListener()
+
+	getUserData(); 
 
 	$('.modal-trigger').leanModal();
 	$('#addProfileBox').hide();
@@ -208,48 +214,50 @@ $(function() {
 
 // after clicking a profile's on/off button, we toggle its appearance (on or off) and cycle through associated extensions turning them all on or off
 $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
+
 	btnId = $(this).attr("id"); // find out which one and assign to btnId
 	//btnIdConvert = btnId.split('_').join(' '); // lower case and replace underscore for space
 	btnIdConvert = $(this).text();
 
-	if ($(this).hasClass("on")) { // if the btn is currently on then turn all extensions off
-		chrome.storage.sync.get(function(obj){
-			Object.keys(obj).forEach(function(key){
-				if (key === btnIdConvert) {
-					for (let i = 0; i < obj[btnIdConvert].length; i++) {
-						chrome.management.setEnabled(obj[btnIdConvert][i], false, function (){});
-					}
-				}
-			});
-			Materialize.toast(btnIdConvert+' is now off', 2000, 'ccToastOff');
-		});
-	$(this).removeClass("on").addClass("off"); // change profile btn to "off" appearance
-	setTimeout(function(){
-		location.reload(false); // adding false lets the page reload from the cache
-	}, 1000);
-	}
+	if ($(this).hasClass("on")) { 
+	// if the btn is currently on then turn all extensions off
 
-	else if ($(this).hasClass("off")) { // if the btn is currently off then turn all extensions on
-		chrome.storage.sync.get(function(obj){
-			Object.keys(obj).forEach(function(key){
-				if (key === btnIdConvert) {
-					for (let i = 0; i < obj[btnIdConvert].length; i++) {
-						chrome.management.setEnabled(obj[btnIdConvert][i], true, function (){});
-					}
-				}
-			});
-			Materialize.toast(btnIdConvert+' is now on', 2000, 'ccToastOn');
-		});
-	$(this).removeClass("off").addClass("on"); // change profile btn to "on" appearance
-	setTimeout(function(){
-		location.reload(false); // adding false lets the page reload from the cache
-	}, 1000);
+		user.profiles[btnIdConvert].forEach(function(extensionId){
+			console.log('enabling extension:', extensionId);
+			chrome.management.setEnabled(extensionId, false);
+		})
+
+		Materialize.toast(btnIdConvert+' is now off', 2000, 'ccToastOff');
+
+
+		// change profile btn to "off" appearance
+		$(this).removeClass("on").addClass("off"); 
+		setTimeout(function(){
+			// adding false lets the page reload from the cache
+			location.reload(false); 
+		}, 1000);
+	} else if ($(this).hasClass("off")) { 
+		// if the btn is currently off then turn all extensions on
+
+		user.profiles[btnIdConvert].forEach(function(extensionId){
+			console.log('enabling extension:', extensionId);
+			chrome.management.setEnabled(extensionId, true);
+		})
+
+		Materialize.toast(btnIdConvert+' is now on', 2000, 'ccToastOn');
+
+		// change profile btn to "on" appearance
+		$(this).removeClass("off").addClass("on"); 
+		setTimeout(function(){
+			// adding false lets the page reload from the cache
+			location.reload(false); 
+		}, 1000);
 	}
 
 });
 
 function extStateListener() { // turn on/off extensions when toggle is switched
-	$('.js-switch').change(function(){
+	$('.state-switch').change(function(){
 		let id = $(this).parents('.switch').attr('id'), // get the app id
 				name = $(this).parents('.switch').attr('name'); // get the app name
 		if($(this).is(':checked')){
@@ -265,7 +273,7 @@ function extStateListener() { // turn on/off extensions when toggle is switched
 }
 
 // listen for addProfile button press, add a button to HTML, prompt for profile name, set that name as button text, add that profile to the storage.sync object
-$('#addProfile').click(
+$('.addProfile').click(
 	function(){
 		$('#profilePrompt').openModal();
 	});
@@ -274,14 +282,16 @@ $('#nameSubmit').submit(
 	function(e){
 		e.preventDefault();
 
-		name = $('#name').val().toLowerCase(); // catch the profile name the user entered
+		// catch the profile name the user entered
+		name = $('#name').val().toLowerCase(); 
 
+		// Check for at least one character
 		if(!name.length){
 			Materialize.toast('Enter at least one character', 2000, 'alert');
 			return
 		}
 		
-
+		// save profile to storage
 		chrome.storage.sync.get(function(obj){
 			if ($.inArray(name, Object.keys(obj)) != -1){
 				Materialize.toast('Profile name already exists!', 2000, 'alert');
@@ -289,6 +299,13 @@ $('#nameSubmit').submit(
 			} else {
 				// profilename doesn't exists yet, proceed with selecting extensions for the new profile
 				$('#profilePrompt').closeModal();
+
+				// Make sure profileHeader is visible
+				$('#profileHeader').slideDown();
+
+				// Make sure options box is closed
+				$('.settings-row').slideUp();
+
 				// after half a second open the modal, user can specify what extensions to add to profile
 				setTimeout(function(){
 						addExtensions(name);
@@ -344,64 +361,98 @@ $('#extSubmit').submit(
 );
 
 function submitThatShit() {
-	tempObj = {};
-	tempObj[name] = idList;
+
+	// profile name is in a global variable 'name'
+	// extension id's are in a global variable 'idList'
+	// tempObj[name] = idList;
 	if (idList.length === 0) {
 		return;
 	}
-	chrome.storage.sync.set(tempObj, function () {
+
+	// set new profile on user obj, with idlist as array
+	user.profiles[name] = idList;
+
+	chrome.storage.sync.set(user, function () {
 	  console.log('Saved', name, idList);
-	  chrome.storage.sync.get(function(obj){
-	  	let allKeys = Object.keys(obj);
-	  	if ( allKeys.length === 1 ) {
-	  		$('#noProfilesText').hide();
-				$('#profileHeader').css("background-color", "#f3f3f3");
-				$('#editBtn').show();
-				$('#addProfileBox').show();
-	  	}
-	  	else if ( allKeys.length >= 5 ) {
-				$('#addProfileBox').hide();
-			}
 
-			// HTML code for profile btn changing string to lower case and replacing spaces with underscores
-			let btnHtml = "<button class='profile-btn off' id='"+name.split(' ').join('_')+"'>"+name+"</button>";
-			$('.profile-holder').append(btnHtml); // append new button with new profile name to profile-holder
-			$('#name').val(""); // set profile name to user-defined profile name
-	  });
-	  idList = []; //emptying out idList so that extensions aren't added to future profiles
+	  // get user data again, re-fill profiles
+	  getUserData();
 
-		// tooltipGenerator();
-		// setTimeout(function(){
-		// 	$('.tooltipped').tooltip();
-		// }, 1000)
+	  //emptying out idList so that extensions aren't added to future profiles
+	  idList = []; 
+
 
 	});
 }
 
-function getProfiles() { // check storage for any profiles
+// check storage for user data
+function getUserData() { 
 	chrome.storage.sync.get(function(obj){
-		let allKeys = Object.keys(obj);
 
-		if ( allKeys.length === 0 ) { // if there are no profiles, exit function
+		// There should be a "profiles" property
+		// we can check for that and assume that 
+		// if it doesn't exist, then they're on the old version
+		if(!obj.hasOwnProperty('profiles')){
+			console.log('migrating user data...')
+			fixStorage(obj);
+			return
+		}
+
+		// at this point, we're on the new data structure
+
+		// set global user obj
+		user = obj;
+
+		// check if user has compact styles checked
+		if(user.compactStyles){
+			// toggle switch to on state
+			$('.compact-styles-switch').attr('checked', true);
+
+			// enable compact styles stylesheet
+			$('#compactStylesheet')[0]['disabled'] = false;
+
+		}
+
+		// check if user has dismissed profiles prompt
+		if(user.dismissedProfilesPrompt){
+			// User has no profiles, and has dismissed profiles prompt
+			$('#profileHeader').hide();
+			// hide edit button (in options slide-down)
+			$('#editBtn').hide();
+		}
+
+		let allProfiles = Object.keys(obj.profiles);
+
+		if ( allProfiles.length === 0 ) { 
+			// if there are no profiles, exit function
 			$('#noProfilesText').show();
-			$('#profileHeader').css("background-color", "#03A9FA");
+			// $('#profileHeader').css("background-color", "#03A9FA");
 			$('#editBtn').hide();
 			return;
 		}
 
 		// if there are between 1 and 4 profiles show addProfileBox
-		else if ( allKeys.length >= 1 && allKeys.length <= 4 ) {
+		else if ( allProfiles.length >= 1 && allProfiles.length <= 4 ) {
 			$('#addProfileBox').show();
 		}
 
 		$('#noProfilesText').hide();
+		$('#profileOnboarding').hide();
 		$('#profileHeader').css("background-color", "#f3f3f3");
 		$('#editBtn').show();
 
-		for (let i = 0; i < allKeys.length; i++) {
-			let name = allKeys[i],
-			btnHtml = "<button class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
-			$('.profile-holder').append(btnHtml); // append to profile-holder
+		// clear out html in profile-holder first
+		$('.profile-holder').html('');
+
+		// loop over all profiles
+		// append them to the div
+		for (let i = 0; i < allProfiles.length; i++) {
+			let name = allProfiles[i];
+			// console.log('name:', name)
+			let btnHtml = "<button class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
+			
+			// append to profile-holder
+			$('.profile-holder').append(btnHtml); 
 		}
 	});
 }
@@ -653,6 +704,90 @@ $("body").on("click",".hide-ext-links",function(e){
 	$(e.currentTarget).siblings('.show-ext-links').show();
 
 })
+
+$("body").on("click","#dismissProfilePrompt",function(e){
+
+	// User wants to dismiss the profiles onboarding
+
+	// prevent default
+	e.preventDefault();
+
+	// Hide call to actions, copy and buttons
+	$('#profileHeader').hide();
+
+	// Show user the modal to tell them they can still add a profile from the options modal
+	$('#confirmDismissProfilePrompt').openModal();
+
+	// Save this to chrome storage so we can use it on next page load and not show the profileheader again UNTIL user resets it in options page....?
+	user.dismissedProfilesPrompt = true
+
+	chrome.storage.sync.set(user, function () {
+	  console.log('Saved, profilesModal dismissed');
+	});
+
+})
+
+$("body").on("click",".settings-icon",function(e){
+
+	// User wants to toggle options div
+	// prevent default
+	e.preventDefault();
+	
+	// Slide options div in
+	$('.settings-row').slideToggle();
+})
+
+
+
+function compactStylesListener() { 
+
+	// turn on/off compact styles
+	$('.compact-styles-switch').change(function(){
+
+		// get reference to stylesheet
+		let sheet = $('#compactStylesheet')[0];
+
+		console.log('toggling styles, disabled:',sheet.disabled);
+
+		// Toggle disabled attribute
+		sheet.disabled = !sheet.disabled;
+
+		// save current state to storage
+		user.compactStyles = !sheet.disabled;
+		console.log("saving user:", user);
+		chrome.storage.sync.set(user);
+		
+	});
+}
+
+/* 
+This function are for moving from v0.82 -> v0.83
+We were storing profiles on the global sync object. We need to put them into a profiles property
+We also need to add properties for compactStyles and dismissedProfilesPrompt
+*/
+
+function fixStorage(profiles){
+
+	console.log('migrating data with:', profiles);
+
+	// create new object
+	let newObj = {
+		"profiles": profiles || [],
+		"dismissedProfilesPrompt": false,
+		"compactStyles": false
+	}
+
+	// clear the storage (We should have everything we need in the newObj)
+	chrome.storage.sync.clear();
+
+	chrome.storage.sync.set(newObj, function(){
+		console.log('new object saved, user is "migrated"')
+	})
+
+	getUserData();
+
+}
+
 
 
 

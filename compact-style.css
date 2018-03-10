@@ -1,0 +1,21 @@
+.extDescription {
+	display: none;
+}
+
+.picHolder img {
+	width:30px;
+	height:30px;
+}
+
+.extName {
+  font-size: 14px;
+}
+
+.nameDesc {
+	margin-left:1%;
+  margin-top: 4px;
+}
+
+.extBlock {
+  margin: 5px 25px;
+}

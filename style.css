@@ -4,7 +4,7 @@ body, html {
 }
 
 body {
-	max-width: 600px;
+	width: 600px;
 	height: 100%;
 	background-color: #f3f3f3;
 	font-family: 'Roboto', sans-serif;
@@ -23,6 +23,10 @@ button {
 	background-color: #f3f3f3;
 }
 
+#profileHeader .btn {
+	margin: 0 5px 0 5px;
+}
+
 #removeAllBtn {
 	text-transform: uppercase;
 	font-size: 10px;
@@ -31,26 +35,15 @@ button {
 	color: #fff;
 }
 
-#editBtn {
-	text-transform: uppercase;
-	font-size: 10px;
-	float: right;
-	margin-top: -15px;
-	cursor: pointer;
-	color: #9F9F9F;
-	background: none;
-	border: none;
-}
-
 .edit, .delete {
 	margin:0 2% 0 2%;
 	cursor:pointer;
 }
 
-#noProfilesText {
+/*#noProfilesText {
 	font-size: 16px;
 	color: #fff;
-}
+}*/
 
 a #addAProfileText {
 	color: #fff;
@@ -302,29 +295,29 @@ span.lever::after {
 	background-color: #81c784;
 }
 
-.switch label {
+.ext-switch label {
 	display: inline-block;
 }
 
-.switch label .lever {
+.ext-switch label .lever {
 	margin:0 !important;
 }
 
-.switch .show-ext-links {
+.ext-switch .show-ext-links {
 	display: inline-block;
 	padding:0 15px 0 22px!important;
 }
 
-.switch .hide-ext-links {
+.ext-switch .hide-ext-links {
 	display: none;
 	padding:0 15px 0 22px!important;
 }
 
-.switch label input[type=checkbox]:checked+.lever:after {
+.ext-switch label input[type=checkbox]:checked+.lever:after {
 	background-color: #81c784;
 }
 
-.switch label input[type=checkbox]:checked+.lever {
+.ext-switch label input[type=checkbox]:checked+.lever {
 	background-color: #81c784;
 }
 
@@ -332,7 +325,7 @@ span.lever {
 	background-color: #DFDFDF;
 }
 
-.switch label .lever {
+.ext-switch label .lever {
 	background-color: #DFDFDF;
 }
 
@@ -379,9 +372,35 @@ span.lever {
 	display: inline-block;
 }
 
+
 .uninstallExt {
 	/*font-weight: bold;*/
 	font-size: 1.3em;
+}
+
+.settings-icon {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+.settings-row {
+	display: none;
+}
+
+.settings-row .btn-large {
+	line-height:50px;
+	width:35px;
+	height:35px;
+}
+
+.settings-row .btn-large i {
+	line-height: 35.5px;
+}
+
+.settings-row .btn-switch {
+	margin-left:20px;
+>>>>>>> modalDismissHack
 }
 
 
