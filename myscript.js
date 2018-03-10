@@ -21,28 +21,27 @@ profileListTemplate = Handlebars.compile(profileListSource);
 // Finish declaring variables
 
 
-$(document).ready(function(){
-
-	// console.log('page loaded')
-
-	getProfiles(); // call function to check storage.sync for existing user profiles
+$(function() {
+	// call function to check storage.sync for existing user profiles
+	getProfiles(); 
 
 	$('.modal-trigger').leanModal();
 	$('#addProfileBox').hide();
 
 	chrome.management.getAll(function(info) {
-		// info is a list of all user installed apps, extensions etc push extensions to extArray
+		// info is a list of all user installed apps i.e. extensions, apps, and themes
 		
 		// MANAGEMENT OF USER'S EXTENSIONS
-
+		
+		// push extensions to extArray
 		info.forEach(function(entry) {
 			if(entry.type === "extension"){
 				extArray.push(entry);
-				console.log(entry);
+				// console.log(entry);
 			}
 		});
 
-		// Sort extArray in alphabetical order based on the extension names
+		// sort extArray into alphabetical order based on the extensions' names
 		extArray.sort(function(a, b) {
 			return a.name.localeCompare(b.name);
 		});
@@ -50,12 +49,12 @@ $(document).ready(function(){
 		extArray.forEach(function(entry) {
 			// extension icons are stored in entry.icons, but not all extensions have icons
 			if (entry.icons === undefined) {
-				imgsrc = 'images/icon-128.png';  // if there aren't any icons, set a default
+				imgsrc = 'images/icon-128.png';  // if there aren't any icons, use our default icon
 			} else {
 				// if there is an array of icons, we want the highest res one (which is the last one in the array) so get the array length (-1) to get the last icon then set that item's url as our app icon url
 				imgsrc = entry.icons[entry.icons.length-1].url;
 			}
-			entry.pic = imgsrc; // setting the url we got earlier as entry.pic
+			entry.pic = imgsrc; // setting the url we just got as entry.pic
 
 			let state = entry.enabled;
 			if(state === true){ // set switches to either on or off
@@ -72,9 +71,11 @@ $(document).ready(function(){
 				$('#inactiveExtensions').append(template(entry));
 			}
 		}); // close extArray.forEach
+		
+		// run the function which listens for a change in a checkbox state
+		extStateListener(); 
 
-		extStateListener(); // run the function which listens for a change in a checkbox state
-
+		// obj refers to all the data the user has stored in chrome relating to Custom Chrome i.e. which extensions are in which profiles
 		chrome.storage.sync.get(function(obj){
 			// setting the profile buttons to on/off appearance
 			let sizeOfStoredObject = Object.keys(obj).length;
@@ -102,9 +103,9 @@ $(document).ready(function(){
 		// MANAGEMENT OF USER'S APPS
 
 		// info.forEach(function(entry) {
-		// 	if(entry.type === "packaged_app" || entry.type === "hosted_app" || entry.type === "legacy_packaged_app" || entry.type === "theme"){
+		// 	if(entry.type === "packaged_app" || entry.type === "hosted_app" || entry.type === "legacy_packaged_app"){
+		// 		// entry.type = "theme" <- if we want to include the user's theme
 		// 		extArray.push(entry);
-		// 		console.log("App:", entry);
 		// 	}
 		// });
 
@@ -183,7 +184,7 @@ $(document).ready(function(){
 			}
 		});
 
-		// no results - show card
+		// if the search returns no results then show the no results card
 		setTimeout(function(){
 			if ( $(".extName:visible").length === 0 ){
 				$("#noResults").fadeIn();
@@ -198,16 +199,14 @@ $(document).ready(function(){
 
 	});
 
-	$('#searchbox').keyup(function(){
-
-	});
+	$('#searchbox').keyup(function(){});
 	$('#searchbox').focus();
 
 }); // close $(document).ready
 
 
 
-// after clicking a profile button toggle it's appearance (on or off) and cycle through associated extensions turning them all on or off
+// after clicking a profile's on/off button, we toggle its appearance (on or off) and cycle through associated extensions turning them all on or off
 $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 	btnId = $(this).attr("id"); // find out which one and assign to btnId
 	//btnIdConvert = btnId.split('_').join(' '); // lower case and replace underscore for space
