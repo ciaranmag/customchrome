@@ -23,12 +23,11 @@ profileListTemplate = Handlebars.compile(profileListSource);
 
 
 $(function() {
-	// call function to check storage.sync for existing user profiles
-	getProfiles(); 
-
+	
 	// listen for compact styles toggle change
 	compactStylesListener()
 
+	// call function to check storage.sync for existing user profiles
 	getUserData(); 
 
 	$('.modal-trigger').leanModal();
