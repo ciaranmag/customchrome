@@ -101,8 +101,8 @@ $(function() {
 			}
 		}); // close chrome.storage.sync.get
 
-		$(".extId").hide(); // just here to reference each individual ext
-		$(".extState").hide(); // just here to reference each individual ext's state
+		// $(".extId").hide(); // just here to reference each individual ext
+		// $(".extState").hide(); // just here to reference each individual ext's state
 
 
 		// MANAGEMENT OF USER'S APPS
@@ -466,11 +466,9 @@ $("body").on("click","#editBtn",function(){
 		ready: function() {},
 	});
 
-	chrome.storage.sync.get(function(obj){
-		for (let i = 0; i < Object.keys(obj).length; i++) {
-			$('#profileList').append(profileListTemplate(Object.keys(obj)[i]));
-		}
-	});
+	for (let i = 0; i < Object.keys(user.profiles).length; i++) {
+		$('#profileList').append(profileListTemplate(Object.keys(user.profiles)[i]));
+	}
 
 });
 
