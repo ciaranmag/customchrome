@@ -404,4 +404,20 @@ span.lever {
 >>>>>>> modalDismissHack
 }
 
+.badge {
+	position: inherit !important;
+	padding: 2px 6px !important;
+	margin-left: 13px !important;
+}
+
+.new:after {
+	content: "app" !important;
+}
+
+span.badge.new {
+	background-color: #ff9800;
+}
+
+
+
 

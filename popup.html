@@ -208,13 +208,15 @@
 	 		<img src="{{ pic }}">
 	 	</div>
 	 	<div class="nameDesc">
-		 	<span class="extName" >{{ name }}</span><br>
+		 	<span class="extName" >{{ name }}</span>
+    	{{#if isApp}}<span class="new badge"></span>{{/if}}<br>
 		 	<span class="extDescription">{{ description }}</span>
 		</div>
 	</div>
 
 	<div class="righty">
     <div class="switch ext-switch" id="{{ id }}" name="{{name}}">
+
 	    <label>
 	      <input type="checkbox" {{stringEnabled}} class="js-switch state-switch">
 	      <span class="lever"></span>

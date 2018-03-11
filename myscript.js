@@ -39,6 +39,7 @@ $(function() {
 		// MANAGEMENT OF USER'S EXTENSIONS
 		
 		// push extensions to extArray
+		
 		// info.forEach(function(entry) {
 		// 	if(entry.type === "extension"){
 		// 		extArray.push(entry);
@@ -55,8 +56,9 @@ $(function() {
 				case "packaged_app":
 				case "legacy_packaged_app":
 				case "hosted_app":
-					entry.name += " (APP)";
+					// entry.name += " (APP)";
 					extArray.push(entry);
+					entry.isApp = '<span class="new badge"></span>';
 					// console.log("PACKAGE", entry);
 					break;
 				default:
