@@ -183,8 +183,9 @@ a #addAProfileText {
 .mdi-action-settings, 
 a.mdi-action-settings {
 	color: #9F9F9F;
-	font-size: 20px;
+	font-size: 22px;
 	margin-right: -22px;
+	vertical-align: super;
 }
 
 #noResults {
