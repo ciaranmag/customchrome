@@ -467,8 +467,8 @@ $("body").on("click","#editBtn",function(){
 	});
 
 	chrome.storage.sync.get(function(obj){
-		for (let i = 0; i < Object.keys(obj).length; i++) {
-			$('#profileList').append(profileListTemplate(Object.keys(obj)[i]));
+		for (let i = 0; i < Object.keys(obj.profiles).length; i++) {
+			$('#profileList').append(profileListTemplate(Object.keys(obj.profiles)[i]));
 		}
 	});
 
