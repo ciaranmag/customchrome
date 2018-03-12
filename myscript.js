@@ -39,8 +39,8 @@ $(function() {
 		// MANAGEMENT OF USER'S EXTENSIONS
 		
 		// push extensions to extArray
-		for (var i = 0; i < info.length; i++) {
-			var entry = info[i];
+		for (let i = 0; i < info.length; i++) {
+			let entry = info[i];
 			switch(entry.type) {
 				case "extension":
 					extArray.push(entry);
@@ -64,8 +64,8 @@ $(function() {
 			return a.name.localeCompare(b.name);
 		});
 
-		for (var i = 0; i < extArray.length; i++) {
-			var entry = extArray[i];
+		for (let i = 0; i < extArray.length; i++) {
+			let entry = extArray[i];
 			// extension icons are stored in entry.icons, but not all extensions have icons
 			if (entry.icons === undefined) {
 				imgsrc = 'images/icon-128.png';  // if there aren't any icons, use our default icon
@@ -95,7 +95,7 @@ $(function() {
 		extStateListener(); 
 
 		// setting the profile buttons to on/off appearance
-		for(let profile in user.profiles) {
+		for (let profile in user.profiles) {
 			// for each profile, get all extension id's in that profile
 			// if they are all on, add class "on" to element
 			// otherwise, leave it grey
@@ -104,10 +104,10 @@ $(function() {
 
 			let tempArray = [];
 
-			for (var i = 0; i < extensionIds.length; i++) {
-				var id = extensionIds[i];
-				for (var x = 0; x < extArray.length; x++) {
-					var obj = extArray[x];
+			for (let i = 0; i < extensionIds.length; i++) {
+				let id = extensionIds[i];
+				for (let x = 0; x < extArray.length; x++) {
+					let obj = extArray[x];
 					if(obj.id === id){
 						tempArray.push(obj);
 					}
@@ -166,21 +166,19 @@ $(function() {
 
 // after clicking a profile's on/off button, we toggle its appearance (on or off) and cycle through associated extensions turning them all on or off
 $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
-
-	btnId = $(this).attr("id"); // find out which one and assign to btnId
-	//btnIdConvert = btnId.split('_').join(' '); // lower case and replace underscore for space
+	
+	// find out which extension was clicked and assign to btnId
+	btnId = $(this).attr("id"); 
 	btnIdConvert = $(this).text();
 
 	if ($(this).hasClass("on")) { 
-	// if the btn is currently on then turn all extensions off
-
+		// if the btn is currently on then turn all extensions off
 		user.profiles[btnIdConvert].forEach(function(extensionId){
 			console.log('enabling extension:', extensionId);
 			chrome.management.setEnabled(extensionId, false);
 		});
 
-		Materialize.toast(btnIdConvert+' is now off', 2000, 'ccToastOff');
-
+		Materialize.toast(btnIdConvert + ' is now off', 2000, 'ccToastOff');
 
 		// change profile btn to "off" appearance
 		$(this).removeClass("on").addClass("off"); 
@@ -188,15 +186,15 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 			// adding false lets the page reload from the cache
 			location.reload(false); 
 		}, 1000);
+
 	} else if ($(this).hasClass("off")) { 
 		// if the btn is currently off then turn all extensions on
-
 		user.profiles[btnIdConvert].forEach(function(extensionId){
 			console.log('enabling extension:', extensionId);
 			chrome.management.setEnabled(extensionId, true);
 		});
 
-		Materialize.toast(btnIdConvert+' is now on', 2000, 'ccToastOn');
+		Materialize.toast(btnIdConvert + ' is now on', 2000, 'ccToastOn');
 
 		// change profile btn to "on" appearance
 		$(this).removeClass("off").addClass("on"); 
@@ -204,14 +202,18 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 			// adding false lets the page reload from the cache
 			location.reload(false); 
 		}, 1000);
+		
 	}
 
 });
 
-function extStateListener() { // turn on/off extensions when toggle is switched
+// turn on/off extensions when toggle is switched
+function extStateListener() { 
 	$('.state-switch').change(function(){
-		let id = $(this).parents('.switch').attr('id'), // get the app id
-				name = $(this).parents('.switch').attr('name'); // get the app name
+		// get the app id
+		let id = $(this).parents('.switch').attr('id'),
+		// get the app name
+		name = $(this).parents('.switch').attr('name');
 		if($(this).is(':checked')){
 			chrome.management.setEnabled(id, true, function (){
 				Materialize.toast(name+' is now on', 2000, 'ccToastOn');
@@ -267,7 +269,8 @@ $('#nameSubmit').submit(
 	}
 );
 
-function addExtensions(name) { // add extensions to new profile modal
+// add extensions to new profile modal
+function addExtensions(name) { 
 	$('#addExts').openModal({
 		dismissible: false,
 		ready: function() {
@@ -276,11 +279,12 @@ function addExtensions(name) { // add extensions to new profile modal
 	});
 
 	let a = $('#addExts h4').text();
-	$('#addExts h4').text(a + name); // change H4 text to say "add extensions to [profile name]"
+	// change H4 text to say "add extensions to [profile name]"
+	$('#addExts h4').text(a + name); 
 	
 	// loop over extArray to populate the list
-	for (var i = 0; i < extArray.length; i++) {
-		var ext = extArray[i];
+	for (let i = 0; i < extArray.length; i++) {
+		let ext = extArray[i];
 		$('#extList').append(extListTemplate(ext));
 	}
 }
@@ -288,7 +292,8 @@ function addExtensions(name) { // add extensions to new profile modal
 function checkboxlistener() { 
 	// turn on/off extensions when toggle is switched
 	$('.extList-toggle input').change(function(){
-		let id = $(this).attr('appid'); //get the extension id the user clicked
+		//get the extension id the user clicked
+		let id = $(this).attr('appid'); 
 		if ($.inArray(id, idList) != -1){
 			let index = idList.indexOf(id);
 			idList.splice(index, 1);
@@ -301,17 +306,17 @@ function checkboxlistener() {
 
 $('#extSubmit').submit(
 	function(e){
-		e.preventDefault(); //preventing default submit button behaviour
+		e.preventDefault();
 		//if no extension are selected, show toast warning and do not close modal
 		if(idList.length === 0){
 			Materialize.toast('You must select at least one extension for this profile', 2000, 'alert');
 		} else {
 			//extensions were selected
-		submitThatShit(); //submitting extensions to memory
-		$('#addExts h4').text("Add extensions to "); // turn h4 text back to normal after modal is dismissed
-		$('#extList').html('');
-		Materialize.toast(name+' profile added', 2000, 'ccToastOn');
-		$('#addExts').closeModal(); //close the modal
+			submitThatShit(); //submitting extensions to memory
+			$('#addExts h4').text("Add extensions to "); // turn h4 text back to normal after modal is dismissed
+			$('#extList').html('');
+			Materialize.toast(name+' profile added', 2000, 'ccToastOn');
+			$('#addExts').closeModal(); //close the modal
 		}
 	}
 );
@@ -336,7 +341,6 @@ function submitThatShit() {
 
 	  //emptying out idList so that extensions aren't added to future profiles
 	  idList = []; 
-
 
 	});
 }
@@ -501,14 +505,14 @@ $("body").on("click",".edit",function(){
 
 
 	//populate list with all extensions:
-	for (var i = extArray.length - 1; i >= 0; i--) {
+	for (let i = extArray.length - 1; i >= 0; i--) {
 		let ext = extArray[i];
 		$('#editExtList').append(extListTemplate(ext));
 	}
 
 
 	// Loop over all id's in profile and tick the boxes that are already in the profile
-	for (var i = user.profiles[profileName].length - 1; i >= 0; i--) {
+	for (let i = user.profiles[profileName].length - 1; i >= 0; i--) {
 		let id = user.profiles[profileName][i];
 		idList.push(id);
 		//find input with this id and add .prop('checked', true);
@@ -530,70 +534,68 @@ $("body").on("click",".edit",function(){
 });
 
 
-$("#editExtSubmit").submit(
-	function(e){
-		e.preventDefault(); //preventing default submit button behaviour
+$("#editExtSubmit").submit(function(e){
+	e.preventDefault();
 
-		//if no extension are selected, show toast warning and return
-		if(idList.length === 0){
-			Materialize.toast('You must select at least one extension for this profile', 2000, 'alert');
-			return;
-		}
-
-		//if user has deleted the profile name, prompt them to enter something and return
-		if($('#editProfileName').val()===''){
-			Materialize.toast('You must enter a name for this profile', 2000, 'alert');
-			return;
-		}
-
-		let newName = $('#editProfileName').val().toLowerCase();
-
-		if(profileName === $('#editProfileName').val()){
-			// user has NOT changed the profile name, so we can just set the idList as the profile
-			chrome.storage.sync.remove(profileName, function(){
-				Materialize.toast(name+' profile successfully edited', 1000, 'ccToastOn');
-				setTimeout(function(){
-					location.reload(false);
-
-					//clear out the editExtList
-					$('#editExtList').html('');
-
-					//set new profile in storage with idList as array
-					name = newName;
-					submitThatShit();
-				}, 1000);
-			});
-			$('#editExts').closeModal(); //close the modal
-
-		}
-
-		else {
-			//user has updated the profile name, check if profile with this new name already exists
-			chrome.storage.sync.get(function(obj){
-				if ($.inArray(newName, Object.keys(obj)) != -1){
-					Materialize.toast('Profile name already exists!', 2000, 'alert');
-				}
-				else {
-					//new name is ok, delete old name from storage
-					console.log('deleting old profile, '+profileName);
-					chrome.storage.sync.remove(profileName, function(){
-						Materialize.toast(name+' profile successfully edited', 1000, 'ccToastOn');
-						setTimeout(function(){
-							location.reload(false);
-
-							//clear out the editExtList
-							$('#editExtList').html('');
-
-							//set new profile in storage with idList as array
-							name = newName;
-							submitThatShit();
-						}, 1000);
-					});
-				}
-			});
-		}
+	//if no extension are selected, show toast warning and return
+	if(idList.length === 0){
+		Materialize.toast('You must select at least one extension for this profile', 2000, 'alert');
+		return;
 	}
-);
+
+	//if user has deleted the profile name, prompt them to enter something and return
+	if($('#editProfileName').val()===''){
+		Materialize.toast('You must enter a name for this profile', 2000, 'alert');
+		return;
+	}
+
+	let newName = $('#editProfileName').val().toLowerCase();
+
+	if(profileName === $('#editProfileName').val()){
+		// user has NOT changed the profile name, so we can just set the idList as the profile
+		chrome.storage.sync.remove(profileName, function(){
+			Materialize.toast(name+' profile successfully edited', 1000, 'ccToastOn');
+			setTimeout(function(){
+				location.reload(false);
+
+				//clear out the editExtList
+				$('#editExtList').html('');
+
+				//set new profile in storage with idList as array
+				name = newName;
+				submitThatShit();
+			}, 1000);
+		});
+		$('#editExts').closeModal(); //close the modal
+
+	}
+
+	else {
+		//user has updated the profile name, check if profile with this new name already exists
+		chrome.storage.sync.get(function(obj){
+			if ($.inArray(newName, Object.keys(obj)) != -1){
+				Materialize.toast('Profile name already exists!', 2000, 'alert');
+			}
+			else {
+				//new name is ok, delete old name from storage
+				console.log('deleting old profile, '+profileName);
+				chrome.storage.sync.remove(profileName, function(){
+					Materialize.toast(name+' profile successfully edited', 1000, 'ccToastOn');
+					setTimeout(function(){
+						location.reload(false);
+
+						//clear out the editExtList
+						$('#editExtList').html('');
+
+						//set new profile in storage with idList as array
+						name = newName;
+						submitThatShit();
+					}, 1000);
+				});
+			}
+		});
+	}
+});
 
 
 $("body").on("click",".uninstallExt",function(e){
@@ -602,7 +604,6 @@ $("body").on("click",".uninstallExt",function(e){
 	// relevant docs:
 	// https://developer.chrome.com/extensions/management#method-uninstall
 
-	// prevent default
 	e.preventDefault();
 
 	// get extension ID
@@ -627,7 +628,7 @@ $("body").on("click",".show-ext-links",function(e){
 
 	// Figure out if icon was clicked or containing element
 	if(e.target)
-	// prevent default
+
 	e.preventDefault();
 
 	// get refrence to relevant ext-links element
@@ -646,7 +647,6 @@ $("body").on("click",".hide-ext-links",function(e){
 
 	// User wants to hide the extension links
 
-	// prevent default
 	e.preventDefault();
 
 	// get refrence to relevant ext-links element
@@ -665,7 +665,6 @@ $("body").on("click","#dismissProfilePrompt",function(e){
 
 	// User wants to dismiss the profiles onboarding
 
-	// prevent default
 	e.preventDefault();
 
 	// Hide call to actions, copy and buttons
