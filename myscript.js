@@ -355,7 +355,8 @@ function addExtensions(name) { // add extensions to new profile modal
 	});
 }
 
-function checkboxlistener() { // turn on/off extensions when toggle is switched
+function checkboxlistener() { 
+	// turn on/off extensions when toggle is switched
 	$('.extList-toggle input').change(function(){
 		let id = $(this).attr('appid'); //get the extension id the user clicked
 		if ($.inArray(id, idList) != -1){
@@ -568,28 +569,23 @@ $("body").on("click",".edit",function(){
 	//prefill the profile name input with the current profile name
 	$('#editProfileName').val(profileName);
 
+
 	//populate list with all extensions:
-	extArray.forEach(function(ext){ // loop over extArray to populate the list
+	for (var i = extArray.length - 1; i >= 0; i--) {
+		let ext = extArray[i];
 		$('#editExtList').append(extListTemplate(ext));
-	});
+	}
 
-	//get the profile form memory, and populate the idList with the resulting array
-	chrome.storage.sync.get(profileName,function(obj){
-		
-		idList = obj[profileName];
+	// Loop over all id's in profile and tick the boxes that are already in the profile
+	for (var i = user.profiles[profileName].length - 1; i >= 0; i--) {
+		let id = user.profiles[profileName][i];
+		idList.push(id);
+		//find input with this id and add .prop('checked', true);
+		$('#editExtList input[appid="'+id+'"]').prop('checked', true);
+	}
 
-		console.log('got extensions for this profile:', idList);
-
-		//loop over each id in idList and set the appropriate extension input as active?
-		idList.forEach(function(id) {
-			//find input with this id and add .prop('checked', true);
-			$('#editExtList input[appid="'+id+'"]').prop('checked', true);
-		});
-
-		//start listening for checkbox changes:
-		checkboxlistener();
-	});
-
+	//start listening for checkbox changes
+	checkboxlistener();
 
 	//save button adds profile to Storage.
 	//cancel button disregards changes
