@@ -1,4 +1,3 @@
-
 // Declare variables
 let extArray = [],
 appArray =[],
@@ -505,14 +504,13 @@ $("body").on("click",".edit",function(){
 
 
 	//populate list with all extensions:
-	for (let i = extArray.length - 1; i >= 0; i--) {
+	for (let i = 0; i < extArray.length; i++) {
 		let ext = extArray[i];
 		$('#editExtList').append(extListTemplate(ext));
 	}
 
-
 	// Loop over all id's in profile and tick the boxes that are already in the profile
-	for (let i = user.profiles[profileName].length - 1; i >= 0; i--) {
+	for (let i = 0; i < user.profiles[profileName].length; i++) {
 		let id = user.profiles[profileName][i];
 		idList.push(id);
 		//find input with this id and add .prop('checked', true);
