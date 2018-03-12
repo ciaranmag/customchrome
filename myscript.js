@@ -14,7 +14,7 @@ template = Handlebars.compile(source),
 
 // Handlebars for extList (modal for adding extensions to profiles)
 extListSource   = $("#extList-template").html(),
-extListTemplate = Handlebars.compile(extListSource);
+extListTemplate = Handlebars.compile(extListSource),
 
 // Handlebars for profileList (modal for editing profiles)
 profileListSource   = $("#profileList-template").html(),
@@ -25,7 +25,7 @@ profileListTemplate = Handlebars.compile(profileListSource);
 $(function() {
 	
 	// listen for compact styles toggle change
-	compactStylesListener()
+	compactStylesListener();
 
 	// call function to check storage.sync for existing user profiles
 	getUserData(); 
@@ -39,10 +39,30 @@ $(function() {
 		// MANAGEMENT OF USER'S EXTENSIONS
 		
 		// push extensions to extArray
+		
+		// info.forEach(function(entry) {
+		// 	if(entry.type === "extension"){
+		// 		extArray.push(entry);
+		// 		// console.log(entry);
+		// 	}
+		// });
+
 		info.forEach(function(entry) {
-			if(entry.type === "extension"){
-				extArray.push(entry);
-				// console.log(entry);
+			switch(entry.type) {
+				case "extension":
+					extArray.push(entry);
+					// console.log("EXTENSION", entry);
+					break;
+				case "packaged_app":
+				case "legacy_packaged_app":
+				case "hosted_app":
+					// entry.name += " (APP)";
+					extArray.push(entry);
+					entry.isApp = '<span class="new badge"></span>';
+					// console.log("PACKAGE", entry);
+					break;
+				default:
+					console.log("This is different", entry);
 			}
 		});
 
@@ -110,7 +130,6 @@ $(function() {
 			if(!off){
 				$("#" + profile).removeClass("off").addClass("on");
 			}
-
 		}
 
 
@@ -181,7 +200,6 @@ $(function() {
 		// $(".appId").hide(); // just here to reference each individual ext
 		// $(".appState").hide(); // just here to reference each individual ext's state
 
-
 	}); // close chrome.management.getAll
 
 	// Search
@@ -213,7 +231,6 @@ $(function() {
 
 	});
 
-	$('#searchbox').keyup(function(){});
 	$('#searchbox').focus();
 
 }); // close $(document).ready
@@ -233,7 +250,7 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 		user.profiles[btnIdConvert].forEach(function(extensionId){
 			console.log('enabling extension:', extensionId);
 			chrome.management.setEnabled(extensionId, false);
-		})
+		});
 
 		Materialize.toast(btnIdConvert+' is now off', 2000, 'ccToastOff');
 
@@ -250,7 +267,7 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 		user.profiles[btnIdConvert].forEach(function(extensionId){
 			console.log('enabling extension:', extensionId);
 			chrome.management.setEnabled(extensionId, true);
-		})
+		});
 
 		Materialize.toast(btnIdConvert+' is now on', 2000, 'ccToastOn');
 
@@ -296,7 +313,7 @@ $('#nameSubmit').submit(
 		// Check for at least one character
 		if(!name.length){
 			Materialize.toast('Enter at least one character', 2000, 'alert');
-			return
+			return;
 		}
 		
 		// save profile to storage
@@ -401,9 +418,9 @@ function getUserData() {
 		// we can check for that and assume that 
 		// if it doesn't exist, then they're on the old version
 		if(!obj.hasOwnProperty('profiles')){
-			console.log('migrating user data...')
+			console.log('migrating user data...');
 			fixStorage(obj);
-			return
+			return;
 		}
 
 		// at this point, we're on the new data structure
@@ -417,7 +434,7 @@ function getUserData() {
 			$('.compact-styles-switch').attr('checked', true);
 
 			// enable compact styles stylesheet
-			$('#compactStylesheet')[0]['disabled'] = false;
+			$('#compactStylesheet')[0].disabled = false;
 
 		}
 
@@ -667,8 +684,8 @@ $("body").on("click",".uninstallExt",function(e){
 		// will we need to refresh the list?
 		// nope, the extension closes the popup.html anyway so nothing to worry about...
 
-	})
-})
+	});
+});
 
 $("body").on("click",".show-ext-links",function(e){
 
@@ -681,7 +698,7 @@ $("body").on("click",".show-ext-links",function(e){
 	e.preventDefault();
 
 	// get refrence to relevant ext-links element
-	let extLinks = $(this).parents('.righty').siblings('.container').find('.ext-links')
+	let extLinks = $(this).parents('.righty').siblings('.container').find('.ext-links');
 
 	// Show ext-links
 	extLinks.slideDown();
@@ -690,7 +707,7 @@ $("body").on("click",".show-ext-links",function(e){
 	$(e.currentTarget).hide();
 	$(e.currentTarget).siblings('.hide-ext-links').show();
 
-})
+});
 
 $("body").on("click",".hide-ext-links",function(e){
 
@@ -700,7 +717,7 @@ $("body").on("click",".hide-ext-links",function(e){
 	e.preventDefault();
 
 	// get refrence to relevant ext-links element
-	let extLinks = $(this).parents('.righty').siblings('.container').find('.ext-links')
+	let extLinks = $(this).parents('.righty').siblings('.container').find('.ext-links');
 
 	// Show ext-links
 	extLinks.slideUp();
@@ -709,7 +726,7 @@ $("body").on("click",".hide-ext-links",function(e){
 	$(e.currentTarget).hide();
 	$(e.currentTarget).siblings('.show-ext-links').show();
 
-})
+});
 
 $("body").on("click","#dismissProfilePrompt",function(e){
 
@@ -725,13 +742,13 @@ $("body").on("click","#dismissProfilePrompt",function(e){
 	$('#confirmDismissProfilePrompt').openModal();
 
 	// Save this to chrome storage so we can use it on next page load and not show the profileheader again UNTIL user resets it in options page....?
-	user.dismissedProfilesPrompt = true
+	user.dismissedProfilesPrompt = true;
 
 	chrome.storage.sync.set(user, function () {
 	  console.log('Saved, profilesModal dismissed');
 	});
 
-})
+});
 
 $("body").on("click",".settings-icon",function(e){
 
@@ -741,7 +758,7 @@ $("body").on("click",".settings-icon",function(e){
 	
 	// Slide options div in
 	$('.settings-row').slideToggle();
-})
+});
 
 
 
@@ -781,14 +798,14 @@ function fixStorage(profiles){
 		"profiles": profiles || [],
 		"dismissedProfilesPrompt": false,
 		"compactStyles": false
-	}
+	};
 
 	// clear the storage (We should have everything we need in the newObj)
 	chrome.storage.sync.clear();
 
 	chrome.storage.sync.set(newObj, function(){
-		console.log('new object saved, user is "migrated"')
-	})
+		console.log('new object saved, user is "migrated"');
+	});
 
 	getUserData();
 

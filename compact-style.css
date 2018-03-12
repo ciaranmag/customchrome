@@ -7,6 +7,22 @@
 	height:30px;
 }
 
+.profile-card-content {
+	padding-top: 5px !important;
+}
+
+#profileHeader {
+	height: 0px;
+}
+
+.extension-card-content {
+	padding: 5px 0 !important;;
+}
+
+.card:first-of-type {
+	margin-bottom: 20px !important;
+}
+
 .extName {
   font-size: 14px;
 }
@@ -19,3 +35,21 @@
 .extBlock {
   margin: 5px 25px;
 }
+
+.switch label .lever {
+	width: 27px;
+	height: 10px;
+}
+
+.switch label .lever:after {
+	width: 15px;
+	height: 15px
+}
+
+.switch label input[type=checkbox]:checked+.lever:after {
+	left: 14px;
+}
+
+
+
+
