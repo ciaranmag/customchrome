@@ -106,8 +106,8 @@ $(function() {
 
 			for (var i = 0; i < extensionIds.length; i++) {
 				var id = extensionIds[i];
-				for (var i = 0; i < extArray.length; i++) {
-					var obj = extArray[i];
+				for (var x = 0; x < extArray.length; x++) {
+					var obj = extArray[x];
 					if(obj.id === id){
 						tempArray.push(obj);
 					}
