@@ -1,12 +1,18 @@
- ToDo For Release v1:
- ☐ for profile naming give user feedback when they use too few/many characters or restricted characters
+ ToDo For Next Release:
+ ☐ show "profile deleted" feedback after window reload
+ ☐ website - add screenshot, add example use cases
+ ☐ 
+ ☐ 
+ ☐ 
 
 
 Issues that can wait:
- ☐ website - add screenshot, add example use cases
  ☐ clean up code, commenting, CSS tweaks, minify
  ☐ display profile tooltips vertically (have tried <br> "\n" "&lt;br /&gt;" "&#013;")
  ☐ Change search icon colour on when focusing on search input and move search icon into the input area
+ ☐ 
+ ☐ 
+ ☐ 
 
 
 Future Features:
@@ -14,3 +20,7 @@ Future Features:
  ☐ Advanced option to see memory usage of each extension (next to switch)
  ☐ Have an option to make sure certain extensions are off when using a profile e.g. turn off ad blockers and social blockers when using "Web Dev" profile but record their state before the change and re-instate it after profile is turned off
  ☐ Backup profiles so they can be restored if Custom Chrome is uninstalled
+ ☐ 
+ ☐ 
+ ☐ 
+ ☐ 

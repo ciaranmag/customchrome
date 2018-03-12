@@ -406,7 +406,7 @@ span.lever {
 .badge {
 	position: inherit !important;
 	padding: 2px 6px !important;
-	margin-left: 13px !important;
+	margin-left: 10px !important;
 }
 
 .new:after {
