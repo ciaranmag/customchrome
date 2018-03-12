@@ -443,7 +443,7 @@ function getUserData() {
 			// User has no profiles, and has dismissed profiles prompt
 			$('#profileHeader').hide();
 			// hide edit button (in options slide-down)
-			$('#editBtn').hide();
+			$('.editBtn').hide();
 		}
 
 		let allProfiles = Object.keys(obj.profiles);
@@ -452,7 +452,7 @@ function getUserData() {
 			// if there are no profiles, exit function
 			$('#noProfilesText').show();
 			// $('#profileHeader').css("background-color", "#03A9FA");
-			$('#editBtn').hide();
+			$('.editBtn').hide();
 			return;
 		}
 
@@ -464,7 +464,7 @@ function getUserData() {
 		$('#noProfilesText').hide();
 		$('#profileOnboarding').hide();
 		$('#profileHeader').css("background-color", "#f3f3f3");
-		$('#editBtn').show();
+		$('.editBtn').show();
 
 		// clear out html in profile-holder first
 		$('.profile-holder').html('');
@@ -486,7 +486,7 @@ $("body").on("click","#addProfileBox",function(){ // add a new profile box
 	$('#profilePrompt').openModal();
 });
 
-$("body").on("click","#editBtn",function(){
+$("body").on("click",".editBtn",function(){
 	$('#editProfiles').openModal({
 		dismissible: false,
 		ready: function() {},
@@ -750,15 +750,15 @@ $("body").on("click","#dismissProfilePrompt",function(e){
 
 });
 
-$("body").on("click",".settings-icon",function(e){
+// $("body").on("click",".settings-icon",function(e){
 
-	// User wants to toggle options div
-	// prevent default
-	e.preventDefault();
+// 	// User wants to toggle options div
+// 	// prevent default
+// 	e.preventDefault();
 	
-	// Slide options div in
-	$('.settings-row').slideToggle();
-});
+// 	// Slide options div in
+// 	$('.settings-row').slideToggle();
+// });
 
 
 

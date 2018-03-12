@@ -28,32 +28,25 @@
 <body>
 	
 	
-	<!-- Settings button in top right -->
-	<a href="!#" class="settings-icon tooltipped" data-position="left" data-delay="50" data-tooltip="Options"><i class="material-icons grey-text">settings</i></a>
-	
+	<!-- Settings button in top right, opens dropdown -->
+	<a href="!#" class="settings-icon dropdown-button  tooltipped" data-position="left" data-delay="50" data-tooltip="Options" data-beloworigin="true" data-activates='options-dropdown'><i class="material-icons grey-text">settings</i></a>
 
-	<div class="row settings-row">
-		<div class="col s12">
-			<!-- Options div -->
-			<h4>Options</h4>
-			<!-- <p><input type="checkbox" id="test5" />
-      <label for="test5">Compact mode</label></p> -->
-			<p>Create Profile   <a class="addProfile btn-floating btn-large waves-effect waves-light red btn-switch"><i class="material-icons">add</i></a></p>
-			
-			<p><button id="editBtn" class="waves-effect waves-light btn" data-position="bottom" data-delay="50" data-tooltip="Edit profiles">Edit Profiles</button></p>
 
-			<p>Compact Styles<span class="switch btn-switch">
+  <!-- Options Dropdown Structure -->
+  <ul id='options-dropdown' class='dropdown-content'>
+    <li><a href="#!" class="addProfile">Create Profile </a></li>
+    <li><a href="#!" class="editBtn">Edit Profiles</a></li>
+    <!-- <li class="divider"></li> -->
+    <li><a href="#!">Compact Styles<span class="switch btn-switch">
 		    <label>
 		    	Off
 		      <input type="checkbox" class="js-switch compact-styles-switch">
 		      <span class="lever"></span>
 		      On
 		    </label>
-		  </span></p>
-	    
-
-		</div>
-	</div>
+		  </span></a></li>
+  </ul>
+	
 
 <div id="profileHeader">
 	<div class="row">
