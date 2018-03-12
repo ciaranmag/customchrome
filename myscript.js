@@ -39,15 +39,8 @@ $(function() {
 		// MANAGEMENT OF USER'S EXTENSIONS
 		
 		// push extensions to extArray
-		
-		// info.forEach(function(entry) {
-		// 	if(entry.type === "extension"){
-		// 		extArray.push(entry);
-		// 		// console.log(entry);
-		// 	}
-		// });
-
-		info.forEach(function(entry) {
+		for (var i = 0; i < info.length; i++) {
+			var entry = info[i];
 			switch(entry.type) {
 				case "extension":
 					extArray.push(entry);
@@ -64,14 +57,15 @@ $(function() {
 				default:
 					console.log("This is different", entry);
 			}
-		});
+		}
 
 		// sort extArray into alphabetical order based on the extensions' names
 		extArray.sort(function(a, b) {
 			return a.name.localeCompare(b.name);
 		});
 
-		extArray.forEach(function(entry) {
+		for (var i = 0; i < extArray.length; i++) {
+			var entry = extArray[i];
 			// extension icons are stored in entry.icons, but not all extensions have icons
 			if (entry.icons === undefined) {
 				imgsrc = 'images/icon-128.png';  // if there aren't any icons, use our default icon
@@ -95,7 +89,7 @@ $(function() {
 			} else {
 				$('#inactiveExtensions').append(template(entry));
 			}
-		}); // close extArray.forEach
+		} // close extArray loop
 		
 		// run the function which listens for a change in a checkbox state
 		extStateListener(); 
@@ -110,95 +104,29 @@ $(function() {
 
 			let tempArray = [];
 
-			extensionIds.forEach(function(id){
-				extArray.forEach(function(obj){
+			for (var i = 0; i < extensionIds.length; i++) {
+				var id = extensionIds[i];
+				for (var i = 0; i < extArray.length; i++) {
+					var obj = extArray[i];
 					if(obj.id === id){
-						tempArray.push(obj)
+						tempArray.push(obj);
 					}
-				})
-			})
+				}
+			}
 
 			// tempArray now contains extension objects for this profile
 
 			// finds if any of the extensions have enabled === false
 			// if even one extension is off, then the profile is inactive
 			let off = tempArray.some(function(ext){
-				return ext.enabled === false
-			}) || false
+				return ext.enabled === false;
+			}) || false;
 
 			// if it's on, add/remove appropriate classes
 			if(!off){
 				$("#" + profile).removeClass("off").addClass("on");
 			}
 		}
-
-
-		// MANAGEMENT OF USER'S APPS
-
-		// info.forEach(function(entry) {
-		// 	if(entry.type === "packaged_app" || entry.type === "hosted_app" || entry.type === "legacy_packaged_app"){
-		// 		// entry.type = "theme" <- if we want to include the user's theme
-		// 		extArray.push(entry);
-		// 	}
-		// });
-
-		// Sort appArray in alphabetical order based on the app names
-		// appArray.sort(function(a, b) {
-		// 	return a.name.localeCompare(b.name);
-		// });
-
-		// appArray.forEach(function(entry) {
-		// 	// app icons are stored in entry.icons, but not all apps have icons
-		// 	if (entry.icons === undefined) {
-		// 		imgsrc = 'images/icon-128.png';  // if there aren't any icons, set a default
-		// 	} else {
-		// 		// if there is an array of icons, we want the highest res one (which is the last one in the array) so get the array length (-1) to get the last icon then set that item's url as our app icon url
-		// 		imgsrc = entry.icons[entry.icons.length-1].url;
-		// 	}
-		// 	entry.pic = imgsrc; // setting the url we got earlier as entry.pic
-
-		// 	let state = entry.enabled;
-		// 	if(state === true){ // set switches to either on or off
-		// 		state = "checked";
-		// 	} else {
-		// 		state = "";
-		// 	}
-		// 	entry.stringEnabled = state;
-
-		// 	// divide the apps into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
-		// 	if (entry.enabled) {
-		// 		$('#activeApps').append(template(entry));
-		// 	} else {
-		// 		$('#inactiveApps').append(template(entry));
-		// 	}
-		// }); // close appArray.forEach
-
-		// CREATE THIS FUCTION
-		// appStateListener(); // run the function which listens for a change in a checkbox state
-
-		// // ARE WE DOING PROFILES FOR APPS?
-		// chrome.storage.sync.get(function(obj){
-		// 	// setting the profile buttons to on/off appearance
-		// 	let sizeOfStoredObject = Object.keys(obj).length;
-		// 	for (let n = 0; n < sizeOfStoredObject; n++) { // cycle through the profilesHolder
-		// 		for (let key in obj) { // cycle through the extension profiles
-		// 			keyUs = key.split(' ').join('_');
-		// 			$("#" + keyUs).addClass("on").removeClass("off");
-		// 			for (let n = 0; n < obj[key].length; n++) { // cycle through the apps within the profile
-		// 				for (let i=0;i<extArray.length;i++) {
-		// 					if (extArray[i]["id"] === obj[key][n]) {
-		// 						if (extArray[i]["enabled"] === false) {
-		// 							$("#" + keyUs).removeClass("on").addClass("off");
-		// 						}
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// }); // close chrome.storage.sync.get
-
-		// $(".appId").hide(); // just here to reference each individual ext
-		// $(".appState").hide(); // just here to reference each individual ext's state
 
 	}); // close chrome.management.getAll
 
@@ -234,7 +162,6 @@ $(function() {
 	$('#searchbox').focus();
 
 }); // close $(document).ready
-
 
 
 // after clicking a profile's on/off button, we toggle its appearance (on or off) and cycle through associated extensions turning them all on or off
@@ -350,9 +277,12 @@ function addExtensions(name) { // add extensions to new profile modal
 
 	let a = $('#addExts h4').text();
 	$('#addExts h4').text(a + name); // change H4 text to say "add extensions to [profile name]"
-	extArray.forEach(function(ext){ // loop over extArray to populate the list
+	
+	// loop over extArray to populate the list
+	for (var i = 0; i < extArray.length; i++) {
+		var ext = extArray[i];
 		$('#extList').append(extListTemplate(ext));
-	});
+	}
 }
 
 function checkboxlistener() { 
@@ -575,6 +505,7 @@ $("body").on("click",".edit",function(){
 		let ext = extArray[i];
 		$('#editExtList').append(extListTemplate(ext));
 	}
+
 
 	// Loop over all id's in profile and tick the boxes that are already in the profile
 	for (var i = user.profiles[profileName].length - 1; i >= 0; i--) {
