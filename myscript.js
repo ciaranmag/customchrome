@@ -80,29 +80,38 @@ $(function() {
 		// run the function which listens for a change in a checkbox state
 		extStateListener(); 
 
-		// obj refers to all the data the user has stored in chrome relating to Custom Chrome i.e. which extensions are in which profiles
-		chrome.storage.sync.get(function(obj){
-			// setting the profile buttons to on/off appearance
-			let sizeOfStoredObject = Object.keys(obj).length;
-			for (let n = 0; n < sizeOfStoredObject; n++) { // cycle through the profilesHolder
-				for (let key in obj) { // cycle through the extension profiles
-					keyUs = key.split(' ').join('_');
-					$("#" + keyUs).addClass("on").removeClass("off");
-					for (let n = 0; n < obj[key].length; n++) { // cycle through the extensions within the profile
-						for (let i=0;i<extArray.length;i++) {
-							if (extArray[i]["id"] === obj[key][n]) {
-								if (extArray[i]["enabled"] === false) {
-									$("#" + keyUs).removeClass("on").addClass("off");
-								}
-							}
-						}
-					}
-				}
-			}
-		}); // close chrome.storage.sync.get
+		// setting the profile buttons to on/off appearance
+		for(let profile in user.profiles) {
+			// for each profile, get all extension id's in that profile
+			// if they are all on, add class "on" to element
+			// otherwise, leave it grey
+			let extensionIds = user.profiles[profile];
+			console.log('extension ids', extensionIds);
 
-		// $(".extId").hide(); // just here to reference each individual ext
-		// $(".extState").hide(); // just here to reference each individual ext's state
+			let tempArray = [];
+
+			extensionIds.forEach(function(id){
+				extArray.forEach(function(obj){
+					if(obj.id === id){
+						tempArray.push(obj)
+					}
+				})
+			})
+
+			// tempArray now contains extension objects for this profile
+
+			// finds if any of the extensions have enabled === false
+			// if even one extension is off, then the profile is inactive
+			let off = tempArray.some(function(ext){
+				return ext.enabled === false
+			}) || false
+
+			// if it's on, add/remove appropriate classes
+			if(!off){
+				$("#" + profile).removeClass("off").addClass("on");
+			}
+
+		}
 
 
 		// MANAGEMENT OF USER'S APPS
