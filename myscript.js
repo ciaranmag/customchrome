@@ -538,7 +538,13 @@ let confirmDelete = function(profile){
 	$("body").on("click","#deleteProfile",function(){
 		//delete the selected profile
 		console.log('trying to remove ',profile," from storage");
-		chrome.storage.sync.remove(profile);
+
+		delete user.profiles[profile];
+
+		chrome.storage.sync.set(user, function () {
+		  console.log('Saved, deleted ', profile);
+		});
+
 		Materialize.toast('Deleting ' + profile, 2000, 'deleteToast');
 		setTimeout(function(){
 			location.reload(false);
