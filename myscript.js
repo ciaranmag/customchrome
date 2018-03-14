@@ -724,9 +724,11 @@ function includeAppsListener() {
 		if(e.target.checked){
 			// user wishes to include apps
 			$('.app').show();
+			Materialize.toast('Apps now included', 1000, 'ccToastOn');
 		} else {
 			// user wishes to hide all apps
 			$('.app').hide();
+			Materialize.toast('Apps now excluded', 1000, 'ccToastOff');
 		}
 
 		user.includeApps = e.target.checked

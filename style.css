@@ -424,4 +424,8 @@ span.badge.new {
 	opacity: 1;
 }
 
+#options-dropdown .switch {
+	float:right;
+}
+
 
