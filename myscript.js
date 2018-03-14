@@ -26,6 +26,9 @@ $(function() {
 	// listen for compact styles toggle change
 	compactStylesListener();
 
+	// listen for include apps toggle
+	includeAppsListener();
+
 	// call function to check storage.sync for existing user profiles
 	getUserData(); 
 
@@ -92,6 +95,15 @@ $(function() {
 		
 		// run the function which listens for a change in a checkbox state
 		extStateListener(); 
+
+		// hide apps if user has toggled that option
+		if(!user.includeApps){
+			// hide apps
+			$('.app').hide();
+		} else {
+			// set toggle switch to checked
+			$('.include-apps-switch').attr('checked', true);
+		}
 
 		// setting the profile buttons to on/off appearance
 		for (let profile in user.profiles) {
@@ -680,17 +692,6 @@ $("body").on("click","#dismissProfilePrompt",function(e){
 
 });
 
-// $("body").on("click",".settings-icon",function(e){
-
-// 	// User wants to toggle options div
-// 	// prevent default
-// 	e.preventDefault();
-	
-// 	// Slide options div in
-// 	$('.settings-row').slideToggle();
-// });
-
-
 
 function compactStylesListener() { 
 
@@ -707,6 +708,29 @@ function compactStylesListener() {
 
 		// save current state to storage
 		user.compactStyles = !sheet.disabled;
+		console.log("saving user:", user);
+		chrome.storage.sync.set(user);
+		
+	});
+}
+
+function includeAppsListener() { 
+
+	// turn on/off compact styles
+	$('.include-apps-switch').change(function(e){
+
+		console.log('toggling apps:', e);
+
+		if(e.target.checked){
+			// user wishes to include apps
+			$('.app').show();
+		} else {
+			// user wishes to hide all apps
+			$('.app').hide();
+		}
+
+		user.includeApps = e.target.checked
+		// save current state to storage
 		console.log("saving user:", user);
 		chrome.storage.sync.set(user);
 		

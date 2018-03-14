@@ -45,6 +45,14 @@
 		      On
 		    </label>
 		  </span></a></li>
+		 <li><a href="#!">Include Apps<span class="switch btn-switch">
+		    <label>
+		    	Off
+		      <input type="checkbox" class="js-switch include-apps-switch">
+		      <span class="lever"></span>
+		      On
+		    </label>
+		  </span></a></li>
   </ul>
 	
 
@@ -194,8 +202,11 @@
 
 <!-- Handlebar Template Start: active/inactive list -->
 <script id="entry-template" type="text/x-handlebars-template">
-<div class="extBlock">
-
+	{{#if isApp}}
+		<div class="extBlock app">
+	{{else}}
+		<div class="extBlock">
+	{{/if}}
 	<div class="lefty">
 	 	<div class="picHolder">
 	 		<img src="{{ pic }}">
