@@ -1,6 +1,6 @@
 // Declare variables
 let extArray = [],
-appArray =[],
+appArray = [],
 activeExtensions = [],
 inactiveExtensions = [],
 btnId,
@@ -701,14 +701,14 @@ function compactStylesListener() {
 		// get reference to stylesheet
 		let sheet = $('#compactStylesheet')[0];
 
-		console.log('toggling styles, disabled:',sheet.disabled);
+		console.log('toggling styles, disabled: ',sheet.disabled);
 
 		// Toggle disabled attribute
 		sheet.disabled = !sheet.disabled;
 
 		// save current state to storage
 		user.compactStyles = !sheet.disabled;
-		console.log("saving user:", user);
+		console.log("saving user: ", user);
 		chrome.storage.sync.set(user);
 		
 	});
@@ -719,21 +719,21 @@ function includeAppsListener() {
 	// turn on/off compact styles
 	$('.include-apps-switch').change(function(e){
 
-		console.log('toggling apps:', e);
+		console.log('toggling apps: ', e);
 
 		if(e.target.checked){
 			// user wishes to include apps
 			$('.app').show();
-			Materialize.toast('Apps now included', 1000, 'ccToastOn');
+			Materialize.toast('Apps now included', 2000, 'ccToastOn');
 		} else {
 			// user wishes to hide all apps
 			$('.app').hide();
-			Materialize.toast('Apps now excluded', 1000, 'ccToastOff');
+			Materialize.toast('Apps now excluded', 2000, 'ccToastOff');
 		}
 
-		user.includeApps = e.target.checked
+		user.includeApps = e.target.checked;
 		// save current state to storage
-		console.log("saving user:", user);
+		console.log("saving user: ", user);
 		chrome.storage.sync.set(user);
 		
 	});

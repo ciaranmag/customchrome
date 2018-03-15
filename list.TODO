@@ -7,6 +7,7 @@
    ☐ add numbered badge to Groups
    ☐ import/export (as json) button on groups
    ☐ show extension description when clicking dropdown (always show description option in settings)
+   ☐ *[BUG]* when showing apps is false, searching for an extension ignores this setting [](myscript.js ":717:0") hint=highlight this line and press ctrl+o to open the file on the line
    ☐ 
    ☐ 
  Housekeeping:

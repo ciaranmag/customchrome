@@ -185,7 +185,7 @@ a.mdi-action-settings {
 	color: #9F9F9F;
 	font-size: 22px;
 	margin-right: -22px;
-	vertical-align: super;
+	vertical-align: middle;
 }
 
 #noResults {
