@@ -1,7 +1,7 @@
  ToDo For Next Release:
    ☐ show "profile deleted" feedback after window reload
    ☐ website - add screenshot, add example use cases
-   ☐ changelog HTML modal
+   ✔ changelog HTML modal @done (18-03-15 23:26)
    ☐ rename Profiles to Groups
    ☐ profiles working correctly
    ☐ add numbered badge to Groups
