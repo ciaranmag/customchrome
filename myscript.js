@@ -26,6 +26,8 @@ $(function() {
 	// listen for compact styles toggle change
 	compactStylesListener();
 
+	 $('#changelogModal').openModal();
+
 	// listen for include apps toggle
 	includeAppsListener();
 
@@ -111,7 +113,6 @@ $(function() {
 			// if they are all on, add class "on" to element
 			// otherwise, leave it grey
 			let extensionIds = user.profiles[profile];
-			console.log('extension ids', extensionIds);
 
 			let tempArray = [];
 
@@ -775,7 +776,8 @@ function fixStorage(profiles){
 	let newObj = {
 		"profiles": profiles || [],
 		"dismissedProfilesPrompt": false,
-		"compactStyles": false
+		"compactStyles": false,
+		"seenChangelog": 0.82
 	};
 
 	// clear the storage (We should have everything we need in the newObj)
@@ -789,7 +791,9 @@ function fixStorage(profiles){
 
 }
 
-
+function onUpdate() {
+    console.log("Extension Updated");
+  }
 
 
 // GOOGLE ANALYTICS
@@ -803,4 +807,36 @@ function trackButtonClick(e) {
 let buttons = document.querySelectorAll('button');
 for (let i = 0; i < buttons.length; i++) {
   buttons[i].addEventListener('click', trackButtonClick);
+}
+
+
+// Handle install/updates
+function onInstall() {
+  console.log("Extension Installed");
+}
+
+function onUpdate() {
+  console.log("Extension Updated");
+}
+
+function getVersion() {
+  var details = chrome.app.getDetails();
+  return details.version;
+}
+
+// Check if the version has changed.
+var currVersion = getVersion();
+var prevVersion = localStorage['version']
+if (currVersion != prevVersion) {
+  // Check if we just installed this extension.
+  if (typeof prevVersion == 'undefined') {
+    onInstall();
+  } else {
+    onUpdate();
+  }
+  localStorage['version'] = currVersion;
+
+  // either way, show changelog modal
+  $('#changelogModal').openModal();
+
 }

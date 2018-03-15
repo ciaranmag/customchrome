@@ -427,10 +427,18 @@ span.badge.new {
 	position: absolute;
 	left: 330px !important;
 	opacity: 1;
+	z-index: 100;
 }
 
 #options-dropdown .switch {
 	float:right;
 }
 
+#changelogModal ul {
+	margin-left: 25px;
+}
+
+#changelogModal ul li {
+	list-style-type: disc;
+}
 
