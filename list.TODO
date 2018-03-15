@@ -1,10 +1,12 @@
  ToDo For Next Release:
  ☐ show "profile deleted" feedback after window reload
  ☐ website - add screenshot, add example use cases
+ ☐ changelog HTML modal
+ ☐ rename Profiles to Groups
+ ☐ profiles working correctly
+ ☐ add numbered badge to Groups
+ ☐ import/export (as json) button on groups
  ☐ 
- ☐ 
- ☐ 
-
 
 Issues that can wait:
  ☐ clean up code, commenting, CSS tweaks, minify
@@ -20,7 +22,7 @@ Future Features:
  ☐ Advanced option to see memory usage of each extension (next to switch)
  ☐ Have an option to make sure certain extensions are off when using a profile e.g. turn off ad blockers and social blockers when using "Web Dev" profile but record their state before the change and re-instate it after profile is turned off
  ☐ Backup profiles so they can be restored if Custom Chrome is uninstalled
- ☐ 
+ ☐ Extension alerts when an extension has been sold or has known malware etc.
  ☐ 
  ☐ 
  ☐ 
