@@ -259,28 +259,23 @@ $('#nameSubmit').submit(
 			Materialize.toast('Enter at least one character', 2000, 'alert');
 			return;
 		}
+
+		// check if profile name already exists
+		if($.inArray(name,Object.keys(user.profiles)) != -1){
+			Materialize.toast('Profile name already exists!', 2000, 'alert');
+			return
+		}
 		
-		// save profile to storage
-		chrome.storage.sync.get(function(obj){
-			if ($.inArray(name, Object.keys(obj)) != -1){
-				Materialize.toast('Profile name already exists!', 2000, 'alert');
-				return;
-			} else {
-				// profile name doesn't exist yet, proceed with selecting extensions for the new profile
-				$('#profilePrompt').closeModal();
+		// profilename doesn't exists yet, proceed with selecting extensions for the new profile
+		$('#profilePrompt').closeModal();
 
-				// Make sure profileHeader is visible
-				$('#profileHeader').slideDown();
+		// Make sure profileHeader is visible
+		$('#profileHeader').slideDown();
 
-				// Make sure options box is closed
-				$('.settings-row').slideUp();
-
-				// after half a second open the modal, user can specify what extensions to add to profile
-				setTimeout(function(){
-						addExtensions(name);
-				}, 500);
-			}
-		});
+		// after half a second open the modal, user can specify what extensions to add to profile
+		setTimeout(function(){
+				addExtensions(name);
+		}, 500);
 	}
 );
 
@@ -390,7 +385,7 @@ function getUserData() {
 		}
 
 		// check if user has dismissed profiles prompt
-		if(user.dismissedProfilesPrompt){
+		if(user.dismissedProfilesPrompt && Object.keys(user.profiles).length === 0){
 			// User has no profiles, and has dismissed profiles prompt
 			$('#profileHeader').hide();
 			// hide edit button (in options slide-down)
@@ -449,8 +444,17 @@ $("body").on("click",".editBtn",function(){
 
 });
 
-$("body").on("click","#removeAllBtn",function(){ // remove all profiles
-	chrome.storage.sync.clear();
+// remove all profiles
+$("body").on("click","#removeAllBtn",function(){ 
+	// chrome.storage.sync.clear();
+	// remove all profiles (set empty object)
+	user.profiles = {};
+
+	// save in memory
+	chrome.storage.sync.set(user, function () {
+	  console.log('removed all profiles');
+	})
+
 	Materialize.toast('Deleting your profiles...', 2000, 'deleteToast');
 	setTimeout(function(){
 		location.reload(false); // adding false lets the page reload from the cache
