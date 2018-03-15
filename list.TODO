@@ -1,28 +1,38 @@
  ToDo For Next Release:
- ☐ show "profile deleted" feedback after window reload
- ☐ website - add screenshot, add example use cases
- ☐ changelog HTML modal
- ☐ rename Profiles to Groups
- ☐ profiles working correctly
- ☐ add numbered badge to Groups
- ☐ import/export (as json) button on groups
- ☐ 
+   ☐ show "profile deleted" feedback after window reload
+   ☐ website - add screenshot, add example use cases
+   ☐ changelog HTML modal
+   ☐ rename Profiles to Groups
+   ☐ profiles working correctly
+   ☐ add numbered badge to Groups
+   ☐ import/export (as json) button on groups
+   ☐ show extension description when clicking dropdown (always show description option in settings)
+   ☐ 
+   ☐ 
+ Housekeeping:
+   ☐ Update blurb (Github repo, Custom Chrome Github website, Chrome Web Store)
+   ☐ Update screenshots (same places as blurb)
+   ☐ Update manifest version number
+   ☐ Reply to Chrome Web Store reviews/feedback
+   ☐ Post on Reddit
+   ☐ 
 
 Issues that can wait:
- ☐ clean up code, commenting, CSS tweaks, minify
- ☐ display profile tooltips vertically (have tried <br> "\n" "&lt;br /&gt;" "&#013;")
- ☐ Change search icon colour on when focusing on search input and move search icon into the input area
- ☐ 
- ☐ 
- ☐ 
+   ☐ setup notification alerts for new reviews/feedback on Chrome Web Store
+   ☐ clean up code, commenting, CSS tweaks, minify
+   ☐ display profile tooltips vertically (have tried <br> "\n" "&lt;br /&gt;" "&#013;")
+   ☐ Change search icon colour on when focusing on search input and move search icon into the input area
+   ☐ 
+   ☐ 
+   ☐ 
 
 
 Future Features:
- ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
- ☐ Advanced option to see memory usage of each extension (next to switch)
- ☐ Have an option to make sure certain extensions are off when using a profile e.g. turn off ad blockers and social blockers when using "Web Dev" profile but record their state before the change and re-instate it after profile is turned off
- ☐ Backup profiles so they can be restored if Custom Chrome is uninstalled
- ☐ Extension alerts when an extension has been sold or has known malware etc.
- ☐ 
- ☐ 
- ☐ 
+   ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
+   ☐ Advanced option to see memory usage of each extension (next to switch)
+   ☐ Have an option to make sure certain extensions are off when using a profile e.g. turn off ad blockers and social blockers when using "Web Dev" profile but record their state before the change and re-instate it after profile is turned off
+   ☐ Backup profiles so they can be restored if Custom Chrome is uninstalled
+   ☐ Extension alerts when an extension has been sold or has known malware etc.
+   ☐ 
+   ☐ 
+   ☐ 
