@@ -433,6 +433,7 @@ $("body").on("click","#addProfileBox",function(){ // add a new profile box
 	$('#profilePrompt').openModal();
 });
 
+
 $("body").on("click",".editBtn",function(){
 	$('#editProfiles').openModal({
 		dismissible: false,
@@ -445,9 +446,20 @@ $("body").on("click",".editBtn",function(){
 
 });
 
-// remove all profiles
-$("body").on("click","#removeAllBtn",function(){ 
-	// chrome.storage.sync.clear();
+
+$('#removeAllBtn').click((e)=>{
+	
+	e.preventDefault();
+
+	console.log('howiye or whatever')
+
+	$('#confirmDeleteAll').openModal();
+
+})
+
+$("body").on("click", "#deleteAllProfiles", function(){
+	
+	// User confirms delete all profiles
 	// remove all profiles (set empty object)
 	user.profiles = {};
 
@@ -460,7 +472,7 @@ $("body").on("click","#removeAllBtn",function(){
 	setTimeout(function(){
 		location.reload(false); // adding false lets the page reload from the cache
 	}, 1000);
-});
+})
 
 
 $("body").on("click",".delete",function(){
