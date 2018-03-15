@@ -19,8 +19,12 @@ button {
 
 #profileHeader {
 	width: 100%;
-	height: 86px;
+	/*height: 86px;*/
 	background-color: #f3f3f3;
+}
+
+#profileHeader .row {
+	margin-bottom: 0px;
 }
 
 #profileHeader .btn {
@@ -167,7 +171,7 @@ a #addAProfileText {
 #searchbox {
 	text-align: center;
 	padding:0;
-	margin: 10px 0;
+	margin: 10px 0 0 0;
 	width: 40%;
 	height: 40px;
 	border:none;
@@ -259,7 +263,8 @@ a.mdi-action-settings {
 #activeTitle,
 #inactiveTitle {
 	padding: 20px 0px;
-	padding-left: 30px !important;
+	padding-left: 25px;
+	font-weight: 400;
 }
 
 #activeTitle {

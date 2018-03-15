@@ -23,6 +23,12 @@
 	margin-bottom: 20px !important;
 }
 
+#activeTitle,
+#inactiveTitle {
+	line-height: initial;
+	font-size: 20px;
+}
+
 .extName {
   font-size: 14px;
 }
@@ -33,7 +39,7 @@
 }
 
 .extBlock {
-  margin: 5px 25px;
+  margin: 1px 25px;
 }
 
 .switch label .lever {
