@@ -270,7 +270,7 @@ $('#nameSubmit').submit(
 		$('#profilePrompt').closeModal();
 
 		// Make sure profileHeader is visible
-		$('#profileHeader').slideDown();
+		// $('#profileHeader').slideDown();
 
 		// after half a second open the modal, user can specify what extensions to add to profile
 		setTimeout(function(){
@@ -328,6 +328,7 @@ $('#extSubmit').submit(
 			$('#extList').html('');
 			Materialize.toast(name +' profile added', 2000, 'ccToastOn');
 			$('#addExts').closeModal(); //close the modal
+			$('#profileHeader').slideDown();
 		}
 	}
 );
@@ -453,7 +454,7 @@ $("body").on("click","#removeAllBtn",function(){
 	// save in memory
 	chrome.storage.sync.set(user, function () {
 	  console.log('removed all profiles');
-	})
+	});
 
 	Materialize.toast('Deleting your profiles...', 2000, 'deleteToast');
 	setTimeout(function(){
