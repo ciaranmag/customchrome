@@ -26,8 +26,6 @@ $(function() {
 	// listen for compact styles toggle change
 	compactStylesListener();
 
-	 $('#changelogModal').openModal();
-
 	// listen for include apps toggle
 	includeAppsListener();
 
@@ -761,6 +759,13 @@ function includeAppsListener() {
 		
 	});
 }
+
+
+$('#viewChangelog').click(()=>{
+	$('#changelogModal').openModal();
+})
+
+
 
 /* 
 This function are for moving from v0.82 -> v0.83
