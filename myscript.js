@@ -266,7 +266,7 @@ $('#nameSubmit').submit(
 				Materialize.toast('Profile name already exists!', 2000, 'alert');
 				return;
 			} else {
-				// profilename doesn't exists yet, proceed with selecting extensions for the new profile
+				// profile name doesn't exist yet, proceed with selecting extensions for the new profile
 				$('#profilePrompt').closeModal();
 
 				// Make sure profileHeader is visible
@@ -322,6 +322,7 @@ function checkboxlistener() {
 $('#extSubmit').submit(
 	function(e){
 		e.preventDefault();
+		name += ` (${idList.length})`;
 		//if no extension are selected, show toast warning and do not close modal
 		if(idList.length === 0){
 			Materialize.toast('You must select at least one extension for this profile', 2000, 'alert');
@@ -330,7 +331,7 @@ $('#extSubmit').submit(
 			submitThatShit(); //submitting extensions to memory
 			$('#addExts h4').text("Add extensions to "); // turn h4 text back to normal after modal is dismissed
 			$('#extList').html('');
-			Materialize.toast(name+' profile added', 2000, 'ccToastOn');
+			Materialize.toast(name +' profile added', 2000, 'ccToastOn');
 			$('#addExts').closeModal(); //close the modal
 		}
 	}
@@ -720,12 +721,13 @@ function compactStylesListener() {
 
 function includeAppsListener() { 
 
-	// turn on/off compact styles
+	// turn on/off show apps
 	$('.include-apps-switch').change(function(e){
 
 		console.log('toggling apps: ', e);
 
 		if(e.target.checked){
+
 			// user wishes to include apps
 			$('.app').show();
 			Materialize.toast('Apps now included', 2000, 'ccToastOn');
