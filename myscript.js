@@ -147,11 +147,15 @@ $(function() {
 		let filter = $(this).val();
 		// Loop through the extensions
 		$(".extName").each(function(){
-			let h = $(this).parents('.extBlock'); //setting h as the extension's holding div
-			if ($(this).text().search(new RegExp(filter, "i")) < 0) { // searching extName for the #searchbox's contents if it doesn't match then fadeOut the holding div
-				h.fadeOut(); //fade the parent div out if no match found
+			//set h as the extension's holding div
+			let h = $(this).parents('.extBlock'); 
+			// searching extName for the #searchbox's contents if it doesn't match then fadeOut the holding div
+			if ($(this).text().search(new RegExp(filter, "i")) < 0) { 
+				//fade the parent div out if no match found
+				h.fadeOut(); 
 			} else {
-				h.fadeIn(); // show the list item if the phrase matches
+				// show the list item if the phrase matches
+				h.fadeIn(); 
 			}
 		});
 
