@@ -5,20 +5,7 @@
   <link rel="stylesheet" href="resources/materialize/materialize.min.css">
   <link rel="stylesheet" href="style.css">
   <link id="compactStylesheet" rel="stylesheet" href="compact-style.css" disabled="true">
-	<!-- <style type="text/css">
-	@font-face {
-		font-family: 'material-design-icons';
-		src: url('resources/materialize/material-design-icons/material-design-icons.eot');
-		src: url('resources/materialize/material-design-icons/material-design-icons.ttf') format('truetype'),
-					url('resources/materialize/material-design-icons/material-design-icons.woff') format('woff'),
-					url('resources/materialize/material-design-icons/material-design-icons.woff2') format('woff2'),
-					url('resources/materialize/material-design-icons/material-design-icons.svg') format('svg');
-	}
-	@font-face {
-		font-family: 'Roboto';
-		src: url('resources/font/roboto/Roboto-Regular.ttf') format('truetype');
-	}
-	</style> -->
+
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 	<!-- Google Analytics -->
@@ -53,6 +40,7 @@
 		      On
 		    </label>
 		  </span></a></li>
+		  <li><a href="#!" id="viewChangelog">View Changelog</a></li>
   </ul>
 	
 
@@ -198,6 +186,25 @@
     <div class="modal-footer">
         <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
         <a href="#!" id='deleteAllProfiles' class=" modal-action modal-close waves-effect waves-green btn-flat">Yep, delete em all!</a>
+    </div>
+</div>
+
+<div id="changelogModal" class="modal">
+    <div class="modal-content">
+        <h4>What's new</h4>
+        <h6>version 0.83</h6>
+        <p>Give us feedback on this update, we're <a href="https://twitter.com/cderm" target="_blank">@Cderm</a> and <a href="https://twitter.com/ciaranmag" target="_blank">@Ciaranmag</a> on Twitter</p>
+        <ul>
+        	<li>Added compact view (toggle in setting menu</li>
+        	<li>Added uninstall button to each extension</li>
+        	<li>Updated storage architecture to save user settings</li>
+        	<li>Profiles/Groups section can now be hidden forever</li>
+        	<li>Added apps to list (toggle in settings menu)</li>
+        </ul>
+
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn">Got it</a>
     </div>
 </div>
 
