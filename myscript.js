@@ -165,8 +165,10 @@ $(function() {
 				$("#noResults").fadeIn();
 				$('#activeExtensions').parent().css('visibility','hidden');
 				$('#inactiveExtensions').parent().css('visibility','hidden');
+				$('.allExtensionsContainer').css('visibility','hidden');
 			} else {
 				$("#noResults").hide();
+				$('.allExtensionsContainer').css('visibility','visible');
 				$('#activeExtensions').parent().css('visibility','visible');
 				$('#inactiveExtensions').parent().css('visibility','visible');
 			}
@@ -242,10 +244,9 @@ function extStateListener() {
 }
 
 // listen for addProfile button press, add a button to HTML, prompt for profile name, set that name as button text, add that profile to the storage.sync object
-$('.addProfile').click(
-	function(){
-		$('#profilePrompt').openModal();
-	});
+$('.addProfile').click(function(){
+	$('#profilePrompt').openModal();
+});
 
 $('#nameSubmit').submit(
 	function(e){
@@ -263,7 +264,7 @@ $('#nameSubmit').submit(
 		// check if profile name already exists
 		if($.inArray(name,Object.keys(user.profiles)) != -1){
 			Materialize.toast('Profile name already exists!', 2000, 'alert');
-			return
+			return;
 		}
 		
 		// profilename doesn't exists yet, proceed with selecting extensions for the new profile
@@ -429,9 +430,10 @@ function getUserData() {
 	});
 }
 
-$("body").on("click","#addProfileBox",function(){ // add a new profile box
-	$('#profilePrompt').openModal();
-});
+// Not needed, listening to .addProfile instead
+// $("body").on("click","#addProfileBox",function(){ // add a new profile box
+// 	$('#profilePrompt').openModal();
+// });
 
 
 $("body").on("click",".editBtn",function(){
@@ -451,11 +453,11 @@ $('#removeAllBtn').click((e)=>{
 	
 	e.preventDefault();
 
-	console.log('howiye or whatever')
+	console.log('howiye or whatever');
 
 	$('#confirmDeleteAll').openModal();
 
-})
+});
 
 $("body").on("click", "#deleteAllProfiles", function(){
 	
@@ -472,7 +474,7 @@ $("body").on("click", "#deleteAllProfiles", function(){
 	setTimeout(function(){
 		location.reload(false); // adding false lets the page reload from the cache
 	}, 1000);
-})
+});
 
 
 $("body").on("click",".delete",function(){
@@ -747,11 +749,11 @@ function includeAppsListener() {
 
 			// user wishes to include apps
 			$('.app').show();
-			Materialize.toast('Apps now included', 2000, 'ccToastOn');
+			Materialize.toast('Apps now showing', 2000, 'ccToastOn');
 		} else {
 			// user wishes to hide all apps
 			$('.app').hide();
-			Materialize.toast('Apps now excluded', 2000, 'ccToastOff');
+			Materialize.toast('Apps will not be shown', 2000, 'ccToastOff');
 		}
 
 		user.includeApps = e.target.checked;
