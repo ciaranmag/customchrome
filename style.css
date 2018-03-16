@@ -434,6 +434,11 @@ span.badge.new {
 	float:right;
 }
 
+#changelogModal p,
+#changelogModal ul {
+	font-size: 1rem;
+}
+
 #changelogModal ul {
 	margin-left: 25px;
 }

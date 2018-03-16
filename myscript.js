@@ -151,7 +151,7 @@ $(function() {
 			// searching extName for the #searchbox's contents if it doesn't match then fadeOut the holding div
 			if ($(this).text().search(new RegExp(filter, "i")) < 0) { 
 				//fade the parent div out if no match found
-				h.fadeOut(); 
+				h.fadeOut();
 			} else {
 				// show the list item if the phrase matches
 				h.fadeIn(); 
@@ -171,7 +171,7 @@ $(function() {
 				$('#activeExtensions').parent().css('visibility','visible');
 				$('#inactiveExtensions').parent().css('visibility','visible');
 			}
-		}, 350);
+		}, 500);
 
 	});
 
@@ -670,6 +670,11 @@ $("body").on("click",".show-ext-links",function(e){
 	// Show ext-links
 	extLinks.slideDown();
 
+	// Show extension description
+	// $(e.currentTarget).parents('.ext-block').find(".extDescription").css("display", "inline");
+
+	this.parentElement.parentElement.parentElement.getElementsByClassName('extDescription')[0].style.display = "inline";
+
 	// hide down arrow, show up arrow
 	$(e.currentTarget).hide();
 	$(e.currentTarget).siblings('.hide-ext-links').show();
@@ -687,6 +692,9 @@ $("body").on("click",".hide-ext-links",function(e){
 
 	// Show ext-links
 	extLinks.slideUp();
+
+
+	this.parentElement.parentElement.parentElement.getElementsByClassName('extDescription')[0].style.display = "none";
 
 	// hide down arrow, show up arrow
 	$(e.currentTarget).hide();
@@ -833,8 +841,8 @@ function getVersion() {
 }
 
 // Check if the version has changed.
-var currVersion = getVersion();
-var prevVersion = localStorage['version']
+let currVersion = getVersion();
+let prevVersion = localStorage.version;
 if (currVersion != prevVersion) {
   // Check if we just installed this extension.
   if (typeof prevVersion == 'undefined') {
@@ -842,9 +850,11 @@ if (currVersion != prevVersion) {
   } else {
     onUpdate();
   }
-  localStorage['version'] = currVersion;
-
+  localStorage.version = currVersion;
   // either way, show changelog modal
   $('#changelogModal').openModal();
-
 }
+
+
+
+

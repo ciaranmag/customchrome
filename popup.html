@@ -3,45 +3,39 @@
 <head>
   <title>Custom Chrome</title>
   <link rel="stylesheet" href="resources/materialize/materialize.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="style.css">
   <link id="compactStylesheet" rel="stylesheet" href="compact-style.css" disabled="true">
-
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-	<!-- Google Analytics -->
-	<script src="analytics.js"></script>
 </head>
-
 <body>
-	
-	
-	<!-- Settings button in top right, opens dropdown -->
-	<a href="!#" class="settings-icon dropdown-button  tooltipped" data-position="left" data-delay="50" data-tooltip="Options" data-beloworigin="true" data-activates='options-dropdown'><i class="material-icons grey-text">settings</i></a>
+
+<!-- Settings button in top right, opens dropdown -->
+<a href="!#" class="settings-icon dropdown-button  tooltipped" data-position="left" data-delay="50" data-tooltip="Options" data-beloworigin="true" data-activates='options-dropdown'><i class="material-icons grey-text">settings</i></a>
 
 
-  <!-- Options Dropdown Structure -->
-  <ul id='options-dropdown' class='dropdown-content'>
-    <li><a href="#!" class="addProfile">Create Profile </a></li>
-    <li><a href="#!" class="editBtn">Edit Profiles</a></li>
-    <!-- <li class="divider"></li> -->
-    <li><a href="#!">Compact View<span class="switch btn-switch">
-		    <label>
-		    	Off
-		      <input type="checkbox" class="js-switch compact-styles-switch">
-		      <span class="lever"></span>
-		      On
-		    </label>
-		  </span></a></li>
-		 <li><a href="#!">Show Chrome Apps<span class="switch btn-switch">
-		    <label>
-		    	Off
-		      <input type="checkbox" class="js-switch include-apps-switch">
-		      <span class="lever"></span>
-		      On
-		    </label>
-		  </span></a></li>
-		  <li><a href="#!" id="viewChangelog">View Changelog</a></li>
-  </ul>
+<!-- Options Dropdown Structure -->
+<ul id='options-dropdown' class='dropdown-content'>
+  <li><a href="#!" class="addProfile">Create Profile </a></li>
+  <li><a href="#!" class="editBtn">Edit Profiles</a></li>
+  <!-- <li class="divider"></li> -->
+  <li><a href="#!">Compact View<span class="switch btn-switch">
+	    <label>
+	    	Off
+	      <input type="checkbox" class="js-switch compact-styles-switch">
+	      <span class="lever"></span>
+	      On
+	    </label>
+	  </span></a></li>
+	 <li><a href="#!">Show Chrome Apps<span class="switch btn-switch">
+	    <label>
+	    	Off
+	      <input type="checkbox" class="js-switch include-apps-switch">
+	      <span class="lever"></span>
+	      On
+	    </label>
+	  </span></a></li>
+	  <li><a href="#!" id="viewChangelog">View Changelog</a></li>
+</ul>
 	
 
 <div id="profileHeader">
@@ -55,6 +49,7 @@
 	  </div>
 	</div>
 </div>
+
 
 <div class="searchbox-holder">
 	<i id="search-icon" class="material-icons">search</i>
@@ -74,7 +69,6 @@
 
 
 <div class="allExtensionsContainer">
-
 	<!-- Spit out active extensions -->
 	<div class="card">
 	  <div class="card-content extension-card-content activeTitleDiv">
@@ -82,7 +76,6 @@
 		</div>
 		<div id="activeExtensions"></div>
 	</div>
-
 	<!-- Spit out inactive extensions -->
 	<div class="card">
 	  <div class="card-content extension-card-content inactiveTitleDiv">
@@ -90,7 +83,6 @@
 		</div>
 		<div id="inactiveExtensions"></div>
 	</div>
-
 </div> <!-- allExtensionsContainer -->
 
 
@@ -110,6 +102,7 @@
   </div>
 </div>
 
+
 <!-- Modal html: new profile extensions list -->
 <div id="addExts" class="modal modal-fixed-footer">
 <form id="extSubmit">
@@ -123,6 +116,7 @@
   </div>
 </form>
 </div>
+
 
 <!-- Modal html: edit profile extensions list -->
 <div id="editExts" class="modal modal-fixed-footer">
@@ -155,6 +149,7 @@
 </form>
 </div>
 
+
 <div id="confirmDelete" class="modal">
     <div class="modal-content">
         <h4>Really?</h4>
@@ -166,6 +161,7 @@
         <a href="#!" id='deleteProfile' class=" modal-action modal-close waves-effect waves-green btn-flat">Yep, delete!</a>
     </div>
 </div>
+
 
 <div id="confirmDismissProfilePrompt" class="modal">
     <div class="modal-content">
@@ -189,19 +185,19 @@
     </div>
 </div>
 
+
 <div id="changelogModal" class="modal">
     <div class="modal-content">
         <h4>What's new</h4>
         <h6>version 0.83</h6>
-        <p>Give us feedback on this update, we're <a href="https://twitter.com/cderm" target="_blank">@Cderm</a> and <a href="https://twitter.com/ciaranmag" target="_blank">@Ciaranmag</a> on Twitter</p>
+        <p>Give us feedback on this update, we're <a href="https://twitter.com/cderm" target="_blank"><@cderm</a> and <a href="https://twitter.com/ciaranmag" target="_blank">@ciaranmag</a> on Twitter</p>
         <ul>
-        	<li>Added compact view (toggle in setting menu</li>
-        	<li>Added uninstall button to each extension</li>
-        	<li>Updated storage architecture to save user settings</li>
-        	<li>Profiles/Groups section can now be hidden forever</li>
+        	<li>Added compact view (toggle in setting menu)</li>
         	<li>Added apps to list (toggle in settings menu)</li>
+        	<li>Added uninstall button to each extension (click the dropdown icon next to the extension on/off switch)</li>
+        	<li>Updated storage architecture to save user's customised settings</li>
+        	<li>"Add a profile" suggestion can be dismissed forever (you can add one at any time in the settings menu)</li>
         </ul>
-
     </div>
     <div class="modal-footer">
         <a href="#!" class="modal-action modal-close waves-effect waves-green btn">Got it</a>
@@ -240,9 +236,9 @@
 		</div>
 	</div>
 
+
 	<div class="righty">
     <div class="switch ext-switch" id="{{ id }}" name="{{name}}">
-
 	    <label>
 	      <input type="checkbox" {{stringEnabled}} class="js-switch state-switch">
 	      <span class="lever"></span>
@@ -255,16 +251,16 @@
 
 	<div class="container">
 	    <div class="row ext-links" data-extId="{{id}}">
-<!-- 	    		{{#if optionsUrl}}
-	        <div class="link"><a href="{{optionsUrl}}" target="_blank"><i class="material-icons">settings</i>Settings</a></div>
-	        {{/if}}
-	        {{#if homepageUrl}}
-	        <div class="link"><a href="{{homepageUrl}}" target="_blank"><i class="material-icons">home</i>Homepage</a></div>
-	        {{/if}} -->
-	        <div class="link"><a href="#!" class="uninstallExt"><i class="material-icons">delete</i>Uninstall</a></div>
+				<!-- {{#if optionsUrl}}
+        <div class="link"><a href="{{optionsUrl}}" target="_blank"><i class="material-icons">settings</i>Settings</a></div>
+        {{/if}}
+        {{#if homepageUrl}}
+        <div class="link"><a href="{{homepageUrl}}" target="_blank"><i class="material-icons">home</i>Homepage</a></div>
+        {{/if}} -->
+        <div class="link"><a href="#!" class="uninstallExt"><i class="material-icons">delete</i>Uninstall</a></div>
 	    </div>
 	</div>
-	
+
 
 </div>
 </script>
@@ -291,6 +287,7 @@
 <!-- Handlebar Template End-->
 
 
+<script src="analytics.js"></script>
 <script src="resources/jquery-2.1.1.min.js"></script>
 <script src="resources/handlebars-v4.0.5.min.js"></script>
 <script src="resources/materialize/materialize.min.js"></script>

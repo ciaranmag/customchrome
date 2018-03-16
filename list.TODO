@@ -7,7 +7,7 @@
    ☐ add numbered badge to Groups
    ☐ show extension description when clicking dropdown (always show description option in settings)
    ☐ *[BUG]* when showing apps is false, searching for an extension ignores this setting [](myscript.js ":739:0") hint=highlight this line and press ctrl+o to open the file on the line
-   ☐ 
+   ☐ *[BUG]* profiles not switching from off to on
    ☐ 
  Housekeeping:
    ☐ Update blurb - add example use cases (Github repo, Custom Chrome Github website, Chrome Web Store)
