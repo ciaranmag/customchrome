@@ -134,6 +134,7 @@ $(function() {
 
 			// if it's on, add/remove appropriate classes
 			if(!off){
+				profile = profile.replace(' ', "_");
 				$("#" + profile).removeClass("off").addClass("on");
 			}
 		}
@@ -310,14 +311,13 @@ function checkboxlistener() {
 			return;
 		}
 		idList.push(id);
-		console.log('idList is now ',idList);
+		// console.log('idList is now ',idList);
 	});
 }
 
 $('#extSubmit').submit(
 	function(e){
 		e.preventDefault();
-		name += ` (${idList.length})`;
 		//if no extension are selected, show toast warning and do not close modal
 		if(idList.length === 0){
 			Materialize.toast('You must select at least one extension for this profile', 2000, 'alert');
