@@ -146,18 +146,18 @@ $(function() {
 		// Retrieve the input field text
 		let filter = $(this).val();
 		// Loop through the extensions
-		$(".extName").each(function(){
-			//set h as the extension's holding div
-			let h = $(this).parents('.extBlock'); 
-			// searching extName for the #searchbox's contents if it doesn't match then fadeOut the holding div
-			if ($(this).text().search(new RegExp(filter, "i")) < 0) { 
-				//fade the parent div out if no match found
-				h.fadeOut();
+
+		// toFilter array will hold all elements to search through
+		// fill this depending on whether apps are on or off
+		let toFilter = user.includeApps ? $(".extBlock") : $(".extBlock:not(.app)");
+
+		toFilter.each(function(i, el){
+			if($(el).find('.extName').text().search(new RegExp(filter, "i")) < 0){
+				$(el).fadeOut()
 			} else {
-				// show the list item if the phrase matches
-				h.fadeIn(); 
+				$(el).fadeIn()
 			}
-		});
+		})
 
 		// if the search returns no results then show the no results card
 		setTimeout(function(){
@@ -191,7 +191,7 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 	if ($(this).hasClass("on")) { 
 		// if the btn is currently on then turn all extensions off
 		user.profiles[btnIdConvert].forEach(function(extensionId){
-			console.log('enabling extension:', extensionId);
+			console.log('disabling extension:', extensionId);
 			chrome.management.setEnabled(extensionId, false);
 		});
 
