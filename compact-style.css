@@ -1,10 +1,6 @@
+/* PROFILES SECTION */
 .extDescription {
 	display: none;
-}
-
-.picHolder img {
-	width:30px;
-	height:30px;
 }
 
 .profile-card-content {
@@ -15,6 +11,7 @@
 	height: 0px;
 }
 
+/* ACTIVE / INACTIVE */
 .extension-card-content {
 	padding: 5px 0 !important;;
 }
@@ -29,8 +26,13 @@
 	font-size: 20px;
 }
 
+.picHolder img {
+	width:30px;
+	height:30px;
+}
+
 .extName {
-  font-size: 14px;
+  font-size: 1.1rem;
 }
 
 .nameDesc {
@@ -58,6 +60,7 @@
 
 .ext-links .description {
 	display: initial;
+	font-size: 0.95rem;
 }
 
 

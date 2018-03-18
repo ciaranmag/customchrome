@@ -660,7 +660,7 @@ $("body").on("click",".show-ext-links",function(e){
 	e.preventDefault();
 
 	// get refrence to relevant ext-links element
-	let extLinks = $(this).parents('.righty').siblings('.ext-links')
+	let extLinks = $(this).parents('.righty').siblings('.ext-links');
 
 	// Show ext-links
 	extLinks.slideDown();
@@ -677,7 +677,7 @@ $("body").on("click",".hide-ext-links",function(e){
 	e.preventDefault();
 
 	// get refrence to relevant ext-links element
-	let extLinks = $(this).parents('.righty').siblings('.ext-links')
+	let extLinks = $(this).parents('.righty').siblings('.ext-links');
 
 	// Show ext-links
 	extLinks.slideUp();

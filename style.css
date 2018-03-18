@@ -433,7 +433,7 @@ span.badge.new {
 #options-dropdown {
 	width: 300px !important;
 	position: absolute;
-	left: 330px !important;
+	left: 290px !important;
 	opacity: 1;
 	z-index: 100;
 }

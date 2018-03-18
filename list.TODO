@@ -1,14 +1,9 @@
  ToDo For Next Release:
    ☐ show "profile deleted" feedback after window reload
-   ☐ website - add screenshot, add example use cases
-   ✔ changelog HTML modal @done (18-03-15 23:26)
    ☐ rename Profiles to Groups
    ☐ profiles working correctly
-   ☐ add numbered badge to Groups
-   ☐ show extension description when clicking dropdown (always show description option in settings)
-   ☐ *[BUG]* when showing apps is false, searching for an extension ignores this setting [](myscript.js ":739:0") hint=highlight this line and press ctrl+o to open the file on the line
-   ☐ *[BUG]* profiles not switching from off to on
    ☐ 
+
  Housekeeping:
    ☐ Update blurb - add example use cases (Github repo, Custom Chrome Github website, Chrome Web Store)
    ☐ Update screenshots (same places as blurb)
@@ -23,9 +18,8 @@ Issues that can wait:
    ☐ display profile tooltips vertically (have tried <br> "\n" "&lt;br /&gt;" "&#013;")
    ☐ Change search icon colour on when focusing on search input and move search icon into the input area
    ☐ import/export (as json) button on groups
+   ☐ add numbered badge to Groups
    ☐ 
-   ☐ 
-
 
 Future Features:
    ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
@@ -33,6 +27,5 @@ Future Features:
    ☐ Have an option to make sure certain extensions are off when using a profile e.g. turn off ad blockers and social blockers when using "Web Dev" profile but record their state before the change and re-instate it after profile is turned off
    ☐ Backup profiles so they can be restored if Custom Chrome is uninstalled
    ☐ Extension alerts when an extension has been sold or has known malware etc.
-   ☐ 
    ☐ 
    ☐ 
