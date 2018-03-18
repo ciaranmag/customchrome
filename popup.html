@@ -249,8 +249,11 @@
 	</div>
 
 
-	<div class="container">
-	    <div class="row ext-links" data-extId="{{id}}">
+	<div class="container ext-links">
+			<div class="row description">
+				<span>{{ description }}</span>
+			</div>
+	    <div class="row buttons" data-extId="{{id}}">
 				<!-- {{#if optionsUrl}}
         <div class="link"><a href="{{optionsUrl}}" target="_blank"><i class="material-icons">settings</i>Settings</a></div>
         {{/if}}

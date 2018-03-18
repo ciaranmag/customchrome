@@ -357,27 +357,35 @@ span.lever {
 	color: white;
 }
 
-.row.ext-links {
-	text-align:right;
+.ext-links {
 	padding-top:10px;
 	display: none;
 }
 
-.row.ext-links a {
+.ext-links .buttons {
+	text-align:right;
+}
+
+.ext-links a {
 	color:grey;
 }
 
-.row.ext-links .material-icons {
+.ext-links .material-icons {
 	font-size: 20px;
   bottom: -3px;
   position: relative;
 }
 
-.row.ext-links .link {
+.ext-links .link {
 	padding: 5px 15px;
 	display: inline-block;
 }
 
+.ext-links .description {
+	text-align: left;
+	margin:0;
+	display: none;
+}
 
 .uninstallExt {
 	/*font-weight: bold;*/

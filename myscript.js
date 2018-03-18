@@ -655,25 +655,15 @@ $("body").on("click",".uninstallExt",function(e){
 });
 
 $("body").on("click",".show-ext-links",function(e){
-
 	// User wants to show the extension links
-	console.log('e:', e);
-
-	// Figure out if icon was clicked or containing element
-	if(e.target)
 
 	e.preventDefault();
 
 	// get refrence to relevant ext-links element
-	let extLinks = $(this).parents('.righty').siblings('.container').find('.ext-links');
+	let extLinks = $(this).parents('.righty').siblings('.ext-links')
 
 	// Show ext-links
 	extLinks.slideDown();
-
-	// Show extension description
-	// $(e.currentTarget).parents('.ext-block').find(".extDescription").css("display", "inline");
-
-	this.parentElement.parentElement.parentElement.getElementsByClassName('extDescription')[0].style.display = "inline";
 
 	// hide down arrow, show up arrow
 	$(e.currentTarget).hide();
@@ -682,19 +672,15 @@ $("body").on("click",".show-ext-links",function(e){
 });
 
 $("body").on("click",".hide-ext-links",function(e){
-
 	// User wants to hide the extension links
 
 	e.preventDefault();
 
 	// get refrence to relevant ext-links element
-	let extLinks = $(this).parents('.righty').siblings('.container').find('.ext-links');
+	let extLinks = $(this).parents('.righty').siblings('.ext-links')
 
 	// Show ext-links
 	extLinks.slideUp();
-
-
-	this.parentElement.parentElement.parentElement.getElementsByClassName('extDescription')[0].style.display = "none";
 
 	// hide down arrow, show up arrow
 	$(e.currentTarget).hide();
