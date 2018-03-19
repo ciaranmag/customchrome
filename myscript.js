@@ -5,7 +5,7 @@ activeExtensions = [],
 inactiveExtensions = [],
 btnId,
 idList = [],
-user = {};
+user = {},
 
 // Handlebars for active and inactive lists
 source   = $("#entry-template").html(),
@@ -801,8 +801,7 @@ function fixStorage(groups){
 	let newObj = {
 		"groups": groups || [],
 		"dismissedProfilesPrompt": false,
-		"compactStyles": false,
-		"seenChangelog": 0.82
+		"compactStyles": false
 	};
 
 	// clear the storage (We should have everything we need in the newObj)
