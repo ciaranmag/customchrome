@@ -15,7 +15,7 @@
 
 <!-- Options Dropdown Structure -->
 <ul id='options-dropdown' class='dropdown-content'>
-  <li><a href="#!" class="addProfile">Create Group</a></li>
+  <li><a href="#!" class="addGroup">Create Group</a></li>
   <li><a href="#!" class="editBtn">Edit Groups</a></li>
   <!-- <li class="divider"></li> -->
   <li><a href="#!">Compact View<span class="switch btn-switch">
@@ -38,13 +38,13 @@
 </ul>
 	
 
-<div id="profileHeader">
+<div id="groupHeader">
 	<div class="row">
 	  <div class="col s12">
-	    <div class="card-content profile-card-content black-text profile-holder">
-	    <p id="noProfilesText">You don't have any groups setup.</p>
-	    <p id="profileOnboarding"><a class="addProfile waves-effect waves-light btn">Create Group</a><a id="dismissProfilePrompt" class="waves-effect waves-light btn grey lighten-3 grey-text text-darken-2">Dismiss</a></p>
-	    <button id='addProfileBox' class="addProfile btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Add a new profile">+</button>
+	    <div class="card-content group-card-content black-text group-holder">
+	    <p id="noGroupsText">You don't have any groups setup.</p>
+	    <p id="groupOnboarding"><a class="addGroup waves-effect waves-light btn">Create Group</a><a id="dismissGroupPrompt" class="waves-effect waves-light btn grey lighten-3 grey-text text-darken-2">Dismiss</a></p>
+	    <button id='addGroupBox' class="addGroup btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Add a new group">+</button>
 	    </div>
 	  </div>
 	</div>
@@ -86,14 +86,14 @@
 </div> <!-- allExtensionsContainer -->
 
 
-<!-- Modal html: new profile name -->
-<div id="profilePrompt" class="modal">
+<!-- Modal html: new group name -->
+<div id="groupPrompt" class="modal">
   <div class="modal-content">
     <h4>Add New Group</h4>
     <form id="nameSubmit">
       <div class="input-field col s6">
         <input type="text" class="validate" id="name" pattern="[a-zA-z0-9\s]{1,15}" autofocus>
-        <label for="profileName">New Group Name</label>
+        <label for="groupName">New Group Name</label>
       </div>
       <div id="addActionBtn">
       	<button class="btn waves-effect waves-light" id="addSubmit" type="submit" name="action">Add</button>
@@ -103,7 +103,7 @@
 </div>
 
 
-<!-- Modal html: new profile extensions list -->
+<!-- Modal html: new group extensions list -->
 <div id="addExts" class="modal modal-fixed-footer">
 <form id="extSubmit">
   <div class="modal-content">
@@ -118,12 +118,12 @@
 </div>
 
 
-<!-- Modal html: edit profile extensions list -->
+<!-- Modal html: edit group extensions list -->
 <div id="editExts" class="modal modal-fixed-footer">
 <form id="editExtSubmit">
   <div class="modal-content">
-  	<label for="editProfileName">Edit Group Name</label>
-  	<input type="text" id="editProfileName" pattern="[a-zA-z0-9\s]{1,15}" autofocus>
+  	<label for="editGroupName">Edit Group Name</label>
+  	<input type="text" id="editGroupName" pattern="[a-zA-z0-9\s]{1,15}" autofocus>
     <p>The extensions you tick here will be turned on when this group is active</p>
     <div id='editExtList'></div>
   </div>
@@ -134,13 +134,13 @@
 </div>
 
 
-<!-- Edit Profiles Modal: List of Profiles -->
-<div id="editProfiles" class="modal modal-fixed-footer">
+<!-- Edit Groups Modal: List of Groups -->
+<div id="editGroups" class="modal modal-fixed-footer">
 <form id="editDone">
   <div class="modal-content">
     <h4>Edit your groups</h4>
     <p>Edit or delete each group</p>
-    <div id='profileList'></div>
+    <div id='groupList'></div>
   </div>
   <div class="modal-footer">
   	<button class="btn waves-effect waves-light red" id="removeAllBtn">Delete all groups</button>
@@ -158,12 +158,12 @@
     </div>
     <div class="modal-footer">
         <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-        <a href="#!" id='deleteProfile' class=" modal-action modal-close waves-effect waves-green btn-flat">Yep, delete!</a>
+        <a href="#!" id='deleteGroup' class=" modal-action modal-close waves-effect waves-green btn-flat">Yep, delete!</a>
     </div>
 </div>
 
 
-<div id="confirmDismissProfilePrompt" class="modal">
+<div id="confirmDismissGroupPrompt" class="modal">
     <div class="modal-content">
         <p>You can still add a group from the options panel (click gear icon in top right)</p>
     </div>
@@ -181,7 +181,7 @@
     </div>
     <div class="modal-footer">
         <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-        <a href="#!" id='deleteAllProfiles' class=" modal-action modal-close waves-effect waves-green btn-flat">Yep, delete em all!</a>
+        <a href="#!" id='deleteAllGroups' class=" modal-action modal-close waves-effect waves-green btn-flat">Yep, delete em all!</a>
     </div>
 </div>
 
@@ -196,7 +196,7 @@
         	<li>Added apps to list (toggle in settings menu)</li>
         	<li>Added uninstall button to each extension (click the dropdown icon next to the extension on/off switch)</li>
         	<li>Updated storage architecture to save user's customised settings</li>
-        	<li>Profiles have been renamed to Groups</li>
+        	<li>Groups have been renamed to Groups</li>
         	<li>"Add a group" suggestion can be dismissed forever (you can add one at any time in the settings menu)</li>
         </ul>
     </div>
@@ -206,10 +206,10 @@
 </div>
 
 
-<!-- Handlebar Template Start: edit profiles in modal -->
-<script id="profileList-template" type="text/x-handlebars-template">
-	<div class='profileList-holder' profile="{{this}}">
-		<div class='profileList-name'>
+<!-- Handlebar Template Start: edit groups in modal -->
+<script id="groupList-template" type="text/x-handlebars-template">
+	<div class='groupList-holder' group="{{this}}">
+		<div class='groupList-name'>
 			<span>{{this}}</span>
 		</div>
 		<button class="btn waves-effect waves-light grey edit {{this}}">EDIT</button>
@@ -271,7 +271,7 @@
 <!-- Handlebar Template End-->
 
 
-<!-- Handlebar Template Start: add extensions to profiles in modal list -->
+<!-- Handlebar Template Start: add extensions to groups in modal list -->
 <script id="extList-template" type="text/x-handlebars-template">
 	<div class='extList-holder'>
 		<div class='extList-toggle'>
