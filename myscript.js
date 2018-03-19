@@ -11,13 +11,13 @@ user = {};
 source   = $("#entry-template").html(),
 template = Handlebars.compile(source),
 
-// Handlebars for extList (modal for adding extensions to profiles)
+// Handlebars for extList (modal for adding extensions to groups)
 extListSource   = $("#extList-template").html(),
 extListTemplate = Handlebars.compile(extListSource),
 
-// Handlebars for profileList (modal for editing profiles)
-profileListSource   = $("#profileList-template").html(),
-profileListTemplate = Handlebars.compile(profileListSource);
+// Handlebars for groupList (modal for editing groups)
+groupListSource   = $("#groupList-template").html(),
+groupListTemplate = Handlebars.compile(groupListSource);
 // Finish declaring variables
 
 
@@ -30,7 +30,7 @@ $(function() {
 	includeAppsListener();
 
 	$('.modal-trigger').leanModal();
-	$('#addProfileBox').hide();
+	$('#addGroupBox').hide();
 
 	chrome.management.getAll(function(info) {
 		// info is a list of all user installed apps i.e. extensions, apps, and themes
@@ -58,7 +58,7 @@ $(function() {
 			}
 		}
 
-		// call function to check storage.sync for existing user profiles
+		// call function to check storage.sync for existing user groups
 		getUserData(); 
 
 		// sort extArray into alphabetical order based on the extensions' names
@@ -161,15 +161,15 @@ $(function() {
 }); // close $(document).ready
 
 function handleGroupsClasses(){
-	// setting the profile buttons to on/off appearance
+	// setting the group buttons to on/off appearance
 
-	debugger
+	// debugger;
 	
-	for (let profile in user.profiles) {
-		// for each profile, get all extension id's in that profile
+	for (let group in user.groups) {
+		// for each group, get all extension id's in that group
 		// if they are all on, add class "on" to element
 		// otherwise, leave it grey
-		let extensionIds = user.profiles[profile];
+		let extensionIds = user.groups[group];
 
 		let tempArray = [];
 
@@ -183,25 +183,25 @@ function handleGroupsClasses(){
 			}
 		}
 
-		// tempArray now contains extension objects for this profile
+		// tempArray now contains extension objects for this group
 
 		// finds if any of the extensions have enabled === false
-		// if even one extension is off, then the profile is inactive
+		// if even one extension is off, then the group is inactive
 		let off = tempArray.some(function(ext){
 			return ext.enabled === false;
 		}) || false;
 
 		// if it's on, add/remove appropriate classes
 		if(!off){
-			profile = profile.replace(' ', "_");
-			$("#" + profile).removeClass("off").addClass("on");
+			group = group.replace(' ', "_");
+			$("#" + group).removeClass("off").addClass("on");
 		}
 	}
 }
 
 
-// after clicking a profile's on/off button, we toggle its appearance (on or off) and cycle through associated extensions turning them all on or off
-$("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
+// after clicking a group's on/off button, we toggle its appearance (on or off) and cycle through associated extensions turning them all on or off
+$("body").on("click",".group-btn",function(){ // if a group btn is clicked
 	
 	// find out which extension was clicked and assign to btnId
 	btnId = $(this).attr("id"); 
@@ -209,14 +209,14 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 
 	if ($(this).hasClass("on")) { 
 		// if the btn is currently on then turn all extensions off
-		user.profiles[btnIdConvert].forEach(function(extensionId){
+		user.groups[btnIdConvert].forEach(function(extensionId){
 			console.log('disabling extension:', extensionId);
 			chrome.management.setEnabled(extensionId, false);
 		});
 
 		Materialize.toast(btnIdConvert + ' is now off', 2000, 'ccToastOff');
 
-		// change profile btn to "off" appearance
+		// change group btn to "off" appearance
 		$(this).removeClass("on").addClass("off"); 
 		setTimeout(function(){
 			// adding false lets the page reload from the cache
@@ -225,14 +225,14 @@ $("body").on("click",".profile-btn",function(){ // if a profile btn is clicked
 
 	} else if ($(this).hasClass("off")) { 
 		// if the btn is currently off then turn all extensions on
-		user.profiles[btnIdConvert].forEach(function(extensionId){
+		user.groups[btnIdConvert].forEach(function(extensionId){
 			console.log('enabling extension:', extensionId);
 			chrome.management.setEnabled(extensionId, true);
 		});
 
 		Materialize.toast(btnIdConvert + ' is now on', 2000, 'ccToastOn');
 
-		// change profile btn to "on" appearance
+		// change group btn to "on" appearance
 		$(this).removeClass("off").addClass("on"); 
 		setTimeout(function(){
 			// adding false lets the page reload from the cache
@@ -262,16 +262,16 @@ function extStateListener() {
 	});
 }
 
-// listen for addProfile button press, add a button to HTML, prompt for profile name, set that name as button text, add that profile to the storage.sync object
-$('.addProfile').click(function(){
-	$('#profilePrompt').openModal();
+// listen for addGroup button press, add a button to HTML, prompt for group name, set that name as button text, add that group to the storage.sync object
+$('.addGroup').click(function(){
+	$('#groupPrompt').openModal();
 });
 
 $('#nameSubmit').submit(
 	function(e){
 		e.preventDefault();
 
-		// catch the profile name the user entered
+		// catch the group name the user entered
 		name = $('#name').val().toLowerCase(); 
 
 		// Check for at least one character
@@ -280,26 +280,26 @@ $('#nameSubmit').submit(
 			return;
 		}
 
-		// check if profile name already exists
-		if($.inArray(name,Object.keys(user.profiles)) != -1){
-			Materialize.toast('Profile name already exists!', 2000, 'alert');
+		// check if group name already exists
+		if($.inArray(name,Object.keys(user.groups)) != -1){
+			Materialize.toast('Group name already exists!', 2000, 'alert');
 			return;
 		}
 		
-		// profilename doesn't exists yet, proceed with selecting extensions for the new profile
-		$('#profilePrompt').closeModal();
+		// groupname doesn't exists yet, proceed with selecting extensions for the new group
+		$('#groupPrompt').closeModal();
 
-		// Make sure profileHeader is visible
-		// $('#profileHeader').slideDown();
+		// Make sure groupHeader is visible
+		// $('#groupHeader').slideDown();
 
-		// after half a second open the modal, user can specify what extensions to add to profile
+		// after half a second open the modal, user can specify what extensions to add to group
 		setTimeout(function(){
 				addExtensions(name);
 		}, 500);
 	}
 );
 
-// add extensions to new profile modal
+// add extensions to new group modal
 function addExtensions(name) { 
 	$('#addExts').openModal({
 		dismissible: false,
@@ -309,7 +309,7 @@ function addExtensions(name) {
 	});
 
 	let a = $('#addExts h4').text();
-	// change H4 text to say "add extensions to [profile name]"
+	// change H4 text to say "add extensions to [group name]"
 	$('#addExts h4').text(a + name); 
 	
 	// loop over extArray to populate the list
@@ -342,38 +342,38 @@ $('#extSubmit').submit(
 		e.preventDefault();
 		//if no extension are selected, show toast warning and do not close modal
 		if(idList.length === 0){
-			Materialize.toast('You must select at least one extension for this profile', 2000, 'alert');
+			Materialize.toast('You must select at least one extension for this group', 2000, 'alert');
 		} else {
 			//extensions were selected
 			submitThatShit(); //submitting extensions to memory
 			$('#addExts h4').text("Add extensions to "); // turn h4 text back to normal after modal is dismissed
 			$('#extList').html('');
-			Materialize.toast(name +' profile added', 2000, 'ccToastOn');
+			Materialize.toast(name +' group added', 2000, 'ccToastOn');
 			$('#addExts').closeModal(); //close the modal
-			$('#profileHeader').slideDown();
+			$('#groupHeader').slideDown();
 		}
 	}
 );
 
 function submitThatShit() {
 
-	// profile name is in a global variable 'name'
+	// group name is in a global variable 'name'
 	// extension id's are in a global variable 'idList'
 	// tempObj[name] = idList;
 	if (idList.length === 0) {
 		return;
 	}
 
-	// set new profile on user obj, with idlist as array
-	user.profiles[name] = idList;
+	// set new group on user obj, with idlist as array
+	user.groups[name] = idList;
 
 	chrome.storage.sync.set(user, function () {
 	  console.log('Saved', name, idList);
 
-	  // get user data again, re-fill profiles
+	  // get user data again, re-fill groups
 	  getUserData();
 
-	  //emptying out idList so that extensions aren't added to future profiles
+	  //emptying out idList so that extensions aren't added to future groups
 	  idList = []; 
 
 	});
@@ -383,10 +383,10 @@ function submitThatShit() {
 function getUserData() { 
 	chrome.storage.sync.get(function(obj){
 
-		// There should be a "profiles" property
+		// There should be a "groups" property
 		// we can check for that and assume that 
 		// if it doesn't exist, then they're on the old version
-		if(!obj.hasOwnProperty('profiles')){
+		if(!obj.hasOwnProperty('groups')){
 			console.log('migrating user data...');
 			fixStorage(obj);
 			return;
@@ -407,46 +407,46 @@ function getUserData() {
 
 		}
 
-		// check if user has dismissed profiles prompt
-		if(user.dismissedProfilesPrompt && Object.keys(user.profiles).length === 0){
-			// User has no profiles, and has dismissed profiles prompt
-			$('#profileHeader').hide();
+		// check if user has dismissed groups prompt
+		if(user.dismissedGroupsPrompt && Object.keys(user.groups).length === 0){
+			// User has no groups, and has dismissed groups prompt
+			$('#groupHeader').hide();
 			// hide edit button (in options slide-down)
 			$('.editBtn').hide();
 		}
 
-		let allProfiles = Object.keys(obj.profiles);
+		let allGroups = Object.keys(obj.groups);
 
-		if ( allProfiles.length === 0 ) { 
-			// if there are no profiles, exit function
-			$('#noProfilesText').show();
-			// $('#profileHeader').css("background-color", "#03A9FA");
+		if ( allGroups.length === 0 ) { 
+			// if there are no groups, exit function
+			$('#noGroupsText').show();
+			// $('#groupHeader').css("background-color", "#03A9FA");
 			$('.editBtn').hide();
 			return;
 		}
 
-		// if there are between 1 and 4 profiles show addProfileBox
-		else if ( allProfiles.length >= 1 && allProfiles.length <= 4 ) {
-			$('#addProfileBox').show();
+		// if there are between 1 and 4 groups show addGroupBox
+		else if ( allGroups.length >= 1 && allGroups.length <= 4 ) {
+			$('#addGroupBox').show();
 		}
 
-		$('#noProfilesText').hide();
-		$('#profileOnboarding').hide();
-		$('#profileHeader').css("background-color", "#f3f3f3");
+		$('#noGroupsText').hide();
+		$('#groupOnboarding').hide();
+		$('#groupHeader').css("background-color", "#f3f3f3");
 		$('.editBtn').show();
 
-		// clear out html in profile-holder first
-		$('.profile-holder').html('');
+		// clear out html in group-holder first
+		$('.group-holder').html('');
 
-		// loop over all profiles
+		// loop over all groups
 		// append them to the div
-		for (let i = 0; i < allProfiles.length; i++) {
-			let name = allProfiles[i];
+		for (let i = 0; i < allGroups.length; i++) {
+			let name = allGroups[i];
 			// console.log('name:', name)
-			let btnHtml = "<button class='profile-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
+			let btnHtml = "<button class='group-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
 			
-			// append to profile-holder
-			$('.profile-holder').append(btnHtml); 
+			// append to group-holder
+			$('.group-holder').append(btnHtml); 
 		}
 
 		handleGroupsClasses();
@@ -454,20 +454,20 @@ function getUserData() {
 	});
 }
 
-// Not needed, listening to .addProfile instead
-// $("body").on("click","#addProfileBox",function(){ // add a new profile box
-// 	$('#profilePrompt').openModal();
+// Not needed, listening to .addGroup instead
+// $("body").on("click","#addGroupBox",function(){ // add a new group box
+// 	$('#groupPrompt').openModal();
 // });
 
 
 $("body").on("click",".editBtn",function(){
-	$('#editProfiles').openModal({
+	$('#editGroups').openModal({
 		dismissible: false,
 		ready: function() {},
 	});
 
-	for (let i = 0; i < Object.keys(user.profiles).length; i++) {
-		$('#profileList').append(profileListTemplate(Object.keys(user.profiles)[i]));
+	for (let i = 0; i < Object.keys(user.groups).length; i++) {
+		$('#groupList').append(groupListTemplate(Object.keys(user.groups)[i]));
 	}
 
 });
@@ -481,18 +481,18 @@ $('#removeAllBtn').click((e)=>{
 
 });
 
-$("body").on("click", "#deleteAllProfiles", function(){
+$("body").on("click", "#deleteAllGroups", function(){
 	
-	// User confirms delete all profiles
-	// remove all profiles (set empty object)
-	user.profiles = {};
+	// User confirms delete all groups
+	// remove all groups (set empty object)
+	user.groups = {};
 
 	// save in memory
 	chrome.storage.sync.set(user, function () {
-	  console.log('removed all profiles');
+	  console.log('removed all groups');
 	});
 
-	Materialize.toast('Deleting your profiles...', 2000, 'deleteToast');
+	Materialize.toast('Deleting your groups...', 2000, 'deleteToast');
 	setTimeout(function(){
 		location.reload(false); // adding false lets the page reload from the cache
 	}, 1000);
@@ -500,45 +500,45 @@ $("body").on("click", "#deleteAllProfiles", function(){
 
 
 $("body").on("click",".delete",function(){
-	//when a profile delete button is clicked, get the name of the profile being deleted
-	let profile = $(this).parent().attr('profile');
+	//when a group delete button is clicked, get the name of the group being deleted
+	let group = $(this).parent().attr('group');
 
-	//close the current modal, and clear out the profilesList
-	$('#editProfiles').closeModal();
-	$('#profileList').html('');
+	//close the current modal, and clear out the groupsList
+	$('#editGroups').closeModal();
+	$('#groupList').html('');
 
 	//wait half a second, open a new confirm/cancel modal
 	setTimeout(function(){
-		confirmDelete(profile);
+		confirmDelete(group);
 	}, 500);
 });
 
 
-let confirmDelete = function(profile){
-	//open the modal and insert the profile name into the first p element
+let confirmDelete = function(group){
+	//open the modal and insert the group name into the first p element
 	$('#confirmDelete').openModal({
 		complete: function(){
 			$('#confirmDelete h6').html('Are you sure you want to delete ');
 		}
 	});
 
-	$('#confirmDelete h6').append(profile);
+	$('#confirmDelete h6').append(group);
 	//on confirm
-		//delete profile from storage, show toast confirming profile delete
+		//delete group from storage, show toast confirming group delete
 	//on cancel
 		//close the modal and do nothing
-	$("body").on("click","#deleteProfile",function(){
-		//delete the selected profile
+	$("body").on("click","#deleteGroup",function(){
+		//delete the selected group
 
-		delete user.profiles[profile];
+		delete user.groups[group];
 
 		// add property to user object that will be used to show 
-		// "profile delete" toast when extension reloads
-		user.showToast = `${profile} successfully deleted`;
+		// "group delete" toast when extension reloads
+		user.showToast = `${group} successfully deleted`;
 
 		chrome.storage.sync.set(user);
 
-		Materialize.toast('Deleting ' + profile, 2000, 'deleteToast');
+		Materialize.toast('Deleting ' + group, 2000, 'deleteToast');
 		setTimeout(function(){
 			location.reload(false);
 		}, 1000);
@@ -547,19 +547,19 @@ let confirmDelete = function(profile){
 
 
 
-let profileName;
+let groupName;
 $("body").on("click",".edit",function(){
 	
-	//get profile name
-	profileName = $(this).parent().attr('profile');
-	console.log('user is editing: ',profileName);
+	//get group name
+	groupName = $(this).parent().attr('group');
+	console.log('user is editing: ',groupName);
 
-	//close the current modal, and clear out the profilesList
-	$('#editProfiles').closeModal();
-	$('#profileList').html('');
+	//close the current modal, and clear out the groupsList
+	$('#editGroups').closeModal();
+	$('#groupList').html('');
 
-	//prefill the profile name input with the current profile name
-	$('#editProfileName').val(profileName);
+	//prefill the group name input with the current group name
+	$('#editGroupName').val(groupName);
 
 
 	//populate list with all extensions:
@@ -568,9 +568,9 @@ $("body").on("click",".edit",function(){
 		$('#editExtList').append(extListTemplate(ext));
 	}
 
-	// Loop over all id's in profile and tick the boxes that are already in the profile
-	for (let i = 0; i < user.profiles[profileName].length; i++) {
-		let id = user.profiles[profileName][i];
+	// Loop over all id's in group and tick the boxes that are already in the group
+	for (let i = 0; i < user.groups[groupName].length; i++) {
+		let id = user.groups[groupName][i];
 		idList.push(id);
 		//find input with this id and add .prop('checked', true);
 		$('#editExtList input[appid="'+id+'"]').prop('checked', true);
@@ -579,7 +579,7 @@ $("body").on("click",".edit",function(){
 	//start listening for checkbox changes
 	checkboxlistener();
 
-	//save button adds profile to Storage.
+	//save button adds group to Storage.
 	//cancel button disregards changes
 
 	//wait half a second, open a new confirm/cancel modal
@@ -596,29 +596,29 @@ $("#editExtSubmit").submit(function(e){
 
 	//if no extension are selected, show toast warning and return
 	if(idList.length === 0){
-		Materialize.toast('You must select at least one extension for this profile', 2000, 'alert');
+		Materialize.toast('You must select at least one extension for this group', 2000, 'alert');
 		return;
 	}
 
-	//if user has deleted the profile name, prompt them to enter something and return
-	if($('#editProfileName').val()===''){
-		Materialize.toast('You must enter a name for this profile', 2000, 'alert');
+	//if user has deleted the group name, prompt them to enter something and return
+	if($('#editGroupName').val()===''){
+		Materialize.toast('You must enter a name for this group', 2000, 'alert');
 		return;
 	}
 
-	let newName = $('#editProfileName').val().toLowerCase();
+	let newName = $('#editGroupName').val().toLowerCase();
 
-	if(profileName === $('#editProfileName').val()){
-		// user has NOT changed the profile name, so we can just set the idList as the profile
-		chrome.storage.sync.remove(profileName, function(){
-			Materialize.toast(name+' profile successfully edited', 1000, 'ccToastOn');
+	if(groupName === $('#editGroupName').val()){
+		// user has NOT changed the group name, so we can just set the idList as the group
+		chrome.storage.sync.remove(groupName, function(){
+			Materialize.toast(name+' group successfully edited', 1000, 'ccToastOn');
 			setTimeout(function(){
 				location.reload(false);
 
 				//clear out the editExtList
 				$('#editExtList').html('');
 
-				//set new profile in storage with idList as array
+				//set new group in storage with idList as array
 				name = newName;
 				submitThatShit();
 			}, 1000);
@@ -628,23 +628,23 @@ $("#editExtSubmit").submit(function(e){
 	}
 
 	else {
-		//user has updated the profile name, check if profile with this new name already exists
+		//user has updated the group name, check if group with this new name already exists
 		chrome.storage.sync.get(function(obj){
 			if ($.inArray(newName, Object.keys(obj)) != -1){
-				Materialize.toast('Profile name already exists!', 2000, 'alert');
+				Materialize.toast('Group name already exists!', 2000, 'alert');
 			}
 			else {
 				//new name is ok, delete old name from storage
-				console.log('deleting old profile, '+profileName);
-				chrome.storage.sync.remove(profileName, function(){
-					Materialize.toast(name+' profile successfully edited', 1000, 'ccToastOn');
+				console.log('deleting old group, '+groupName);
+				chrome.storage.sync.remove(groupName, function(){
+					Materialize.toast(name+' group successfully edited', 1000, 'ccToastOn');
 					setTimeout(function(){
 						location.reload(false);
 
 						//clear out the editExtList
 						$('#editExtList').html('');
 
-						//set new profile in storage with idList as array
+						//set new group in storage with idList as array
 						name = newName;
 						submitThatShit();
 					}, 1000);
@@ -712,23 +712,23 @@ $("body").on("click",".hide-ext-links",function(e){
 
 });
 
-$("body").on("click","#dismissProfilePrompt",function(e){
+$("body").on("click","#dismissGroupPrompt",function(e){
 
-	// User wants to dismiss the profiles onboarding
+	// User wants to dismiss the groups onboarding
 
 	e.preventDefault();
 
 	// Hide call to actions, copy and buttons
-	$('#profileHeader').hide();
+	$('#groupHeader').hide();
 
-	// Show user the modal to tell them they can still add a profile from the options modal
-	$('#confirmDismissProfilePrompt').openModal();
+	// Show user the modal to tell them they can still add a group from the options modal
+	$('#confirmDismissGroupPrompt').openModal();
 
-	// Save this to chrome storage so we can use it on next page load and not show the profileheader again UNTIL user resets it in options page....?
-	user.dismissedProfilesPrompt = true;
+	// Save this to chrome storage so we can use it on next page load and not show the groupheader again UNTIL user resets it in options page....?
+	user.dismissedGroupsPrompt = true;
 
 	chrome.storage.sync.set(user, function () {
-	  console.log('Saved, profilesModal dismissed');
+	  console.log('Saved, groupsModal dismissed');
 	});
 
 });
@@ -790,18 +790,18 @@ $('#viewChangelog').click(()=>{
 
 /* 
 This function are for moving from v0.82 -> v0.83
-We were storing profiles on the global sync object. We need to put them into a profiles property
-We also need to add properties for compactStyles and dismissedProfilesPrompt
+We were storing groups on the global sync object. We need to put them into a groups property
+We also need to add properties for compactStyles and dismissedGroupsPrompt
 */
 
-function fixStorage(profiles){
+function fixStorage(groups){
 
-	console.log('migrating data with:', profiles);
+	console.log('migrating data with:', groups);
 
 	// create new object
 	let newObj = {
-		"profiles": profiles || [],
-		"dismissedProfilesPrompt": false,
+		"groups": groups || [],
+		"dismissedGroupsPrompt": false,
 		"compactStyles": false,
 		"seenChangelog": 0.82
 	};
