@@ -1,6 +1,6 @@
  ToDo For Next Release:
-   ☐ show "profile deleted" feedback after window reload
-   ☐ rename Profiles to Groups
+   ✔ show "profile deleted" feedback after window reload @done (18-03-19 13:27)
+   ✔ rename Profiles to Groups @done (18-03-19 13:41)
    ☐ profiles working correctly
    ☐ better event tracking analytics
 

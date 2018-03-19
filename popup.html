@@ -15,8 +15,8 @@
 
 <!-- Options Dropdown Structure -->
 <ul id='options-dropdown' class='dropdown-content'>
-  <li><a href="#!" class="addProfile">Create Profile </a></li>
-  <li><a href="#!" class="editBtn">Edit Profiles</a></li>
+  <li><a href="#!" class="addProfile">Create Group</a></li>
+  <li><a href="#!" class="editBtn">Edit Groups</a></li>
   <!-- <li class="divider"></li> -->
   <li><a href="#!">Compact View<span class="switch btn-switch">
 	    <label>
@@ -42,8 +42,8 @@
 	<div class="row">
 	  <div class="col s12">
 	    <div class="card-content profile-card-content black-text profile-holder">
-	    <p id="noProfilesText">You don't have any profiles setup.</p>
-	    <p id="profileOnboarding"><a class="addProfile waves-effect waves-light btn">Create Profile</a><a id="dismissProfilePrompt" class="waves-effect waves-light btn grey lighten-3 grey-text text-darken-2">Dismiss</a></p>
+	    <p id="noProfilesText">You don't have any groups setup.</p>
+	    <p id="profileOnboarding"><a class="addProfile waves-effect waves-light btn">Create Group</a><a id="dismissProfilePrompt" class="waves-effect waves-light btn grey lighten-3 grey-text text-darken-2">Dismiss</a></p>
 	    <button id='addProfileBox' class="addProfile btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Add a new profile">+</button>
 	    </div>
 	  </div>
@@ -89,11 +89,11 @@
 <!-- Modal html: new profile name -->
 <div id="profilePrompt" class="modal">
   <div class="modal-content">
-    <h4>Add New Profile</h4>
+    <h4>Add New Group</h4>
     <form id="nameSubmit">
       <div class="input-field col s6">
         <input type="text" class="validate" id="name" pattern="[a-zA-z0-9\s]{1,15}" autofocus>
-        <label for="profileName">New Profile Name</label>
+        <label for="profileName">New Group Name</label>
       </div>
       <div id="addActionBtn">
       	<button class="btn waves-effect waves-light" id="addSubmit" type="submit" name="action">Add</button>
@@ -108,7 +108,7 @@
 <form id="extSubmit">
   <div class="modal-content">
     <h4>Add extensions to </h4>
-    <p>The extensions you tick here will be turned on when this profile is active</p>
+    <p>The extensions you tick here will be turned on when this group is active</p>
     <div id='extList'></div>
   </div>
   <div class="modal-footer">
@@ -122,9 +122,9 @@
 <div id="editExts" class="modal modal-fixed-footer">
 <form id="editExtSubmit">
   <div class="modal-content">
-  	<label for="editProfileName">Edit Profile Name</label>
+  	<label for="editProfileName">Edit Group Name</label>
   	<input type="text" id="editProfileName" pattern="[a-zA-z0-9\s]{1,15}" autofocus>
-    <p>The extensions you tick here will be turned on when this profile is active</p>
+    <p>The extensions you tick here will be turned on when this group is active</p>
     <div id='editExtList'></div>
   </div>
   <div class="modal-footer">
@@ -138,12 +138,12 @@
 <div id="editProfiles" class="modal modal-fixed-footer">
 <form id="editDone">
   <div class="modal-content">
-    <h4>Edit your profiles</h4>
-    <p>Edit or delete each profile</p>
+    <h4>Edit your groups</h4>
+    <p>Edit or delete each group</p>
     <div id='profileList'></div>
   </div>
   <div class="modal-footer">
-  	<button class="btn waves-effect waves-light red" id="removeAllBtn">Delete all profiles</button>
+  	<button class="btn waves-effect waves-light red" id="removeAllBtn">Delete all groups</button>
   	<button class="btn waves-effect waves-light" id="editDone" type="submit" name="action">Done</button>
   </div>
 </form>
@@ -165,7 +165,7 @@
 
 <div id="confirmDismissProfilePrompt" class="modal">
     <div class="modal-content">
-        <p>You can still add a profile from the options panel (click gear icon in top right)</p>
+        <p>You can still add a group from the options panel (click gear icon in top right)</p>
     </div>
     <div class="modal-footer">
         <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Ok!</a>
@@ -176,7 +176,7 @@
 <div id="confirmDeleteAll" class="modal">
     <div class="modal-content">
         <h4>Really?</h4>
-        <h6>Are you sure you want to delete all your profiles?</h6>
+        <h6>Are you sure you want to delete all your groups?</h6>
         <p>This is irreversible...</p>
     </div>
     <div class="modal-footer">
@@ -196,7 +196,7 @@
         	<li>Added apps to list (toggle in settings menu)</li>
         	<li>Added uninstall button to each extension (click the dropdown icon next to the extension on/off switch)</li>
         	<li>Updated storage architecture to save user's customised settings</li>
-        	<li>"Add a profile" suggestion can be dismissed forever (you can add one at any time in the settings menu)</li>
+        	<li>"Add a group" suggestion can be dismissed forever (you can add one at any time in the settings menu)</li>
         </ul>
     </div>
     <div class="modal-footer">
