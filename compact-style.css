@@ -1,13 +1,13 @@
-/* PROFILES SECTION */
+/* GROUPS SECTION */
 .extDescription {
 	display: none;
 }
 
-.profile-card-content {
+.group-card-content {
 	padding-top: 5px !important;
 }
 
-#profileHeader {
+#groupHeader {
 	height: 0px;
 }
 
