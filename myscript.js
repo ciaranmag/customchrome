@@ -802,8 +802,7 @@ function fixStorage(groups){
 	let newObj = {
 		"groups": groups || [],
 		"dismissedGroupsPrompt": false,
-		"compactStyles": false,
-		"seenChangelog": 0.82
+		"compactStyles": false
 	};
 
 	// clear the storage (We should have everything we need in the newObj)
