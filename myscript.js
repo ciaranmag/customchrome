@@ -5,7 +5,7 @@ activeExtensions = [],
 inactiveExtensions = [],
 btnId,
 idList = [],
-user = {};
+user = {},
 
 // Handlebars for active and inactive lists
 source   = $("#entry-template").html(),
