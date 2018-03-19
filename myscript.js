@@ -285,7 +285,7 @@ function addExtensions(name) {
 	$('#addExts').openModal({
 		dismissible: false,
 		ready: function() {
-			checkboxlistener(name);
+			checkboxListener();
 		}
 	});
 
@@ -298,9 +298,12 @@ function addExtensions(name) {
 		let ext = extArray[i];
 		$('#extList').append(extListTemplate(ext));
 	}
+
+	// clear out name variable
+	$('#name').val('');
 }
 
-function checkboxlistener() { 
+function checkboxListener() { 
 	// turn on/off extensions when toggle is switched
 	$('.extList-toggle input').change(function(){
 		//get the extension id the user clicked
@@ -426,6 +429,18 @@ function getUserData() {
 			// append to profile-holder
 			$('.profile-holder').append(btnHtml); 
 		}
+
+		// Check if there's a toast to show
+		if(user.showToast.length) {
+			// show toast
+			Materialize.toast(user.showToast, 2000, 'deleteToast');
+			// empty out the showToast property
+			user.showToast = ""
+			chrome.storage.sync.set(user, function(){
+				console.log('deleted showToast:', user)
+			});
+		}
+
 	});
 }
 
@@ -451,8 +466,6 @@ $("body").on("click",".editBtn",function(){
 $('#removeAllBtn').click((e)=>{
 	
 	e.preventDefault();
-
-	console.log('howiye or whatever');
 
 	$('#confirmDeleteAll').openModal();
 
@@ -506,13 +519,14 @@ let confirmDelete = function(profile){
 		//close the modal and do nothing
 	$("body").on("click","#deleteProfile",function(){
 		//delete the selected profile
-		console.log('trying to remove ',profile," from storage");
 
 		delete user.profiles[profile];
 
-		chrome.storage.sync.set(user, function () {
-		  console.log('Saved, deleted ', profile);
-		});
+		// add property to user object that will be used to show 
+		// "profile delete" toast when extension reloads
+		user.showToast = `${profile} successfully deleted`;
+
+		chrome.storage.sync.set(user);
 
 		Materialize.toast('Deleting ' + profile, 2000, 'deleteToast');
 		setTimeout(function(){
