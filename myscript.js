@@ -30,7 +30,7 @@ $(function() {
 	includeAppsListener();
 
 	$('.modal-trigger').leanModal();
-	$('#addGroupBox').hide();
+	$('#addProfileBox').hide();
 
 	chrome.management.getAll(function(info) {
 		// info is a list of all user installed apps i.e. extensions, apps, and themes
@@ -262,7 +262,7 @@ function extStateListener() {
 	});
 }
 
-// listen for addGroup button press, add a button to HTML, prompt for group name, set that name as button text, add that group to the storage.sync object
+// listen for addProfile button press, add a button to HTML, prompt for group name, set that name as button text, add that group to the storage.sync object
 $('.addGroup').click(function(){
 	$('#groupPrompt').openModal();
 });
@@ -282,7 +282,7 @@ $('#nameSubmit').submit(
 
 		// check if group name already exists
 		if($.inArray(name,Object.keys(user.groups)) != -1){
-			Materialize.toast('Group name already exists!', 2000, 'alert');
+			Materialize.toast('Profile name already exists!', 2000, 'alert');
 			return;
 		}
 		
@@ -408,29 +408,29 @@ function getUserData() {
 		}
 
 		// check if user has dismissed groups prompt
-		if(user.dismissedGroupsPrompt && Object.keys(user.groups).length === 0){
+		if(user.dismissedProfilesPrompt && Object.keys(user.groups).length === 0){
 			// User has no groups, and has dismissed groups prompt
 			$('#groupHeader').hide();
 			// hide edit button (in options slide-down)
 			$('.editBtn').hide();
 		}
 
-		let allGroups = Object.keys(obj.groups);
+		let allProfiles = Object.keys(obj.groups);
 
-		if ( allGroups.length === 0 ) { 
+		if ( allProfiles.length === 0 ) { 
 			// if there are no groups, exit function
-			$('#noGroupsText').show();
+			$('#noProfilesText').show();
 			// $('#groupHeader').css("background-color", "#03A9FA");
 			$('.editBtn').hide();
 			return;
 		}
 
-		// if there are between 1 and 4 groups show addGroupBox
-		else if ( allGroups.length >= 1 && allGroups.length <= 4 ) {
-			$('#addGroupBox').show();
+		// if there are between 1 and 4 groups show addProfileBox
+		else if ( allProfiles.length >= 1 && allProfiles.length <= 4 ) {
+			$('#addProfileBox').show();
 		}
 
-		$('#noGroupsText').hide();
+		$('#noProfilesText').hide();
 		$('#groupOnboarding').hide();
 		$('#groupHeader').css("background-color", "#f3f3f3");
 		$('.editBtn').show();
@@ -440,8 +440,8 @@ function getUserData() {
 
 		// loop over all groups
 		// append them to the div
-		for (let i = 0; i < allGroups.length; i++) {
-			let name = allGroups[i];
+		for (let i = 0; i < allProfiles.length; i++) {
+			let name = allProfiles[i];
 			// console.log('name:', name)
 			let btnHtml = "<button class='group-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
 			
@@ -454,14 +454,14 @@ function getUserData() {
 	});
 }
 
-// Not needed, listening to .addGroup instead
-// $("body").on("click","#addGroupBox",function(){ // add a new group box
+// Not needed, listening to .addProfile instead
+// $("body").on("click","#addProfileBox",function(){ // add a new group box
 // 	$('#groupPrompt').openModal();
 // });
 
 
 $("body").on("click",".editBtn",function(){
-	$('#editGroups').openModal({
+	$('#editProfiles').openModal({
 		dismissible: false,
 		ready: function() {},
 	});
@@ -481,7 +481,7 @@ $('#removeAllBtn').click((e)=>{
 
 });
 
-$("body").on("click", "#deleteAllGroups", function(){
+$("body").on("click", "#deleteAllProfiles", function(){
 	
 	// User confirms delete all groups
 	// remove all groups (set empty object)
@@ -504,7 +504,7 @@ $("body").on("click",".delete",function(){
 	let group = $(this).parent().attr('group');
 
 	//close the current modal, and clear out the groupsList
-	$('#editGroups').closeModal();
+	$('#editProfiles').closeModal();
 	$('#groupList').html('');
 
 	//wait half a second, open a new confirm/cancel modal
@@ -527,7 +527,7 @@ let confirmDelete = function(group){
 		//delete group from storage, show toast confirming group delete
 	//on cancel
 		//close the modal and do nothing
-	$("body").on("click","#deleteGroup",function(){
+	$("body").on("click","#deleteProfile",function(){
 		//delete the selected group
 
 		delete user.groups[group];
@@ -555,11 +555,11 @@ $("body").on("click",".edit",function(){
 	console.log('user is editing: ',groupName);
 
 	//close the current modal, and clear out the groupsList
-	$('#editGroups').closeModal();
+	$('#editProfiles').closeModal();
 	$('#groupList').html('');
 
 	//prefill the group name input with the current group name
-	$('#editGroupName').val(groupName);
+	$('#editProfileName').val(groupName);
 
 
 	//populate list with all extensions:
@@ -601,14 +601,14 @@ $("#editExtSubmit").submit(function(e){
 	}
 
 	//if user has deleted the group name, prompt them to enter something and return
-	if($('#editGroupName').val()===''){
+	if($('#editProfileName').val()===''){
 		Materialize.toast('You must enter a name for this group', 2000, 'alert');
 		return;
 	}
 
-	let newName = $('#editGroupName').val().toLowerCase();
+	let newName = $('#editProfileName').val().toLowerCase();
 
-	if(groupName === $('#editGroupName').val()){
+	if(groupName === $('#editProfileName').val()){
 		// user has NOT changed the group name, so we can just set the idList as the group
 		chrome.storage.sync.remove(groupName, function(){
 			Materialize.toast(name+' group successfully edited', 1000, 'ccToastOn');
@@ -631,7 +631,7 @@ $("#editExtSubmit").submit(function(e){
 		//user has updated the group name, check if group with this new name already exists
 		chrome.storage.sync.get(function(obj){
 			if ($.inArray(newName, Object.keys(obj)) != -1){
-				Materialize.toast('Group name already exists!', 2000, 'alert');
+				Materialize.toast('Profile name already exists!', 2000, 'alert');
 			}
 			else {
 				//new name is ok, delete old name from storage
@@ -712,7 +712,7 @@ $("body").on("click",".hide-ext-links",function(e){
 
 });
 
-$("body").on("click","#dismissGroupPrompt",function(e){
+$("body").on("click","#dismissProfilePrompt",function(e){
 
 	// User wants to dismiss the groups onboarding
 
@@ -722,10 +722,10 @@ $("body").on("click","#dismissGroupPrompt",function(e){
 	$('#groupHeader').hide();
 
 	// Show user the modal to tell them they can still add a group from the options modal
-	$('#confirmDismissGroupPrompt').openModal();
+	$('#confirmDismissProfilePrompt').openModal();
 
 	// Save this to chrome storage so we can use it on next page load and not show the groupheader again UNTIL user resets it in options page....?
-	user.dismissedGroupsPrompt = true;
+	user.dismissedProfilesPrompt = true;
 
 	chrome.storage.sync.set(user, function () {
 	  console.log('Saved, groupsModal dismissed');
@@ -784,14 +784,13 @@ function includeAppsListener() {
 
 $('#viewChangelog').click(()=>{
 	$('#changelogModal').openModal();
-})
-
+});
 
 
 /* 
 This function are for moving from v0.82 -> v0.83
 We were storing groups on the global sync object. We need to put them into a groups property
-We also need to add properties for compactStyles and dismissedGroupsPrompt
+We also need to add properties for compactStyles and dismissedProfilesPrompt
 */
 
 function fixStorage(groups){
@@ -801,7 +800,7 @@ function fixStorage(groups){
 	// create new object
 	let newObj = {
 		"groups": groups || [],
-		"dismissedGroupsPrompt": false,
+		"dismissedProfilesPrompt": false,
 		"compactStyles": false,
 		"seenChangelog": 0.82
 	};
@@ -818,8 +817,8 @@ function fixStorage(groups){
 }
 
 function onUpdate() {
-    console.log("Extension Updated");
-  }
+  console.log("Extension Updated");
+}
 
 
 // GOOGLE ANALYTICS
