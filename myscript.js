@@ -29,9 +29,6 @@ $(function() {
 	// listen for include apps toggle
 	includeAppsListener();
 
-	// call function to check storage.sync for existing user profiles
-	getUserData(); 
-
 	$('.modal-trigger').leanModal();
 	$('#addProfileBox').hide();
 
@@ -61,11 +58,16 @@ $(function() {
 			}
 		}
 
+		// call function to check storage.sync for existing user profiles
+		getUserData(); 
+
 		// sort extArray into alphabetical order based on the extensions' names
 		extArray.sort(function(a, b) {
 			return a.name.localeCompare(b.name);
 		});
 
+
+		// loop over extArray, sory icons, append to appropriate element
 		for (let i = 0; i < extArray.length; i++) {
 			let entry = extArray[i];
 			// extension icons are stored in entry.icons, but not all extensions have icons
@@ -103,40 +105,6 @@ $(function() {
 		} else {
 			// set toggle switch to checked
 			$('.include-apps-switch').attr('checked', true);
-		}
-
-		// setting the profile buttons to on/off appearance
-		for (let profile in user.profiles) {
-			// for each profile, get all extension id's in that profile
-			// if they are all on, add class "on" to element
-			// otherwise, leave it grey
-			let extensionIds = user.profiles[profile];
-
-			let tempArray = [];
-
-			for (let i = 0; i < extensionIds.length; i++) {
-				let id = extensionIds[i];
-				for (let x = 0; x < extArray.length; x++) {
-					let obj = extArray[x];
-					if(obj.id === id){
-						tempArray.push(obj);
-					}
-				}
-			}
-
-			// tempArray now contains extension objects for this profile
-
-			// finds if any of the extensions have enabled === false
-			// if even one extension is off, then the profile is inactive
-			let off = tempArray.some(function(ext){
-				return ext.enabled === false;
-			}) || false;
-
-			// if it's on, add/remove appropriate classes
-			if(!off){
-				profile = profile.replace(' ', "_");
-				$("#" + profile).removeClass("off").addClass("on");
-			}
 		}
 
 	}); // close chrome.management.getAll
@@ -178,7 +146,58 @@ $(function() {
 
 	$('#searchbox').focus();
 
+	// Check if there's a toast to show
+	if(user.showToast && user.showToast.length) {
+		// show toast
+		Materialize.toast(user.showToast, 2000, 'deleteToast');
+		// empty out the showToast property
+		user.showToast = ""
+		chrome.storage.sync.set(user, function(){
+			console.log('deleted showToast:', user)
+		});
+	}
+
+
 }); // close $(document).ready
+
+function handleGroupsClasses(){
+	// setting the profile buttons to on/off appearance
+
+	debugger
+	
+	for (let profile in user.profiles) {
+		// for each profile, get all extension id's in that profile
+		// if they are all on, add class "on" to element
+		// otherwise, leave it grey
+		let extensionIds = user.profiles[profile];
+
+		let tempArray = [];
+
+		for (let i = 0; i < extensionIds.length; i++) {
+			let id = extensionIds[i];
+			for (let x = 0; x < extArray.length; x++) {
+				let obj = extArray[x];
+				if(obj.id === id){
+					tempArray.push(obj);
+				}
+			}
+		}
+
+		// tempArray now contains extension objects for this profile
+
+		// finds if any of the extensions have enabled === false
+		// if even one extension is off, then the profile is inactive
+		let off = tempArray.some(function(ext){
+			return ext.enabled === false;
+		}) || false;
+
+		// if it's on, add/remove appropriate classes
+		if(!off){
+			profile = profile.replace(' ', "_");
+			$("#" + profile).removeClass("off").addClass("on");
+		}
+	}
+}
 
 
 // after clicking a profile's on/off button, we toggle its appearance (on or off) and cycle through associated extensions turning them all on or off
@@ -430,16 +449,7 @@ function getUserData() {
 			$('.profile-holder').append(btnHtml); 
 		}
 
-		// Check if there's a toast to show
-		if(user.showToast.length) {
-			// show toast
-			Materialize.toast(user.showToast, 2000, 'deleteToast');
-			// empty out the showToast property
-			user.showToast = ""
-			chrome.storage.sync.set(user, function(){
-				console.log('deleted showToast:', user)
-			});
-		}
+		handleGroupsClasses();
 
 	});
 }
