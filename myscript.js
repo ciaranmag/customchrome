@@ -3,7 +3,6 @@ let extArray = [],
 appArray = [],
 activeExtensions = [],
 inactiveExtensions = [],
-btnId,
 idList = [],
 user = {},
 
@@ -30,7 +29,6 @@ $(function() {
 	includeAppsListener();
 
 	$('.modal-trigger').leanModal();
-	$('#addProfileBox').hide();
 
 	chrome.management.getAll(function(info) {
 		// info is a list of all user installed apps i.e. extensions, apps, and themes
@@ -193,7 +191,7 @@ function handleGroupsClasses(){
 
 		// if it's on, add/remove appropriate classes
 		if(!off){
-			group = group.replace(' ', "_");
+			group = group.replace(/ /g, "_");
 			$("#" + group).removeClass("off").addClass("on");
 		}
 	}
@@ -203,18 +201,54 @@ function handleGroupsClasses(){
 // after clicking a group's on/off button, we toggle its appearance (on or off) and cycle through associated extensions turning them all on or off
 $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 	
-	// find out which extension was clicked and assign to btnId
-	btnId = $(this).attr("id"); 
-	btnIdConvert = $(this).text();
+	// cache button in local variable
+	// so we don't repeatedly poll the DOM for the element
+	let btn = $(this);
 
-	if ($(this).hasClass("on")) { 
-		// if the btn is currently on then turn all extensions off
-		user.groups[btnIdConvert].forEach(function(extensionId){
-			console.log('disabling extension:', extensionId);
-			chrome.management.setEnabled(extensionId, false);
+	// find out which extension was clicked and assign to btnId
+	let groupClicked = btn.attr("id").replace(/_/g, " ")
+
+	// check if group was on or off
+	if (btn.hasClass("on")) { 
+
+		// It was on, turn all extensions off
+		// Loop over each extension in the group
+		user.groups[groupClicked].forEach(function(extensionId){
+
+			// Check to see if this extension lives in any of the groups that are still on
+			let keepOn = false;
+
+			// Get all group names that are on (have .on class)
+			let activeGroups = []
+			for (var i = $('.group-btn.on').length - 1; i >= 0; i--) {
+				
+				let groupName = $($('.group-btn.on')[i]).attr('id');
+				
+				groupName = groupName.replace(/_/g, " ");
+				// ignore the groupClicked group
+				groupName != groupClicked ? activeGroups.push(groupName) : false;
+			}
+
+			// for each group in activeGroups array
+			// search the ids in its group
+			// if we get a match, then keepOn = true
+			for (var i = activeGroups.length - 1; i >= 0; i--) {
+				keepOn = user.groups[activeGroups[i]].some(function(extId){
+					return extId === extensionId
+				})
+			}
+
+			if(!keepOn){
+				// this extension mustn't be in any other active group
+				// turn it off
+				chrome.management.setEnabled(extensionId, false);
+			} else {
+				console.log("keeping extension on")
+			}
+			
 		});
 
-		Materialize.toast(btnIdConvert + ' is now off', 2000, 'ccToastOff');
+		Materialize.toast(groupClicked + ' is now off', 2000, 'ccToastOff');
 
 		// change group btn to "off" appearance
 		$(this).removeClass("on").addClass("off"); 
@@ -223,14 +257,15 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 			location.reload(false); 
 		}, 1000);
 
-	} else if ($(this).hasClass("off")) { 
+	} else if (btn.hasClass("off")) { 
 		// if the btn is currently off then turn all extensions on
-		user.groups[btnIdConvert].forEach(function(extensionId){
+		debugger
+		user.groups[groupClicked].forEach(function(extensionId){
 			console.log('enabling extension:', extensionId);
 			chrome.management.setEnabled(extensionId, true);
 		});
 
-		Materialize.toast(btnIdConvert + ' is now on', 2000, 'ccToastOn');
+		Materialize.toast(groupClicked + ' is now on', 2000, 'ccToastOn');
 
 		// change group btn to "on" appearance
 		$(this).removeClass("off").addClass("on"); 
@@ -282,7 +317,7 @@ $('#nameSubmit').submit(
 
 		// check if group name already exists
 		if($.inArray(name,Object.keys(user.groups)) != -1){
-			Materialize.toast('Profile name already exists!', 2000, 'alert');
+			Materialize.toast('Group name already exists!', 2000, 'alert');
 			return;
 		}
 		
@@ -419,18 +454,13 @@ function getUserData() {
 
 		if ( allProfiles.length === 0 ) { 
 			// if there are no groups, exit function
-			$('#noProfilesText').show();
+			$('#noGroupsText').show();
 			// $('#groupHeader').css("background-color", "#03A9FA");
 			$('.editBtn').hide();
 			return;
 		}
 
-		// if there are between 1 and 4 groups show addProfileBox
-		else if ( allProfiles.length >= 1 && allProfiles.length <= 4 ) {
-			$('#addProfileBox').show();
-		}
-
-		$('#noProfilesText').hide();
+		$('#noGroupsText').hide();
 		$('#groupOnboarding').hide();
 		$('#groupHeader').css("background-color", "#f3f3f3");
 		$('.editBtn').show();
@@ -461,7 +491,7 @@ function getUserData() {
 
 
 $("body").on("click",".editBtn",function(){
-	$('#editProfiles').openModal({
+	$('#editGroups').openModal({
 		dismissible: false,
 		ready: function() {},
 	});
@@ -481,7 +511,7 @@ $('#removeAllBtn').click((e)=>{
 
 });
 
-$("body").on("click", "#deleteAllProfiles", function(){
+$("body").on("click", "#deleteAllGroups", function(){
 	
 	// User confirms delete all groups
 	// remove all groups (set empty object)
@@ -504,7 +534,7 @@ $("body").on("click",".delete",function(){
 	let group = $(this).parent().attr('group');
 
 	//close the current modal, and clear out the groupsList
-	$('#editProfiles').closeModal();
+	$('#editGroups').closeModal();
 	$('#groupList').html('');
 
 	//wait half a second, open a new confirm/cancel modal
@@ -527,7 +557,7 @@ let confirmDelete = function(group){
 		//delete group from storage, show toast confirming group delete
 	//on cancel
 		//close the modal and do nothing
-	$("body").on("click","#deleteProfile",function(){
+	$("body").on("click","#deleteGroup",function(){
 		//delete the selected group
 
 		delete user.groups[group];
@@ -555,11 +585,11 @@ $("body").on("click",".edit",function(){
 	console.log('user is editing: ',groupName);
 
 	//close the current modal, and clear out the groupsList
-	$('#editProfiles').closeModal();
+	$('#editGroups').closeModal();
 	$('#groupList').html('');
 
 	//prefill the group name input with the current group name
-	$('#editProfileName').val(groupName);
+	$('#editGroupName').val(groupName);
 
 
 	//populate list with all extensions:
@@ -577,7 +607,7 @@ $("body").on("click",".edit",function(){
 	}
 
 	//start listening for checkbox changes
-	checkboxlistener();
+	checkboxListener();
 
 	//save button adds group to Storage.
 	//cancel button disregards changes
@@ -601,14 +631,14 @@ $("#editExtSubmit").submit(function(e){
 	}
 
 	//if user has deleted the group name, prompt them to enter something and return
-	if($('#editProfileName').val()===''){
+	if($('#editGroupName').val()===''){
 		Materialize.toast('You must enter a name for this group', 2000, 'alert');
 		return;
 	}
 
-	let newName = $('#editProfileName').val().toLowerCase();
+	let newName = $('#editGroupName').val().toLowerCase();
 
-	if(groupName === $('#editProfileName').val()){
+	if(groupName === $('#editGroupName').val()){
 		// user has NOT changed the group name, so we can just set the idList as the group
 		chrome.storage.sync.remove(groupName, function(){
 			Materialize.toast(name+' group successfully edited', 1000, 'ccToastOn');
@@ -631,7 +661,7 @@ $("#editExtSubmit").submit(function(e){
 		//user has updated the group name, check if group with this new name already exists
 		chrome.storage.sync.get(function(obj){
 			if ($.inArray(newName, Object.keys(obj)) != -1){
-				Materialize.toast('Profile name already exists!', 2000, 'alert');
+				Materialize.toast('Group name already exists!', 2000, 'alert');
 			}
 			else {
 				//new name is ok, delete old name from storage
@@ -712,7 +742,7 @@ $("body").on("click",".hide-ext-links",function(e){
 
 });
 
-$("body").on("click","#dismissProfilePrompt",function(e){
+$("body").on("click","#dismissGroupPrompt",function(e){
 
 	// User wants to dismiss the groups onboarding
 
@@ -722,7 +752,7 @@ $("body").on("click","#dismissProfilePrompt",function(e){
 	$('#groupHeader').hide();
 
 	// Show user the modal to tell them they can still add a group from the options modal
-	$('#confirmDismissProfilePrompt').openModal();
+	$('#confirmDismissGroupPrompt').openModal();
 
 	// Save this to chrome storage so we can use it on next page load and not show the groupheader again UNTIL user resets it in options page....?
 	user.dismissedProfilesPrompt = true;
