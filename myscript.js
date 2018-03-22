@@ -259,7 +259,6 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 
 	} else if (btn.hasClass("off")) { 
 		// if the btn is currently off then turn all extensions on
-		debugger
 		user.groups[groupClicked].forEach(function(extensionId){
 			console.log('enabling extension:', extensionId);
 			chrome.management.setEnabled(extensionId, true);
@@ -275,6 +274,9 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 		}, 1000);
 		
 	}
+
+	// track that the user has toggled a group
+	_gaq.push(['groups', 'group-toggled', 'clicked']);
 
 });
 
@@ -412,6 +414,10 @@ function submitThatShit() {
 	  idList = []; 
 
 	});
+
+	// Track event in Google
+	_gaq.push(['groups', "group-added", 'clicked']);
+
 }
 
 // check storage for user data
@@ -472,7 +478,7 @@ function getUserData() {
 		// append them to the div
 		for (let i = 0; i < allProfiles.length; i++) {
 			let name = allProfiles[i];
-			// console.log('name:', name)
+
 			let btnHtml = "<button class='group-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
 			
 			// append to group-holder
@@ -682,6 +688,10 @@ $("#editExtSubmit").submit(function(e){
 			}
 		});
 	}
+
+	// Track event in Google
+	_gaq.push(['groups', "edited-successfully"]);
+
 });
 
 
@@ -781,6 +791,9 @@ function compactStylesListener() {
 		user.compactStyles = !sheet.disabled;
 		console.log("saving user: ", user);
 		chrome.storage.sync.set(user);
+
+		// Track event in Google
+		_gaq.push(['UI-change', `compact-styles-toggled-${user.compactStyles}`]);
 		
 	});
 }
@@ -807,6 +820,9 @@ function includeAppsListener() {
 		// save current state to storage
 		console.log("saving user: ", user);
 		chrome.storage.sync.set(user);
+
+		// Track event in Google
+		_gaq.push(['UI-change', `include-apps-toggled-${user.includeApps}`]);
 		
 	});
 }
