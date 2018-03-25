@@ -7,7 +7,7 @@
 
   "version": "0.82",
 
-  "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.google-analytics.com; object-src 'self'",
 
   "permissions": [
     "storage",

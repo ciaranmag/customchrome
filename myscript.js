@@ -276,7 +276,7 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 	}
 
 	// track that the user has toggled a group
-	_gaq.push(['groups', 'group-toggled', 'clicked']);
+	ga('send', 'event', "groups", "group-toggled")
 
 });
 
@@ -416,7 +416,7 @@ function submitThatShit() {
 	});
 
 	// Track event in Google
-	_gaq.push(['groups', "group-added", 'clicked']);
+	ga('send', 'event', "groups", "group-added")
 
 }
 
@@ -690,7 +690,7 @@ $("#editExtSubmit").submit(function(e){
 	}
 
 	// Track event in Google
-	_gaq.push(['groups', "edited-successfully"]);
+	ga('send', 'event', "groups", "group-edited")
 
 });
 
@@ -793,7 +793,7 @@ function compactStylesListener() {
 		chrome.storage.sync.set(user);
 
 		// Track event in Google
-		_gaq.push(['UI-change', `compact-styles-toggled-${user.compactStyles}`]);
+		ga('send', 'event', "options", `compact-styles-toggled-to-${user.compactStyles}`)
 		
 	});
 }
@@ -822,7 +822,8 @@ function includeAppsListener() {
 		chrome.storage.sync.set(user);
 
 		// Track event in Google
-		_gaq.push(['UI-change', `include-apps-toggled-${user.includeApps}`]);
+		ga('send', 'event', "options", `include-apps-toggled-to-${user.includeApps}`)
+
 		
 	});
 }
@@ -867,17 +868,7 @@ function onUpdate() {
 
 
 // GOOGLE ANALYTICS
-
-// Write a function that sends click events to Google Analytics:
-function trackButtonClick(e) {
-  _gaq.push(['_trackEvent', e.target.id, 'clicked']);
-}
-
-// And use it as an event handler for each button's click:
-let buttons = document.querySelectorAll('button');
-for (let i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener('click', trackButtonClick);
-}
+// ga('send', 'event', [eventCategory], [eventAction])
 
 
 // Handle install/updates
