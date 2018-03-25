@@ -135,18 +135,6 @@ $(function() {
 
 	$('#searchbox').focus();
 
-	// Check if there's a toast to show
-	if(user.showToast && user.showToast.length) {
-		// show toast
-		Materialize.toast(user.showToast, 2000, 'deleteToast');
-		// empty out the showToast property
-		user.showToast = ""
-		chrome.storage.sync.set(user, function(){
-			console.log('deleted showToast:', user)
-		});
-	}
-
-
 }); // close $(document).ready
 
 function handleGroupsClasses(){
@@ -455,6 +443,18 @@ function getUserData() {
 			$('.include-apps-switch').attr('checked', true);
 		}
 
+		// Check if there's a toast to show
+		if(user.showToast && user.showToast.length) {
+			// show toast
+			Materialize.toast(user.showToast, 2000, 'deleteToast');
+			// empty out the showToast property
+			user.showToast = ""
+			chrome.storage.sync.set(user, function(){
+				console.log('deleted showToast:', user)
+			});
+		}
+
+
 		let allProfiles = Object.keys(obj.groups);
 
 		if ( allProfiles.length === 0 ) { 
@@ -557,7 +557,7 @@ let confirmDelete = function(group){
 		}
 	});
 
-	$('#confirmDelete h6').append(group);
+	$('#confirmDelete h5').append(group + "?");
 	//on confirm
 		//delete group from storage, show toast confirming group delete
 	//on cancel
