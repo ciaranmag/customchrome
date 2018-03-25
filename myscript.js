@@ -96,15 +96,6 @@ $(function() {
 		// run the function which listens for a change in a checkbox state
 		extStateListener(); 
 
-		// hide apps if user has toggled that option
-		if(!user.includeApps){
-			// hide apps
-			$('.app').hide();
-		} else {
-			// set toggle switch to checked
-			$('.include-apps-switch').attr('checked', true);
-		}
-
 	}); // close chrome.management.getAll
 
 	// Search
@@ -143,18 +134,6 @@ $(function() {
 	});
 
 	$('#searchbox').focus();
-
-	// Check if there's a toast to show
-	if(user.showToast && user.showToast.length) {
-		// show toast
-		Materialize.toast(user.showToast, 2000, 'deleteToast');
-		// empty out the showToast property
-		user.showToast = ""
-		chrome.storage.sync.set(user, function(){
-			console.log('deleted showToast:', user)
-		});
-	}
-
 
 }); // close $(document).ready
 
@@ -259,7 +238,6 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 
 	} else if (btn.hasClass("off")) { 
 		// if the btn is currently off then turn all extensions on
-		debugger
 		user.groups[groupClicked].forEach(function(extensionId){
 			console.log('enabling extension:', extensionId);
 			chrome.management.setEnabled(extensionId, true);
@@ -275,6 +253,9 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 		}, 1000);
 		
 	}
+
+	// track that the user has toggled a group
+	ga('send', 'event', "groups", "group-toggled")
 
 });
 
@@ -412,6 +393,10 @@ function submitThatShit() {
 	  idList = []; 
 
 	});
+
+	// Track event in Google
+	ga('send', 'event', "groups", "group-added")
+
 }
 
 // check storage for user data
@@ -439,7 +424,6 @@ function getUserData() {
 
 			// enable compact styles stylesheet
 			$('#compactStylesheet')[0].disabled = false;
-
 		}
 
 		// check if user has dismissed groups prompt
@@ -449,6 +433,27 @@ function getUserData() {
 			// hide edit button (in options slide-down)
 			$('.editBtn').hide();
 		}
+
+		// hide apps if user has toggled that option
+		if(!user.includeApps){
+			// hide apps
+			$('.app').hide();
+		} else {
+			// set toggle switch to checked
+			$('.include-apps-switch').attr('checked', true);
+		}
+
+		// Check if there's a toast to show
+		if(user.showToast && user.showToast.length) {
+			// show toast
+			Materialize.toast(user.showToast, 2000, 'deleteToast');
+			// empty out the showToast property
+			user.showToast = ""
+			chrome.storage.sync.set(user, function(){
+				console.log('deleted showToast:', user)
+			});
+		}
+
 
 		let allProfiles = Object.keys(obj.groups);
 
@@ -472,7 +477,7 @@ function getUserData() {
 		// append them to the div
 		for (let i = 0; i < allProfiles.length; i++) {
 			let name = allProfiles[i];
-			// console.log('name:', name)
+
 			let btnHtml = "<button class='group-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
 			
 			// append to group-holder
@@ -552,7 +557,7 @@ let confirmDelete = function(group){
 		}
 	});
 
-	$('#confirmDelete h6').append(group);
+	$('#confirmDelete h5').append(group + "?");
 	//on confirm
 		//delete group from storage, show toast confirming group delete
 	//on cancel
@@ -682,6 +687,10 @@ $("#editExtSubmit").submit(function(e){
 			}
 		});
 	}
+
+	// Track event in Google
+	ga('send', 'event', "groups", "group-edited")
+
 });
 
 
@@ -781,6 +790,9 @@ function compactStylesListener() {
 		user.compactStyles = !sheet.disabled;
 		console.log("saving user: ", user);
 		chrome.storage.sync.set(user);
+
+		// Track event in Google
+		ga('send', 'event', "options", `compact-styles-toggled-to-${user.compactStyles}`)
 		
 	});
 }
@@ -807,6 +819,10 @@ function includeAppsListener() {
 		// save current state to storage
 		console.log("saving user: ", user);
 		chrome.storage.sync.set(user);
+
+		// Track event in Google
+		ga('send', 'event', "options", `include-apps-toggled-to-${user.includeApps}`)
+
 		
 	});
 }
@@ -851,17 +867,7 @@ function onUpdate() {
 
 
 // GOOGLE ANALYTICS
-
-// Write a function that sends click events to Google Analytics:
-function trackButtonClick(e) {
-  _gaq.push(['_trackEvent', e.target.id, 'clicked']);
-}
-
-// And use it as an event handler for each button's click:
-let buttons = document.querySelectorAll('button');
-for (let i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener('click', trackButtonClick);
-}
+// ga('send', 'event', [eventCategory], [eventAction])
 
 
 // Handle install/updates
