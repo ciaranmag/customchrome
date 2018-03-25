@@ -1,7 +1,7 @@
  ToDo For Next Release:
    ☐ profiles working correctly
    ☐ better event tracking analytics
-   ☐ 
+   ☐ [BUG] Editing an existing group's name creates a new group with new name and leaves old group there instead of replacing it
 
  Housekeeping:
    ☐ Update blurb - add example use cases (Github repo, Custom Chrome Github website, Chrome Web Store)
