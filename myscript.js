@@ -96,15 +96,6 @@ $(function() {
 		// run the function which listens for a change in a checkbox state
 		extStateListener(); 
 
-		// hide apps if user has toggled that option
-		if(!user.includeApps){
-			// hide apps
-			$('.app').hide();
-		} else {
-			// set toggle switch to checked
-			$('.include-apps-switch').attr('checked', true);
-		}
-
 	}); // close chrome.management.getAll
 
 	// Search
@@ -445,7 +436,6 @@ function getUserData() {
 
 			// enable compact styles stylesheet
 			$('#compactStylesheet')[0].disabled = false;
-
 		}
 
 		// check if user has dismissed groups prompt
@@ -454,6 +444,15 @@ function getUserData() {
 			$('#groupHeader').hide();
 			// hide edit button (in options slide-down)
 			$('.editBtn').hide();
+		}
+
+		// hide apps if user has toggled that option
+		if(!user.includeApps){
+			// hide apps
+			$('.app').hide();
+		} else {
+			// set toggle switch to checked
+			$('.include-apps-switch').attr('checked', true);
 		}
 
 		let allProfiles = Object.keys(obj.groups);
