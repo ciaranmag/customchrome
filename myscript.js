@@ -85,6 +85,11 @@ $(function() {
 			}
 			entry.stringEnabled = state;
 
+			// Check if extension is sideloaded
+			if(entry.installType === "development"){
+				entry.sideloaded = true
+			}
+
 			// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
 			if (entry.enabled) {
 				$('#activeExtensions').append(template(entry));

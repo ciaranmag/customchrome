@@ -379,17 +379,13 @@ span.lever {
 .ext-links .link {
 	padding: 5px 15px;
 	display: inline-block;
+	font-size: 1.3em;
 }
 
 .ext-links .description {
 	text-align: left;
 	margin:0;
 	display: none;
-}
-
-.uninstallExt {
-	/*font-weight: bold;*/
-	font-size: 1.3em;
 }
 
 .settings-icon {
@@ -461,4 +457,11 @@ span.badge.new {
 
 .btn {
 	background-color: #81c784;
+}
+
+.sideloaded-badge {
+	background: darkgrey;
+  padding: 3px 5px;
+  border-radius: 3px;
+  color: white;
 }
