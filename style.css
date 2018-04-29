@@ -40,7 +40,7 @@ button {
 }
 
 .edit, .delete {
-	margin:0 2% 0 2%;
+	margin:0 1% 0 1%;
 	cursor:pointer;
 }
 
@@ -455,3 +455,10 @@ span.badge.new {
 	list-style-type: disc;
 }
 
+.modal-content {
+	border-top: 7px solid #81c784;
+}
+
+.btn {
+	background-color: #81c784;
+}
