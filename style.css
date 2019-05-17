@@ -7,7 +7,6 @@ body {
 	width: 600px;
 	height: 100%;
 	background-color: #f3f3f3;
-	/*font-family: 'Roboto', sans-serif;*/
 	margin: auto;
 }
 
@@ -44,11 +43,6 @@ button {
 	cursor:pointer;
 }
 
-/*#noGroupsText {
-	font-size: 16px;
-	color: #fff;
-}*/
-
 a #addAGroupText {
 	color: #fff;
 	text-decoration: none !important;
@@ -59,11 +53,6 @@ a #addAGroupText {
 	font-weight: bold;
 }
 
-/*#addGroupBox {
-	font-size: 16px;
-	color: rgba(0,0,0,0.54);
-}*/
-
 .group-card-content {
 	padding: 20px 0px 0px 0px !important;
 }
@@ -72,7 +61,6 @@ a #addAGroupText {
 	text-align: center;
 }
 
-/*#addGroupBox,*/
 .group-btn,
 .group-btn:hover,
 .group-btn:focus {
@@ -159,7 +147,6 @@ a #addAGroupText {
 .groupList-name span {
 	font-size: 20px;
 }
-
 
 
 /* SEARCHBOX AND SETTINGS */

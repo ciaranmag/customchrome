@@ -65,7 +65,7 @@ $(function() {
 		});
 
 
-		// loop over extArray, sory icons, append to appropriate element
+		// loop over extArray, sort icons, append to appropriate element
 		for (let i = 0; i < extArray.length; i++) {
 			let entry = extArray[i];
 			// extension icons are stored in entry.icons, but not all extensions have icons
@@ -87,7 +87,7 @@ $(function() {
 
 			// Check if extension is sideloaded
 			if(entry.installType === "development"){
-				entry.sideloaded = true
+				entry.sideloaded = true;
 			}
 
 			// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
@@ -115,11 +115,11 @@ $(function() {
 
 		toFilter.each(function(i, el){
 			if($(el).find('.extName').text().search(new RegExp(filter, "i")) < 0){
-				$(el).fadeOut()
+				$(el).fadeOut();
 			} else {
-				$(el).fadeIn()
+				$(el).fadeIn();
 			}
-		})
+		});
 
 		// if the search returns no results then show the no results card
 		setTimeout(function(){
@@ -144,8 +144,6 @@ $(function() {
 
 function handleGroupsClasses(){
 	// setting the group buttons to on/off appearance
-
-	// debugger;
 	
 	for (let group in user.groups) {
 		// for each group, get all extension id's in that group
@@ -218,8 +216,8 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 			// if we get a match, then keepOn = true
 			for (var i = activeGroups.length - 1; i >= 0; i--) {
 				keepOn = user.groups[activeGroups[i]].some(function(extId){
-					return extId === extensionId
-				})
+					return extId === extensionId;
+				});
 			}
 
 			if(!keepOn){
@@ -227,7 +225,7 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 				// turn it off
 				chrome.management.setEnabled(extensionId, false);
 			} else {
-				console.log("keeping extension on")
+				console.log("keeping extension on");
 			}
 			
 		});
@@ -470,8 +468,7 @@ function getUserData() {
 			return;
 		}
 
-		$('#noGroupsText').hide();
-		$('#groupOnboarding').hide();
+		$('#noGroupsText, #groupOnboarding').hide();
 		$('#groupHeader').css("background-color", "#f3f3f3");
 		$('.editBtn').show();
 
@@ -494,11 +491,6 @@ function getUserData() {
 	});
 }
 
-// Not needed, listening to .addProfile instead
-// $("body").on("click","#addProfileBox",function(){ // add a new group box
-// 	$('#groupPrompt').openModal();
-// });
-
 
 $("body").on("click",".editBtn",function(){
 	$('#editGroups').openModal({
@@ -514,11 +506,8 @@ $("body").on("click",".editBtn",function(){
 
 
 $('#removeAllBtn').click((e)=>{
-	
 	e.preventDefault();
-
 	$('#confirmDeleteAll').openModal();
-
 });
 
 $("body").on("click", "#deleteAllGroups", function(){
@@ -554,7 +543,7 @@ $("body").on("click",".delete",function(){
 });
 
 
-let confirmDelete = function(group){
+function confirmDelete(group){
 	//open the modal and insert the group name into the first p element
 	$('#confirmDelete').openModal({
 		complete: function(){
@@ -839,7 +828,7 @@ $('#viewChangelog').click(()=>{
 
 
 /* 
-This function are for moving from v0.82 -> v0.83
+This function is for moving from v0.82 -> v0.83
 We were storing groups on the global sync object. We need to put them into a groups property
 We also need to add properties for compactStyles and dismissedProfilesPrompt
 */
@@ -866,10 +855,6 @@ function fixStorage(groups){
 
 }
 
-function onUpdate() {
-  console.log("Extension Updated");
-}
-
 
 // GOOGLE ANALYTICS
 // ga('send', 'event', [eventCategory], [eventAction])
@@ -885,8 +870,7 @@ function onUpdate() {
 }
 
 function getVersion() {
-  var details = chrome.app.getDetails();
-  return details.version;
+  return chrome.app.getDetails().version;
 }
 
 // Check if the version has changed.
@@ -903,7 +887,3 @@ if (currVersion != prevVersion) {
   // either way, show changelog modal
   $('#changelogModal').openModal();
 }
-
-
-
-
