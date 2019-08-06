@@ -194,11 +194,6 @@ a.mdi-action-settings {
 	display:none;
 }
 
-/* #noResults .filterLink {
-	margin-top: 10px;
-	display: block;
-} */
-
 #noResults .filterLink .text {
 	font-weight: bolder;
 }
@@ -239,6 +234,11 @@ a.mdi-action-settings {
 	width: 20%;
 	text-align: right;
 }
+
+.righty input:focus + .lever:before{
+	background-color:pink;
+}
+
 
 .picHolder {
 	display: inline-block;
