@@ -128,6 +128,10 @@ $(function() {
 				$('#activeExtensions').parent().css('visibility','hidden');
 				$('#inactiveExtensions').parent().css('visibility','hidden');
 				$('.allExtensionsContainer').css('visibility','hidden');
+				// fill in text
+				$('#noResults .filterLink .text').text(filter);
+				// update url
+				$('#noResults a.filterLink').attr("href", "https://chrome.google.com/webstore/search/"+encodeURIComponent(filter))
 			} else {
 				$("#noResults").hide();
 				$('.allExtensionsContainer').css('visibility','visible');
