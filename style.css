@@ -183,6 +183,15 @@ a.mdi-action-settings {
 	display:none;
 }
 
+/* #noResults .filterLink {
+	margin-top: 10px;
+	display: block;
+} */
+
+#noResults .filterLink .text {
+	font-weight: bolder;
+}
+
 
 /* EXTENSIONS */
 
