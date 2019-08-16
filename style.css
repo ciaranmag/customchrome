@@ -304,6 +304,10 @@ a.mdi-action-settings {
 	font-size: 30px;
 }
 
+.js-switch:focus ~ .lever:after {
+	box-shadow: 0 1px 3px 1px rgba(0,0,0,0.4), 0 0 0 15px rgba(38,166,154,0.1);
+}
+
 span.lever::after {
 	background-color: #81c784;
 }
