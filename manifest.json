@@ -5,7 +5,7 @@
 
   "description": "A beautiful Google Chrome extension manager to turn on/off other extensions quickly and easily without leaving your current tab",
 
-  "version": "1.02",
+  "version": "1.03",
 
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.google-analytics.com; object-src 'self'",
 
@@ -14,9 +14,11 @@
     "management"
   ],
 
-  "icons": { "16": "images/googleCog16.png",
-           "48": "images/googleCog48.png",
-          "128": "images/googleCog128.png" },
+  "icons": {
+		"16": "images/googleCog16.png",
+		"48": "images/googleCog48.png",
+		"128": "images/googleCog128.png"
+	},
 
   "browser_action": {
     "default_icon": "images/googleCog128.png",
