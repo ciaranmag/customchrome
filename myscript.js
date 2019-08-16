@@ -112,11 +112,14 @@ $(function() {
 		// toFilter array will hold all elements to search through
 		// fill this depending on whether apps are on or off
 		let toFilter = user.includeApps ? $(".extBlock") : $(".extBlock:not(.app)");
-
+		let tabindex = 1;
 		toFilter.each(function(i, el){
 			if($(el).find('.extName').text().search(new RegExp(filter, "i")) < 0){
 				$(el).fadeOut();
 			} else {
+				tabindex++;
+				console.log($(el).children('div:nth(1)'));
+				$(el).children('div:nth(1)').attr("tabindex", tabindex);
 				$(el).fadeIn();
 			}
 		});
