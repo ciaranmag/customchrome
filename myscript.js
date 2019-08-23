@@ -803,7 +803,7 @@ function compactStylesListener() {
 		chrome.storage.sync.set(user);
 
 		// Track event in Google
-		ga('send', 'event', "options", `compact-styles-toggled-to-${user.compactStyles}`)
+		ga('send', 'event', "options", `compact-styles-toggled-to-${user.compactStyles}`);
 		
 	});
 }
@@ -832,7 +832,7 @@ function includeAppsListener() {
 		chrome.storage.sync.set(user);
 
 		// Track event in Google
-		ga('send', 'event', "options", `include-apps-toggled-to-${user.includeApps}`)
+		ga('send', 'event', "options", `include-apps-toggled-to-${user.includeApps}`);
 	});
 }
 

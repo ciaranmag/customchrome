@@ -16,4 +16,4 @@ let changelog = {
 	"Updated storage architecture to save user's customised settings",
 	"Profiles have been renamed to Groups",
 	"Add a group suggestion can be dismissed forever (you can add one at any time in the settings menu)"]
-}
+};

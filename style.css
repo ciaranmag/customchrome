@@ -222,7 +222,7 @@ a.mdi-action-settings {
 	width: 530px;
 	min-height: 5vw;
 	float: left;
-	margin: 10px 25px;
+	margin: 0px 25px;
 	text-align: left;
 }
 
@@ -230,7 +230,7 @@ a.mdi-action-settings {
 	width: 79%;
 	display: inline-block;
 	height: 100%;
-	vertical-align: middle;
+	vertical-align: top;
 }
 
 .righty {
