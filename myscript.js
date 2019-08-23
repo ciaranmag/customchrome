@@ -91,6 +91,7 @@ $(function() {
 			}
 
 			// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
+			// console.log("entry:", entry)
 			if (entry.enabled) {
 				$('#activeExtensions').append(template(entry));
 			} else {
@@ -112,14 +113,11 @@ $(function() {
 		// toFilter array will hold all elements to search through
 		// fill this depending on whether apps are on or off
 		let toFilter = user.includeApps ? $(".extBlock") : $(".extBlock:not(.app)");
-		let tabindex = 1;
+
 		toFilter.each(function(i, el){
 			if($(el).find('.extName').text().search(new RegExp(filter, "i")) < 0){
 				$(el).fadeOut();
 			} else {
-				tabindex++;
-				console.log($(el).children('div:nth(1)'));
-				$(el).children('div:nth(1)').attr("tabindex", tabindex);
 				$(el).fadeIn();
 			}
 		});
@@ -128,18 +126,16 @@ $(function() {
 		setTimeout(function(){
 			if ( $(".extName:visible").length === 0 ){
 				$("#noResults").fadeIn();
-				$('#activeExtensions').parent().css('visibility','hidden');
-				$('#inactiveExtensions').parent().css('visibility','hidden');
-				$('.allExtensionsContainer').css('visibility','hidden');
+				$('#activeExtensions, #inactiveExtensions').parent().css('visibility','hidden');
+				$('.allExtensionsContainer').css({'visibility':'hidden', 'height':'0px'});
 				// fill in text
 				$('#noResults .filterLink .text').text(filter);
 				// update url
-				$('#noResults a.filterLink').attr("href", "https://chrome.google.com/webstore/search/"+encodeURIComponent(filter))
+				$('#noResults a.filterLink').attr("href", "https://chrome.google.com/webstore/search/"+encodeURIComponent(filter));
 			} else {
 				$("#noResults").hide();
-				$('.allExtensionsContainer').css('visibility','visible');
-				$('#activeExtensions').parent().css('visibility','visible');
-				$('#inactiveExtensions').parent().css('visibility','visible');
+				$('.allExtensionsContainer').css({'visibility':'visible', 'height':'auto'});
+				$('#activeExtensions, #inactiveExtensions').parent().css('visibility','visible');
 			}
 		}, 500);
 
@@ -426,6 +422,7 @@ function getUserData() {
 
 		// set global user obj
 		user = obj;
+		console.log("user:", user);
 
 		// check if user has compact styles checked
 		if(user.compactStyles){
@@ -495,7 +492,33 @@ function getUserData() {
 
 		handleGroupsClasses();
 
+		addGroupLabels(user.groups)
+
 	});
+}
+
+function addGroupLabels(groups){
+	console.log('adding labels to extensions for groups:', groups)
+
+	// loop over all groups
+	for (let group in groups) {
+	  if (Object.prototype.hasOwnProperty.call(groups, group)) {
+	    // do stuff
+	    console.log(`group: ${group}: `+groups[group]);
+	    // for each id in the group
+	    // find the switch with that ID
+	    // then find its parent('.entry')
+	    // then find its child group.badges
+	    // append the name to that element
+	    groups[group].forEach(function (id) {
+	      console.log(id);
+	      let target = $(`#${id}`).parents('.extBlock').find('.extName');
+	      console.log('target:', target);
+	      let spanHtml = "<span class='groupLabel'>"+group+"</span>";
+	      target.append(spanHtml)
+	    });
+	  }
+	}
 }
 
 
@@ -696,13 +719,10 @@ $("#editExtSubmit").submit(function(e){
 
 
 $("body").on("click",".uninstallExt",function(e){
-
-	// User wants to uninstall an extension
-	// relevant docs:
-	// https://developer.chrome.com/extensions/management#method-uninstall
-
 	e.preventDefault();
 
+	// User wants to uninstall an extension
+	// relevant docs: https://developer.chrome.com/extensions/management#method-uninstall
 	// get extension ID
 	let id = $(e.currentTarget).parents('.row.buttons').attr('data-extid');
 
@@ -719,10 +739,8 @@ $("body").on("click",".uninstallExt",function(e){
 });
 
 $("body").on("click",".show-ext-links",function(e){
-	// User wants to show the extension links
-
 	e.preventDefault();
-
+	// User wants to show the extension links
 	// get refrence to relevant ext-links element
 	let extLinks = $(this).parents('.righty').siblings('.ext-links');
 
@@ -732,14 +750,11 @@ $("body").on("click",".show-ext-links",function(e){
 	// hide down arrow, show up arrow
 	$(e.currentTarget).hide();
 	$(e.currentTarget).siblings('.hide-ext-links').show();
-
 });
 
 $("body").on("click",".hide-ext-links",function(e){
-	// User wants to hide the extension links
-
 	e.preventDefault();
-
+	// User wants to hide the extension links
 	// get refrence to relevant ext-links element
 	let extLinks = $(this).parents('.righty').siblings('.ext-links');
 
@@ -749,15 +764,11 @@ $("body").on("click",".hide-ext-links",function(e){
 	// hide down arrow, show up arrow
 	$(e.currentTarget).hide();
 	$(e.currentTarget).siblings('.show-ext-links').show();
-
 });
 
 $("body").on("click","#dismissGroupPrompt",function(e){
-
-	// User wants to dismiss the groups onboarding
-
 	e.preventDefault();
-
+	// User wants to dismiss the groups onboarding
 	// Hide call to actions, copy and buttons
 	$('#groupHeader').hide();
 
@@ -770,7 +781,6 @@ $("body").on("click","#dismissGroupPrompt",function(e){
 	chrome.storage.sync.set(user, function () {
 	  console.log('Saved, groupsModal dismissed');
 	});
-
 });
 
 
@@ -823,8 +833,6 @@ function includeAppsListener() {
 
 		// Track event in Google
 		ga('send', 'event', "options", `include-apps-toggled-to-${user.includeApps}`)
-
-		
 	});
 }
 
@@ -867,30 +875,13 @@ function fixStorage(groups){
 // ga('send', 'event', [eventCategory], [eventAction])
 
 
-// Handle install/updates
-function onInstall() {
-  console.log("Extension Installed");
-}
-
-function onUpdate() {
-  console.log("Extension Updated");
-}
-
 function getVersion() {
   return chrome.app.getDetails().version;
 }
 
-// Check if the version has changed.
-let currVersion = getVersion();
-let prevVersion = localStorage.version;
-if (currVersion != prevVersion) {
-  // Check if we just installed this extension.
-  if (typeof prevVersion == 'undefined') {
-    onInstall();
-  } else {
-    onUpdate();
-  }
-  localStorage.version = currVersion;
+// Check if the version has changed
+if (getVersion() != localStorage.version) {
+  localStorage.version = getVersion();
   // either way, show changelog modal
   $('#changelogModal').openModal();
 }

@@ -102,6 +102,10 @@ a #addAGroupText {
 
 /* MODAL STYLES */
 
+.allExtensionsContainer {
+	overflow: hidden;
+}
+
 .extList-holder {
 	margin: 5px 0 5px 0;
 }
