@@ -537,7 +537,7 @@ $("body").on("click",".editBtn",function(){
 	});
 
 	for (let i = 0; i < Object.keys(user.groups).length; i++) {
-		$('#groupList').append(groupListTemplate(Object.keys(user.groups)[i]));
+		$('#groupList').append(groupListTemplate(Object.keys(user.groups)[i].toLowerCase().split(' ').join('_')));
 	}
 
 });

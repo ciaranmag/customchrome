@@ -1,6 +1,6 @@
  ToDo For Next Release:
    ☐ [BUG] Editing an existing group's name creates a new group with new name and leaves old group there instead of replacing it
-   ☐ 
+   ☐ user.seen_changelog isn't used anymore, we use local storage, maybe we should go back though because it syncs with the cloud and local doesn't
 
  Housekeeping:
    ☐ Update blurb - add example use cases (Github repo, Custom Chrome Github website, Chrome Web Store)

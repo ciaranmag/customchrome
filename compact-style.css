@@ -49,7 +49,7 @@
   margin: 2px 0;
 }
 
-.switch label .lever {
+/* .switch label .lever {
 	width: 27px;
 	height: 10px;
 }
@@ -57,7 +57,7 @@
 .switch label .lever:after {
 	width: 15px;
 	height: 15px
-}
+} */
 
 .switch label input[type=checkbox]:checked+.lever:after {
 	left: 14px;
