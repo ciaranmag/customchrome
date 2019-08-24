@@ -189,8 +189,7 @@ a #addAGroupText {
 .mdi-action-settings, 
 a.mdi-action-settings {
 	color: #9F9F9F;
-	font-size: 22px;
-	margin-right: -22px;
+	margin-right: -23px;
 	vertical-align: middle;
 }
 
@@ -416,7 +415,7 @@ span.lever {
 .next-to-search {
 	position: relative;
 	float: right;
-	top: 27px;
+	top: 21px;
 	right: 12px;
 }
 
