@@ -488,3 +488,12 @@ span.badge.new {
   border-radius: 3px;
   color: white;
 }
+
+.groupLabel {
+	background: #81c784;
+	color: #fff;
+	padding: 3px 5px;
+	margin-left: 5px;
+	border-radius: 5px;
+	font-size: 10px;
+}
