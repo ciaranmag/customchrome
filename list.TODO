@@ -1,30 +1,23 @@
  ToDo For Next Release:
    ☐ [BUG] Editing an existing group's name creates a new group with new name and leaves old group there instead of replacing it
-   ✔ profiles working correctly @done (18-03-25 13:08)
-   ✔ better event tracking analytics @done (18-03-25 13:08)
    ☐ 
 
  Housekeeping:
    ☐ Update blurb - add example use cases (Github repo, Custom Chrome Github website, Chrome Web Store)
    ☐ Update screenshots (same places as blurb)
-   ☐ Update manifest version number
    ✔ Reply to Chrome Web Store reviews/feedback @done (18-04-29 19:37)
    ☐ Post on Reddit
    ☐ 
 
 Future Features:
-   ☐ setup notification alerts for new reviews/feedback on Chrome Web Store
-   ☐ clean up code, commenting, CSS tweaks, minify
    ☐ display profile tooltips vertically (have tried <br> "\n" "&lt;br /&gt;" "&#013;")
-   ☐ change search icon colour on when focusing on search input and move search icon into the input area
+   ☐ change search icon colour on when focusing on search input
    ☐ import/export (as json) button on groups
    ☐ add numbered badge to Groups
    ☐ if an extension is in the inactive list because it needs increased permissions then visually show that to the user next to the extension (chrome.management ExtensionDisabledReason "permissions_increase")
-   ☐ if an extension was sideloaded visually show that to the user (chrome.management ExtensionInstallType "sideload")
    ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
    ☐ advanced option to see memory usage of each extension (next to switch)
    ☐ have an option to make sure certain extensions are off when using a profile e.g. turn off ad blockers and social blockers when using "Web Dev" profile but record their state before the change and re-instate it after profile is turned off
-   ☐ backup profiles so they can be restored if Custom Chrome is uninstalled
    ☐ extension alerts when an extension has been sold, has malware, has vulnerabilities etc. (chrome.management ExtensionInfo "version")
    ☐ do not show an on/off switch if the app can't be disabled/uninstalled by the user (chrome.management ExtensionInfo "mayDisable")
    ☐ 
