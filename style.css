@@ -227,7 +227,7 @@ a.mdi-action-settings {
 }
 
 .lefty {
-	width: 83%;
+	width: 85%;
 	display: inline-block;
 	height: 100%;
 	vertical-align: top;
@@ -235,7 +235,7 @@ a.mdi-action-settings {
 
 .righty {
 	display: inline-block;
-	width: 16%;
+	width: 14%;
 	text-align: right;
 }
 
