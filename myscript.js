@@ -381,7 +381,6 @@ function submitThatShit() {
 
 	// group name is in a global variable 'name'
 	// extension id's are in a global variable 'idList'
-	// tempObj[name] = idList;
 	if (idList.length === 0) {
 		return;
 	}
@@ -391,7 +390,7 @@ function submitThatShit() {
 		chrome.management.setEnabled(extensionId, true);
 	});
 
-	/* REFRESH THE LIST AFTER CREATING A NEW GROUP AND TURNING EXTENSIONS ON */
+	/* TODO: REFRESH THE LIST AFTER CREATING A NEW GROUP AND TURNING EXTENSIONS ON */
 
 	// set new group on user obj, with idlist as array
 	user.groups[name] = idList;

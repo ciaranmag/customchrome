@@ -26,22 +26,27 @@
 	font-size: 20px;
 }
 
+.picHolder {
+	margin-top: 0px;
+}
+
 .picHolder img {
-	width:30px;
-	height:30px;
+	width: 30px;
+	height: 30px;
 }
 
 .extName {
-  font-size: 1.1rem;
+  font-size: 17px;
 }
 
 .nameDesc {
-	margin-left:1%;
+	margin-left: 1%;
   margin-top: 4px;
 }
 
 .extBlock {
-  margin: 2px 25px;
+	padding: 0 15px;
+  margin: 2px 0;
 }
 
 .switch label .lever {

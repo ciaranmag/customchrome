@@ -1,6 +1,6 @@
 let changelog = {
 	"Version 1.0.4":
-	["Fixed some ugly design layout issues",
+	["Fixed a lot of design/layout issues",
 	"Fixed some long standing bugs including inactive extensions not being activated after creating a new group with them in it - thanks for the reports 👍"],
 	"Version 1.0.3":
 	["When searching for an extension if there are no results you are shown a link which will take you to the Chrome Web Store showing results for the same search term",

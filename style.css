@@ -219,15 +219,16 @@ a.mdi-action-settings {
 }
 
 .extBlock {
-	width: 530px;
+	width: 580px;
 	min-height: 5vw;
 	float: left;
-	margin: 0px 25px;
+	padding: 0 15px;
+	margin: 10px 0 5px 0;
 	text-align: left;
 }
 
 .lefty {
-	width: 79%;
+	width: 83%;
 	display: inline-block;
 	height: 100%;
 	vertical-align: top;
@@ -235,7 +236,7 @@ a.mdi-action-settings {
 
 .righty {
 	display: inline-block;
-	width: 20%;
+	width: 16%;
 	text-align: right;
 }
 
@@ -246,20 +247,20 @@ a.mdi-action-settings {
 
 .picHolder {
 	display: inline-block;
-	width: 10%;
 	vertical-align: top;
+	margin-top: 5px;
 }
 
 .nameDesc {
 	display: inline-block;
 	width: 84%;
 	vertical-align: top;
-	margin-left: 5%;
+	margin-left: 3%;
 }
 
 .extBlock img {
-	width: 50px;
-	height: 50px;
+	width: 40px;
+	height: 40px;
 	vertical-align: top;
 }
 
@@ -273,9 +274,10 @@ a.mdi-action-settings {
 
 #activeTitle,
 #inactiveTitle {
-	padding: 20px 0px;
+	padding: 15px 0px;
 	padding-left: 25px;
 	font-weight: 400;
+	line-height: 36px;
 }
 
 #activeTitle {
@@ -287,14 +289,11 @@ a.mdi-action-settings {
 }
 
 .extName {
-	height: 30px;
-	overflow: hidden;
-	font-size: 20px;
+	font-size: 18px;
 	color: black;
 }
 
 .extDescription {
-	overflow: hidden;
 	font-size: 12px;
 	color: #a3a3a3;
 }
@@ -326,12 +325,12 @@ span.lever::after {
 
 .ext-switch .show-ext-links {
 	display: inline-block;
-	padding:0 15px 0 22px!important;
+	padding:0 0 0 22px !important;
 }
 
 .ext-switch .hide-ext-links {
 	display: none;
-	padding:0 15px 0 22px!important;
+	padding:0 0 0 22px !important;
 }
 
 .ext-switch label input[type=checkbox]:checked+.lever:after {
