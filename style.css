@@ -345,6 +345,10 @@ span.lever {
 	background-color: #DFDFDF;
 }
 
+.switch label .lever {
+	margin: 0 9px;
+}
+
 .ext-switch label .lever {
 	background-color: #DFDFDF;
 }
@@ -449,11 +453,17 @@ span.badge.new {
 }
 
 #options-dropdown {
-	width: 300px !important;
+	width: 280px !important;
 	position: absolute;
-	left: 290px !important;
+	left: 310px !important;
 	opacity: 1;
 	z-index: 100;
+}
+
+.dropdown-content li>a,
+.dropdown-content li>span {
+	font-size: 16px;
+	padding: 10px 15px;
 }
 
 #options-dropdown .switch {
