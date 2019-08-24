@@ -410,6 +410,13 @@ span.lever {
 	top: 10px;
 }
 
+.next-to-search {
+	position: relative;
+	float: right;
+	top: 27px;
+	right: 12px;
+}
+
 .settings-row {
 	display: none;
 }
