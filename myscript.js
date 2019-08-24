@@ -204,7 +204,7 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 			let keepOn = false;
 
 			// Get all group names that are on (have .on class)
-			let activeGroups = []
+			let activeGroups = [];
 			for (var i = $('.group-btn.on').length - 1; i >= 0; i--) {
 				
 				let groupName = $($('.group-btn.on')[i]).attr('id');
@@ -386,6 +386,13 @@ function submitThatShit() {
 		return;
 	}
 
+	// turn all selected extensions on
+	idList.forEach(function(extensionId, index) {
+		chrome.management.setEnabled(extensionId, true);
+	});
+
+	/* REFRESH THE LIST AFTER CREATING A NEW GROUP AND TURNING EXTENSIONS ON */
+
 	// set new group on user obj, with idlist as array
 	user.groups[name] = idList;
 
@@ -401,7 +408,7 @@ function submitThatShit() {
 	});
 
 	// Track event in Google
-	ga('send', 'event', "groups", "group-added")
+	ga('send', 'event', "groups", "group-added");
 
 }
 
@@ -445,9 +452,11 @@ function getUserData() {
 		if(!user.includeApps){
 			// hide apps
 			$('.app').hide();
+			$('#searchbox').attr('placeholder','Search extensions');
 		} else {
 			// set toggle switch to checked
 			$('.include-apps-switch').attr('checked', true);
+			$('#searchbox').attr('placeholder','Search extensions and apps');
 		}
 
 		// Check if there's a toast to show
@@ -455,9 +464,9 @@ function getUserData() {
 			// show toast
 			Materialize.toast(user.showToast, 2000, 'deleteToast');
 			// empty out the showToast property
-			user.showToast = ""
+			user.showToast = "";
 			chrome.storage.sync.set(user, function(){
-				console.log('deleted showToast:', user)
+				console.log('deleted showToast:', user);
 			});
 		}
 
@@ -492,13 +501,13 @@ function getUserData() {
 
 		handleGroupsClasses();
 
-		addGroupLabels(user.groups)
+		// addGroupLabels(user.groups);
 
 	});
 }
 
 function addGroupLabels(groups){
-	console.log('adding labels to extensions for groups:', groups)
+	console.log('adding labels to extensions for groups:', groups);
 
 	// loop over all groups
 	for (let group in groups) {
@@ -515,7 +524,7 @@ function addGroupLabels(groups){
 	      let target = $(`#${id}`).parents('.extBlock').find('.extName');
 	      console.log('target:', target);
 	      let spanHtml = "<span class='groupLabel'>"+group+"</span>";
-	      target.append(spanHtml)
+	      target.append(spanHtml);
 	    });
 	  }
 	}
@@ -713,7 +722,7 @@ $("#editExtSubmit").submit(function(e){
 	}
 
 	// Track event in Google
-	ga('send', 'event', "groups", "group-edited")
+	ga('send', 'event', "groups", "group-edited");
 
 });
 
@@ -820,10 +829,12 @@ function includeAppsListener() {
 			// user wishes to include apps
 			$('.app').show();
 			Materialize.toast('Apps now showing', 2000, 'ccToastOn');
+			$('#searchbox').attr('placeholder', 'Search extensions and apps');
 		} else {
 			// user wishes to hide all apps
 			$('.app').hide();
 			Materialize.toast('Apps will not be shown', 2000, 'ccToastOff');
+			$('#searchbox').attr('placeholder', 'Search extensions');
 		}
 
 		user.includeApps = e.target.checked;

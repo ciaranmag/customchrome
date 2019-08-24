@@ -54,7 +54,7 @@
 
 <div class="searchbox-holder">
 	<i id="search-icon" class="material-icons">search</i>
-	<input type="text" id="searchbox" tabindex="1" placeholder="Search extensions and apps">
+	<input type="text" id="searchbox" tabindex="1">
 </div>
 
 
@@ -99,7 +99,7 @@
     <h4>Add New Group</h4>
     <form id="nameSubmit">
       <div class="input-field col s6">
-        <input type="text" class="validate" id="name" pattern="[a-zA-z0-9\s]{1,15}" autofocus>
+        <input type="text" class="validate" id="name" pattern="[a-zA-z0-9\s]{1,15}" maxlength="15" autofocus>
         <label for="groupName">New Group Name</label>
       </div>
       <div id="addActionBtn">
@@ -130,7 +130,7 @@
 <form id="editExtSubmit">
   <div class="modal-content">
   	<label for="editGroupName">Edit Group Name</label>
-  	<input type="text" id="editGroupName" pattern="[a-zA-z0-9\s]{1,15}" autofocus>
+  	<input type="text" id="editGroupName" pattern="[a-zA-z0-9\s]{1,15}" maxlength="15" autofocus>
     <p>The extensions you tick here will be turned on when this group is active</p>
     <div id='editExtList'></div>
   </div>

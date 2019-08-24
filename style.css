@@ -82,7 +82,7 @@ a #addAGroupText {
 	line-height: 36px;
 	outline: 0;
 	margin: 5px;
-	padding: 0 2rem;
+	padding: 0 15px;
 	text-transform: uppercase;
 	vertical-align: middle;
 	background-color: #DFDFDF;
@@ -378,7 +378,8 @@ span.lever {
 }
 
 .ext-links .buttons {
-	text-align:right;
+	text-align: right;
+	margin-bottom: 10px;
 }
 
 .ext-links a {
