@@ -19,6 +19,11 @@ groupListSource   = $("#groupList-template").html(),
 groupListTemplate = Handlebars.compile(groupListSource);
 // Finish declaring variables
 
+// Handlebars Helpers
+Handlebars.registerHelper('lowerStripJoin', function(groupName) {
+	return groupName.toLowerCase().split(' ').join('_');
+});
+
 
 $(function() {
 	
@@ -537,7 +542,7 @@ $("body").on("click",".editBtn",function(){
 	});
 
 	for (let i = 0; i < Object.keys(user.groups).length; i++) {
-		$('#groupList').append(groupListTemplate(Object.keys(user.groups)[i].toLowerCase().split(' ').join('_')));
+		$('#groupList').append(groupListTemplate(Object.keys(user.groups)[i]));
 	}
 
 });

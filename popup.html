@@ -242,8 +242,8 @@
 		<div class='groupList-name'>
 			<span>{{this}}</span>
 		</div>
-		<button class="btn waves-effect waves-light grey edit {{this}}">EDIT</button>
-		<button class="btn waves-effect waves-light red delete {{this}}">DELETE</button>
+		<button class="btn waves-effect waves-light grey edit {{lowerStripJoin this}}">EDIT</button>
+		<button class="btn waves-effect waves-light red delete {{lowerStripJoin this}}">DELETE</button>
 	</div>
 </script>
 <!-- Handlebar Template End-->
@@ -261,8 +261,8 @@
 	 		<img src="{{ pic }}">
 	 	</div>
 	 	<div class="nameDesc">
-      {{#if sideloaded}}<span class="sideloaded-badge">sideloaded</span>{{/if}}
 		 	<span class="extName" >{{ name }}</span>
+      {{#if sideloaded}}<span class="sideloaded-badge">sideloaded</span>{{/if}}
     	{{#if isApp}}<span class="new badge"></span>{{/if}}
       <br>
 		 	<span class="extDescription">{{ description }}</span>
