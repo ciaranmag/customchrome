@@ -884,17 +884,16 @@ function includeAppsListener() {
 
 
 $('#viewChangelog').click(()=>{
-	var changelogHTML;
+	let changelogHTML = '<hr>';
 	for (let [key, value] of Object.entries(changelog)) {
-		console.log(`${key}: ${value}`);
 		changelogHTML += '<h6>'+key+'</h6><ul>';
 		value.forEach(function(item) {
 			changelogHTML += '<li>'+item+'</li>';
 		});
 		changelogHTML += '</ul>';
-		$('#changelogModal .modal-content').innerHTML += changelogHTML;
-		$('#changelogModal').openModal();
 	}
+	$('#changelogModal .modal-content')[0].innerHTML += changelogHTML;
+	$('#changelogModal').openModal();
 });
 
 
