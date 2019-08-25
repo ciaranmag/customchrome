@@ -530,6 +530,14 @@ function getUserData() {
 			$('.group-holder').append(btnHtml); 
 		}
 
+		// remove Custom Chrome from user's existing groups to prevent them from unintentionally turning off the extension
+		Object.keys(user.groups).forEach(function (key) {
+			// console.log(key, user.groups[key]);
+			user.groups[key] = arrayRemove(user.groups[key], 'balnpimdnhfiodmodckhkgneejophhhm');
+			user.groups[key] == '' ? delete user.groups[key] :0;
+			chrome.storage.sync.set(user);
+		});
+
 		handleGroupsClasses();
 
 		// addGroupLabels(user.groups);
@@ -538,22 +546,22 @@ function getUserData() {
 }
 
 function addGroupLabels(groups){
-	console.log('adding labels to extensions for groups:', groups);
+	// console.log('adding labels to extensions for groups:', groups);
 
 	// loop over all groups
 	for (let group in groups) {
 	  if (Object.prototype.hasOwnProperty.call(groups, group)) {
 	    // do stuff
-	    console.log(`group: ${group}: `+groups[group]);
+	    // console.log(`group: ${group}: `+groups[group]);
 	    // for each id in the group
 	    // find the switch with that ID
 	    // then find its parent('.entry')
 	    // then find its child group.badges
 	    // append the name to that element
 	    groups[group].forEach(function (id) {
-	      console.log(id);
+	      // console.log(id);
 	      let target = $(`#${id}`).parents('.extBlock').find('.extName');
-	      console.log('target:', target);
+	      // console.log('target:', target);
 	      let spanHtml = "<span class='groupLabel'>"+group+"</span>";
 	      target.append(spanHtml);
 	    });
@@ -882,8 +890,7 @@ function includeAppsListener() {
 	});
 }
 
-
-$('#viewChangelog').click(()=>{
+function showChangeLog() {
 	let changelogHTML = '<hr>';
 	for (let [key, value] of Object.entries(changelog)) {
 		changelogHTML += '<h6>'+key+'</h6><ul>';
@@ -894,6 +901,10 @@ $('#viewChangelog').click(()=>{
 	}
 	$('#changelogModal .modal-content')[0].innerHTML += changelogHTML;
 	$('#changelogModal').openModal();
+}
+
+$('#viewChangelog').click(()=>{
+	showChangeLog();
 });
 
 
@@ -937,6 +948,13 @@ function getVersion() {
 // Check if the version has changed
 if (getVersion() != localStorage.version) {
   localStorage.version = getVersion();
-  // either way, show changelog modal
-  $('#changelogModal').openModal();
+	// either way, show changelog modal
+	showChangeLog();
+}
+
+// remove an item from an array (used for removing custom chrome from users' groups)
+function arrayRemove(arr, value) {
+	return arr.filter(function (item) {
+		return item != value;
+	});
 }
