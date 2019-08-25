@@ -16,7 +16,9 @@ extListTemplate = Handlebars.compile(extListSource),
 
 // Handlebars for groupList (modal for editing groups)
 groupListSource   = $("#groupList-template").html(),
-groupListTemplate = Handlebars.compile(groupListSource);
+groupListTemplate = Handlebars.compile(groupListSource),
+
+customChromeId = 'balnpimdnhfiodmodckhkgneejophhhm';
 // Finish declaring variables
 
 // Handlebars Helpers
@@ -103,6 +105,9 @@ $(function() {
 				$('#inactiveExtensions').append(template(entry));
 			}
 		} // close extArray loop
+
+		// hide on/off switch for Custom Chrome extension
+		$('#balnpimdnhfiodmodckhkgneejophhhm')[0].children[0].style.visibility = 'hidden';
 		
 		// run the function which listens for a change in a checkbox state
 		extStateListener();
@@ -135,7 +140,7 @@ $(function() {
 				$('#activeExtensions, #inactiveExtensions').parent().css('visibility','hidden');
 				$('.allExtensionsContainer').css({'visibility':'hidden', 'height':'0px'});
 				// fill in text
-				$('#noResults .filterLink .text').text(filter);
+				$('#noResults .filterLink .search-failed-text').text(filter);
 				// update url
 				$('#noResults a.filterLink').attr("href", "https://chrome.google.com/webstore/search/"+encodeURIComponent(filter));
 			} else {
@@ -306,7 +311,7 @@ function extStateListener() {
 	});
 }
 
-// listen for addProfile button press, add a button to HTML, prompt for group name, set that name as button text, add that group to the storage.sync object
+// listen for addGroup button press, add a button to HTML, prompt for group name, set that name as button text, add that group to the storage.sync object
 $('.addGroup').click(function(){
 	$('#groupPrompt').openModal();
 });
@@ -358,6 +363,9 @@ function addExtensions(name) {
 	
 	// loop over extArray to populate the list
 	for (let i = 0; i < extArray.length; i++) {
+		if (extArray[i].id === 'balnpimdnhfiodmodckhkgneejophhhm') {
+			continue;
+		}
 		let ext = extArray[i];
 		$('#extList').append(extListTemplate(ext));
 	}
@@ -655,6 +663,9 @@ $("body").on("click",".edit",function(){
 
 	//populate list with all extensions:
 	for (let i = 0; i < extArray.length; i++) {
+		if (extArray[i].id === 'balnpimdnhfiodmodckhkgneejophhhm') {
+			continue;
+		}
 		let ext = extArray[i];
 		$('#editExtList').append(extListTemplate(ext));
 	}

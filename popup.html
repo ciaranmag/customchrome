@@ -65,14 +65,14 @@
 <div class="row" id='noResults'>
   <div class="col s12 m5">
     <div class="card-panel amber">
-    	<h4>Oh no...</h4>
+    	<h4>No results, sorry</h4>
 			<h6 class="grey-text text-darken-2">You don't have any extensions installed matching that search term
 			</h6>
 			<br>
-			<h5>Looking for a new extension?</h5>
-			<h6>
-				<a class="filterLink" href="https://chrome.google.com/webstore/search/" target="_blank" tabindex="2">Search <span
-						class="text"></span> on the chrome web store</a>
+			<!-- <h5>Looking for a new extension?</h5> -->
+			<h6 style="text-align: center">
+				<a class="waves-effect waves-light btn filterLink" href="https://chrome.google.com/webstore/search/" target="_blank" tabindex="2">Search <span class="search-failed-text"></span> on the chrome web store
+				</a>
 			</h6>
     </div>
   </div>
@@ -244,8 +244,11 @@
 		<div class='groupList-name'>
 			<span>{{this}}</span>
 		</div>
-		<button class="btn waves-effect waves-light grey edit {{lowerStripJoin this}}">EDIT</button>
-		<button class="btn waves-effect waves-light red delete {{lowerStripJoin this}}">DELETE</button>
+		<!-- Don't need these two anymore nor the Handlebar Helper for it -->
+		<!-- <button class="btn waves-effect waves-light grey edit {{lowerStripJoin this}}">EDIT</button>
+		<button class="btn waves-effect waves-light red delete {{lowerStripJoin this}}">DELETE</button> -->
+		<button class="btn waves-effect waves-light grey edit">EDIT</button>
+		<button class="btn waves-effect waves-light red delete">DELETE</button>
 	</div>
 </script>
 <!-- Handlebar Template End-->
