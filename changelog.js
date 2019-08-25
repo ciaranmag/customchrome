@@ -1,7 +1,8 @@
 let changelog = {
 	"Version 1.0.4":
 	["Fixed a lot of design/layout issues",
-	"Fixed some long standing bugs including inactive extensions not being activated after creating a new group with them in it - thanks for the reports"],
+	"Fixed some long standing bugs including inactive extensions not being activated after creating a new group with them in it - thanks for the reports",
+	"Removed ability to add Custom Chrome to a group to avoid unintentionally killing the extension"],
 	"Version 1.0.3":
 	["When searching for an extension if there are no results you are shown a link which will take you to the Chrome Web Store showing results for the same search term",
 	"You can now use the tab key to move from the search bar through the extension list and then use the space bar to turn extensions on/off"],

@@ -9,9 +9,6 @@
 </head>
 <body>
 
-<!-- Settings button in top right, opens dropdown -->
-<!-- <a href="!#" class="settings-icon dropdown-button  tooltipped" data-position="left" data-delay="50" data-tooltip="Options" data-beloworigin="true" data-activates='options-dropdown'><i class="material-icons grey-text">settings</i></a> -->
-
 
 <!-- Options Dropdown Structure -->
 <ul id='options-dropdown' class='dropdown-content'>
@@ -216,9 +213,6 @@
 		<div class='groupList-name'>
 			<span>{{this}}</span>
 		</div>
-		<!-- Don't need these two anymore nor the Handlebar Helper for it -->
-		<!-- <button class="btn waves-effect waves-light grey edit {{lowerStripJoin this}}">EDIT</button>
-		<button class="btn waves-effect waves-light red delete {{lowerStripJoin this}}">DELETE</button> -->
 		<button class="btn waves-effect waves-light grey edit">EDIT</button>
 		<button class="btn waves-effect waves-light red delete">DELETE</button>
 	</div>
@@ -264,11 +258,11 @@
 				<span>{{ description }}</span>
 			</div>
 	    <div class="row buttons" data-extId="{{id}}">
-<!-- 				{{#if optionsUrl}}
-        <div class="link"><a href="{{optionsUrl}}"><i class="material-icons">settings</i>Options</a></div>
-        {{/if}} -->
         {{#if homepageUrl}}
         <div class="link"><a href="{{homepageUrl}}" target="_blank"><i class="material-icons">home</i>Homepage</a></div>
+        {{/if}}
+				{{#if optionsUrl}}
+        <div class="link"><a href="{{optionsUrl}}"><i class="material-icons">settings</i>Options</a></div>
         {{/if}}
         <div class="link"><a href="#!" class="uninstallExt"><i class="material-icons">delete</i>Uninstall</a></div>
 	    </div>

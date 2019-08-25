@@ -468,7 +468,7 @@ span.lever {
 .badge {
 	position: inherit !important;
 	padding: 2px 6px !important;
-	margin-left: 10px !important;
+	margin-left: 5px !important;
 }
 
 .new:after {
@@ -519,10 +519,11 @@ span.badge.new {
 }
 
 .sideloaded-badge {
-	background: darkgrey;
-  padding: 3px 5px;
+	background: #cfcbcb;
+	padding: 3px 5px;
+	margin-left: 5px;
   border-radius: 3px;
-  color: white;
+  color: #353535;
 }
 
 .groupLabel {
