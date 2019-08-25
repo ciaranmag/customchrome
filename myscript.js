@@ -105,10 +105,11 @@ $(function() {
 		} // close extArray loop
 		
 		// run the function which listens for a change in a checkbox state
-		extStateListener(); 
+		extStateListener();
 
 	}); // close chrome.management.getAll
 
+	
 	// Search
 	$("#searchbox").keyup(function(){
 		// Retrieve the input field text
@@ -149,6 +150,22 @@ $(function() {
 	$('#searchbox').focus();
 
 }); // close $(document).ready
+
+// Add active and inactive extension count next to card title
+function getExtensionCount() {
+	if (user.includeApps) {
+		let count = $('#activeExtensions').children('.extBlock').length;
+		$('#activeCount').text(count);
+		count = $('#inactiveExtensions').children('.extBlock').length;
+		$('#inactiveCount').text(count);
+
+	} else if (!user.includeApps) {
+		let count = $('#activeExtensions').children('.extBlock:not(.app)').length;
+		$('#activeCount').text(count);
+		count = $('#inactiveExtensions').children('.extBlock:not(.app)').length;
+		$('#inactiveCount').text(count);
+	}
+}
 
 function handleGroupsClasses(){
 	// setting the group buttons to on/off appearance
@@ -457,10 +474,12 @@ function getUserData() {
 			// hide apps
 			$('.app').hide();
 			$('#searchbox').attr('placeholder','Search extensions');
+			getExtensionCount();
 		} else {
 			// set toggle switch to checked
 			$('.include-apps-switch').attr('checked', true);
 			$('#searchbox').attr('placeholder','Search extensions and apps');
+			getExtensionCount();
 		}
 
 		// Check if there's a toast to show
@@ -842,6 +861,7 @@ function includeAppsListener() {
 		}
 
 		user.includeApps = e.target.checked;
+		getExtensionCount();
 		// save current state to storage
 		console.log("saving user: ", user);
 		chrome.storage.sync.set(user);

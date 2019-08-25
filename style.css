@@ -273,7 +273,7 @@ a.mdi-action-settings {
 
 #activeTitle,
 #inactiveTitle {
-	padding: 15px 0px;
+	/* padding: 15px 0px; */
 	padding-left: 25px;
 	font-weight: 400;
 	line-height: 36px;
@@ -285,6 +285,23 @@ a.mdi-action-settings {
 
 #inactiveTitle {
 	color: #9F9F9F;
+}
+
+#activeCount,
+#inactiveCount {
+	float: right;
+	padding-right: 25px;
+	font-size: 24px;
+	line-height: 36px;
+	font-weight: 300;
+}
+
+#activeCount {
+	color: rgba(255, 255, 255, .6);
+}
+
+#inactiveCount {
+	color: rgba(159, 159, 159, .6);
 }
 
 .extName {

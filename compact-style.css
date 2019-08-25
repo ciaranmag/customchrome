@@ -26,6 +26,12 @@
 	font-size: 20px;
 }
 
+#activeCount,
+#inactiveCount {
+	font-size: 20px;
+	line-height: initial;
+}
+
 .picHolder {
 	margin-top: 0px;
 }
