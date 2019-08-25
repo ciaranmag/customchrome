@@ -16,9 +16,9 @@ extListTemplate = Handlebars.compile(extListSource),
 
 // Handlebars for groupList (modal for editing groups)
 groupListSource   = $("#groupList-template").html(),
-groupListTemplate = Handlebars.compile(groupListSource),
+groupListTemplate = Handlebars.compile(groupListSource);
 
-customChromeId = 'balnpimdnhfiodmodckhkgneejophhhm';
+const customChromeId = 'balnpimdnhfiodmodckhkgneejophhhm';
 // Finish declaring variables
 
 // Handlebars Helpers
@@ -53,7 +53,6 @@ $(function() {
 				case "packaged_app":
 				case "legacy_packaged_app":
 				case "hosted_app":
-					// entry.name += " (APP)";
 					extArray.push(entry);
 					entry.isApp = '<span class="new badge"></span>';
 					// console.log("PACKAGE", entry);
@@ -71,7 +70,6 @@ $(function() {
 			return a.name.localeCompare(b.name);
 		});
 
-
 		// loop over extArray, sort icons, append to appropriate element
 		for (let i = 0; i < extArray.length; i++) {
 			let entry = extArray[i];
@@ -85,17 +83,11 @@ $(function() {
 			entry.pic = imgsrc; // setting the url we just got as entry.pic
 
 			let state = entry.enabled;
-			if(state === true){ // set switches to either on or off
-				state = "checked";
-			} else {
-				state = "";
-			}
+			state ? state = "checked" : state = "";
 			entry.stringEnabled = state;
 
 			// Check if extension is sideloaded
-			if(entry.installType === "development"){
-				entry.sideloaded = true;
-			}
+			entry.installType === "development" ? entry.sideloaded = true : 0;
 
 			// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
 			// console.log("entry:", entry)
@@ -120,7 +112,6 @@ $(function() {
 		// Retrieve the input field text
 		let filter = $(this).val();
 		// Loop through the extensions
-
 		// toFilter array will hold all elements to search through
 		// fill this depending on whether apps are on or off
 		let toFilter = user.includeApps ? $(".extBlock") : $(".extBlock:not(.app)");
@@ -159,16 +150,12 @@ $(function() {
 // Add active and inactive extension count next to card title
 function getExtensionCount() {
 	if (user.includeApps) {
-		let count = $('#activeExtensions').children('.extBlock').length;
-		$('#activeCount').text(count);
-		count = $('#inactiveExtensions').children('.extBlock').length;
-		$('#inactiveCount').text(count);
+		$('#activeCount').text($('#activeExtensions').children('.extBlock').length);
+		$('#inactiveCount').text($('#inactiveExtensions').children('.extBlock').length);
 
 	} else if (!user.includeApps) {
-		let count = $('#activeExtensions').children('.extBlock:not(.app)').length;
-		$('#activeCount').text(count);
-		count = $('#inactiveExtensions').children('.extBlock:not(.app)').length;
-		$('#inactiveCount').text(count);
+		$('#activeCount').text($('#activeExtensions').children('.extBlock:not(.app)').length);
+		$('#inactiveCount').text($('#inactiveExtensions').children('.extBlock:not(.app)').length);
 	}
 }
 
@@ -187,9 +174,7 @@ function handleGroupsClasses(){
 			let id = extensionIds[i];
 			for (let x = 0; x < extArray.length; x++) {
 				let obj = extArray[x];
-				if(obj.id === id){
-					tempArray.push(obj);
-				}
+				obj.id === id ? tempArray.push(obj) : 0;
 			}
 		}
 
@@ -202,7 +187,7 @@ function handleGroupsClasses(){
 		}) || false;
 
 		// if it's on, add/remove appropriate classes
-		if(!off){
+		if (!off) {
 			group = group.replace(/ /g, "_");
 			$("#" + group).removeClass("off").addClass("on");
 		}
@@ -232,8 +217,7 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 
 			// Get all group names that are on (have .on class)
 			let activeGroups = [];
-			for (var i = $('.group-btn.on').length - 1; i >= 0; i--) {
-				
+			for (let i = $('.group-btn.on').length - 1; i >= 0; i--) {
 				let groupName = $($('.group-btn.on')[i]).attr('id');
 				
 				groupName = groupName.replace(/_/g, " ");
@@ -244,19 +228,15 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 			// for each group in activeGroups array
 			// search the ids in its group
 			// if we get a match, then keepOn = true
-			for (var i = activeGroups.length - 1; i >= 0; i--) {
+			for (let i = activeGroups.length - 1; i >= 0; i--) {
 				keepOn = user.groups[activeGroups[i]].some(function(extId){
 					return extId === extensionId;
 				});
 			}
 
-			if(!keepOn){
-				// this extension mustn't be in any other active group
-				// turn it off
-				chrome.management.setEnabled(extensionId, false);
-			} else {
-				console.log("keeping extension on");
-			}
+			// this extension mustn't be in any other active group
+			// turn it off
+			!keepOn ? chrome.management.setEnabled(extensionId, false) :0;
 			
 		});
 
@@ -267,7 +247,7 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 		setTimeout(function(){
 			// adding false lets the page reload from the cache
 			location.reload(false); 
-		}, 1000);
+		}, 500);
 
 	} else if (btn.hasClass("off")) { 
 		// if the btn is currently off then turn all extensions on
@@ -283,12 +263,12 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 		setTimeout(function(){
 			// adding false lets the page reload from the cache
 			location.reload(false); 
-		}, 1000);
+		}, 500);
 		
 	}
 
 	// track that the user has toggled a group
-	ga('send', 'event', "groups", "group-toggled")
+	ga('send', 'event', "groups", "group-toggled");
 
 });
 
@@ -507,13 +487,11 @@ function getUserData() {
 		if ( allProfiles.length === 0 ) { 
 			// if there are no groups, exit function
 			$('#noGroupsText').show();
-			// $('#groupHeader').css("background-color", "#03A9FA");
 			$('.editBtn').hide();
 			return;
 		}
 
 		$('#noGroupsText, #groupOnboarding').hide();
-		$('#groupHeader').css("background-color", "#f3f3f3");
 		$('.editBtn').show();
 
 		// clear out html in group-holder first
@@ -551,7 +529,6 @@ function addGroupLabels(groups){
 	// loop over all groups
 	for (let group in groups) {
 	  if (Object.prototype.hasOwnProperty.call(groups, group)) {
-	    // do stuff
 	    // console.log(`group: ${group}: `+groups[group]);
 	    // for each id in the group
 	    // find the switch with that ID
@@ -630,12 +607,9 @@ function confirmDelete(group){
 	});
 
 	$('#confirmDelete h5').append(group + "?");
-	//on confirm
-		//delete group from storage, show toast confirming group delete
-	//on cancel
-		//close the modal and do nothing
+	//on confirm - delete group from storage, show toast confirming group delete
+	//on cancel - close the modal and do nothing
 	$("body").on("click","#deleteGroup",function(){
-		//delete the selected group
 
 		delete user.groups[group];
 
@@ -650,7 +624,7 @@ function confirmDelete(group){
 			location.reload(false);
 		}, 1000);
 	});
-};
+}
 
 
 
@@ -667,7 +641,6 @@ $("body").on("click",".edit",function(){
 
 	//prefill the group name input with the current group name
 	$('#editGroupName').val(groupName);
-
 
 	//populate list with all extensions:
 	for (let i = 0; i < extArray.length; i++) {
@@ -780,13 +753,8 @@ $("body").on("click",".uninstallExt",function(e){
 	// uninstall, with native confirm dialog
 	// even with false, an extension uninstalling an extension
 	// will always trigger the native confirm dialog
-	chrome.management.uninstall(id, {"showConfirmDialog": false}, ()=>{
-
-		// do something when user has confirmed or denied?
-		// will we need to refresh the list?
-		// nope, the extension closes the popup.html anyway so nothing to worry about...
-
-	});
+	chrome.management.uninstall(id, {"showConfirmDialog": false}, ()=>{});
+	// custom chrome closes automatically
 });
 
 $("body").on("click",".show-ext-links",function(e){
@@ -915,25 +883,20 @@ We also need to add properties for compactStyles and dismissedProfilesPrompt
 */
 
 function fixStorage(groups){
-
-	console.log('migrating data with:', groups);
-
-	// create new object
+	// create new object (essentially backing up the user's settings)
 	let newObj = {
 		"groups": groups || [],
 		"dismissedProfilesPrompt": false,
 		"compactStyles": false
 	};
 
-	// clear the storage (We should have everything we need in the newObj)
+	// clear the cloud storage
 	chrome.storage.sync.clear();
 
-	chrome.storage.sync.set(newObj, function(){
-		console.log('new object saved, user is "migrated"');
-	});
+	// set the backup as storage (in our newer format)
+	chrome.storage.sync.set(newObj, function(){});
 
 	getUserData();
-
 }
 
 
