@@ -203,6 +203,10 @@ function handleGroupsClasses(){
 			$("#" + group).removeClass("off").addClass("on");
 		}
 	}
+	// delete any empty groups
+	Object.keys(user.groups).forEach(function (group) {
+		user.groups[group].length === 0 ? delete user.groups[group] :0;
+	});
 	chrome.storage.sync.set(user, function () {});
 }
 
