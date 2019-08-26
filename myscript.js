@@ -28,6 +28,10 @@ Handlebars.registerHelper('lowerStripJoin', function(groupName) {
 });
 
 
+	// hide groupHeader
+	$('#groupHeader').hide();
+	$('#noGroupsText, #groupOnboarding').hide();
+
 $(function() {
 	
 	// listen for compact styles toggle change
@@ -213,6 +217,7 @@ function handleGroupsClasses(){
 	Object.keys(user.groups).forEach(function (group) {
 		user.groups[group].length === 0 ? delete user.groups[group] :0;
 	});
+
 	chrome.storage.sync.set(user, function () {});
 }
 
@@ -524,42 +529,55 @@ function getUserData() {
 
 
 		let allProfiles = Object.keys(obj.groups);
+		
+		// if user has groups, show groups
+		if (Object.keys(user.groups).length > 0) {
+			// show groups
+			$('#groupHeader').show();
+			$('#noGroupsText, #groupOnboarding').hide();
+			$('#groupOnboarding').innerHTML = '';
+			$('.editBtn').show();
 
-		if ( allProfiles.length === 0 ) { 
-			// if there are no groups, exit function
-			$('#noGroupsText').show();
+			// clear out html in group-holder first
+			$('.group-holder').html('');
+
+			// loop over all groups
+			// append them to the div
+			for (let i = 0; i < allProfiles.length; i++) {
+				let name = allProfiles[i];
+
+				let btnHtml = "<button class='group-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
+				
+				// append to group-holder
+				$('.group-holder').append(btnHtml); 
+			}
+
+			// remove Custom Chrome from user's existing groups to prevent them from unintentionally turning off the extension
+			Object.keys(user.groups).forEach(function (key) {
+				// console.log(key, user.groups[key]);
+				user.groups[key] = arrayRemove(user.groups[key], 'balnpimdnhfiodmodckhkgneejophhhm');
+				user.groups[key] == '' ? delete user.groups[key] :0;
+				chrome.storage.sync.set(user);
+			});
+
+			handleGroupsClasses();
+
+			// addGroupLabels(user.groups);
+
+		}
+		// if user has dismissed group prompt, hide group header
+		else if (user.dismissedProfilesPrompt) {
+			// User has no groups, and has dismissed groups prompt
+			$('#groupHeader').hide();
+			$('#groupOnboarding').innerHTML = '';
+			// hide edit button (in options slide-down)
 			$('.editBtn').hide();
-			return;
+		} else {
+			// show user the group prompt and hide the edit groups button
+			$('#noGroupsText').text("You don't have any groups setup.");
+			$('#groupOnboarding').innerHTML('<a class="addGroup waves-effect waves-light btn">Create Group</a><a id="dismissGroupPrompt" class="waves-effect waves-light btn grey lighten-3 grey-text text-darken-2">Dismiss</a>');
+			$('.editBtn').hide();
 		}
-
-		$('#noGroupsText, #groupOnboarding').hide();
-		$('.editBtn').show();
-
-		// clear out html in group-holder first
-		$('.group-holder').html('');
-
-		// loop over all groups
-		// append them to the div
-		for (let i = 0; i < allProfiles.length; i++) {
-			let name = allProfiles[i];
-
-			let btnHtml = "<button class='group-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
-			
-			// append to group-holder
-			$('.group-holder').append(btnHtml); 
-		}
-
-		// remove Custom Chrome from user's existing groups to prevent them from unintentionally turning off the extension
-		Object.keys(user.groups).forEach(function (key) {
-			// console.log(key, user.groups[key]);
-			user.groups[key] = arrayRemove(user.groups[key], 'balnpimdnhfiodmodckhkgneejophhhm');
-			user.groups[key] == '' ? delete user.groups[key] :0;
-			chrome.storage.sync.set(user);
-		});
-
-		handleGroupsClasses();
-
-		// addGroupLabels(user.groups);
 
 	});
 }
