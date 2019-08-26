@@ -432,6 +432,14 @@ span.lever {
 	display: none;
 }
 
+#refresh-icon {
+	position: absolute;
+	right: 70px;
+	top: 72px;
+	color: #81c783;
+	font-weight: 600;
+}
+
 .settings-icon {
 	position: absolute;
 	right: 10px;

@@ -36,6 +36,12 @@ $(function() {
 	// listen for include apps toggle
 	includeAppsListener();
 
+	// hide refresh button and set listener
+	$('#refresh-icon').hide();
+	$('#refresh-icon').on('click', function (e) {
+		location.reload(false);
+	});
+
 	$('.modal-trigger').leanModal();
 
 	chrome.management.getAll(function(info) {
@@ -303,6 +309,7 @@ function extStateListener() {
 				Materialize.toast(name+' is now off', 2000, 'ccToastOff');
 			});
 		}
+		$('#refresh-icon').show();
 	});
 }
 
