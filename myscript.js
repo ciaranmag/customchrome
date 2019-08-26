@@ -343,6 +343,7 @@ function addExtensions(name) {
 	
 	// loop over extArray to populate the list
 	for (let i = 0; i < extArray.length; i++) {
+		// don't include custom chrome
 		if (extArray[i].id === 'balnpimdnhfiodmodckhkgneejophhhm') {
 			continue;
 		}
@@ -373,9 +374,10 @@ $('#extSubmit').submit(
 	function(e){
 		e.preventDefault();
 		//if no extension are selected, show toast warning and do not close modal
-		if(idList.length === 0){
+		if (idList.length === 0) {
 			Materialize.toast('You must select at least one extension for this group', 2000, 'alert');
-		} else {
+		} 
+		else {
 			//extensions were selected
 			submitThatShit(); //submitting extensions to memory
 			$('#addExts h4').text("Add extensions to "); // turn h4 text back to normal after modal is dismissed
@@ -418,6 +420,11 @@ function submitThatShit() {
 
 	// Track event in Google
 	ga('send', 'event', "groups", "group-added");
+
+	setTimeout(function () {
+		// adding false lets the page reload from the cache
+		location.reload(false);
+	}, 500);
 
 }
 
