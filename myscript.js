@@ -248,8 +248,8 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 			// adding false lets the page reload from the cache
 			location.reload(false); 
 		}, 500);
-
-	} else if (btn.hasClass("off")) { 
+	} 
+	else if (btn.hasClass("off")) { 
 		// if the btn is currently off then turn all extensions on
 		user.groups[groupClicked].forEach(function(extensionId){
 			console.log('enabling extension:', extensionId);
@@ -264,7 +264,6 @@ $("body").on("click",".group-btn",function(){ // if a group btn is clicked
 			// adding false lets the page reload from the cache
 			location.reload(false); 
 		}, 500);
-		
 	}
 
 	// track that the user has toggled a group
@@ -331,7 +330,6 @@ $('#nameSubmit').submit(
 // add extensions to new group modal
 function addExtensions(name) { 
 	$('#addExts').openModal({
-		dismissible: false,
 		ready: function() {
 			checkboxListener();
 		}
@@ -556,8 +554,8 @@ function addGroupLabels(groups){
 
 $("body").on("click",".editBtn",function(){
 	$('#editGroups').openModal({
-		dismissible: false,
-		ready: function() {},
+		// dismissible: false,
+		ready: function() {}
 	});
 
 	for (let i = 0; i < Object.keys(user.groups).length; i++) {
@@ -674,9 +672,7 @@ $("body").on("click",".edit",function(){
 
 	//wait half a second, open a new confirm/cancel modal
 	setTimeout(function(){
-		$('#editExts').openModal({
-			dismissible: false
-		});
+		$('#editExts').openModal({});
 	}, 500);
 });
 
