@@ -774,7 +774,15 @@ $("body").on("click",".uninstallExt",function(e){
 	// uninstall, with native confirm dialog
 	// even with false, an extension uninstalling an extension
 	// will always trigger the native confirm dialog
-	chrome.management.uninstall(id, {"showConfirmDialog": false}, ()=>{});
+	chrome.management.uninstall(id, {"showConfirmDialog": false}, ()=>{
+		console.log('going to delete');
+		for (let [group_name, group_ids] of Object.entries(user.groups)){
+			if (group_ids.indexOf(id) != -1) {
+				user.groups[group_name].splice(group_ids.indexOf(id), 1);
+			}
+		}
+		chrome.storage.sync.set(user, function () {});
+	});
 	// custom chrome closes automatically
 });
 
