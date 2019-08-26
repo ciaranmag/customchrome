@@ -5,6 +5,7 @@ activeExtensions = [],
 inactiveExtensions = [],
 idList = [],
 user = {},
+justExtIds = [],
 
 // Handlebars for active and inactive lists
 source   = $("#entry-template").html(),
@@ -63,16 +64,22 @@ $(function() {
 		}
 
 		// call function to check storage.sync for existing user groups
-		getUserData(); 
+		getUserData();
 
 		// sort extArray into alphabetical order based on the extensions' names
 		extArray.sort(function(a, b) {
 			return a.name.localeCompare(b.name);
 		});
-
+		
+		justExtIds = [];
+		
 		// loop over extArray, sort icons, append to appropriate element
 		for (let i = 0; i < extArray.length; i++) {
 			let entry = extArray[i];
+			
+			// Make an array of all the extension ids
+			justExtIds.push(entry.id);
+			
 			// extension icons are stored in entry.icons, but not all extensions have icons
 			if (entry.icons === undefined) {
 				imgsrc = 'images/icon-128.png';  // if there aren't any icons, use our default icon
@@ -81,14 +88,14 @@ $(function() {
 				imgsrc = entry.icons[entry.icons.length-1].url;
 			}
 			entry.pic = imgsrc; // setting the url we just got as entry.pic
-
+			
 			let state = entry.enabled;
 			state ? state = "checked" : state = "";
 			entry.stringEnabled = state;
-
+			
 			// Check if extension is sideloaded
 			entry.installType === "development" ? entry.sideloaded = true : 0;
-
+			
 			// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
 			// console.log("entry:", entry)
 			if (entry.enabled) {
@@ -97,7 +104,7 @@ $(function() {
 				$('#inactiveExtensions').append(template(entry));
 			}
 		} // close extArray loop
-
+		
 		// hide on/off switch for Custom Chrome extension
 		$('#balnpimdnhfiodmodckhkgneejophhhm')[0].children[0].style.visibility = 'hidden';
 		
@@ -170,11 +177,15 @@ function handleGroupsClasses(){
 
 		let tempArray = [];
 
-		for (let i = 0; i < extensionIds.length; i++) {
+		for (let i = extensionIds.length -1; i>=0; i--) {
 			let id = extensionIds[i];
 			for (let x = 0; x < extArray.length; x++) {
 				let obj = extArray[x];
 				obj.id === id ? tempArray.push(obj) : 0;
+			}
+			// check if the extension is still installed by the user
+			if (justExtIds.indexOf(id) == -1) {
+				user.groups[group].splice(user.groups[group].indexOf(id),1);
 			}
 		}
 
@@ -192,6 +203,7 @@ function handleGroupsClasses(){
 			$("#" + group).removeClass("off").addClass("on");
 		}
 	}
+	chrome.storage.sync.set(user, function () {});
 }
 
 
@@ -775,7 +787,6 @@ $("body").on("click",".uninstallExt",function(e){
 	// even with false, an extension uninstalling an extension
 	// will always trigger the native confirm dialog
 	chrome.management.uninstall(id, {"showConfirmDialog": false}, ()=>{
-		console.log('going to delete');
 		for (let [group_name, group_ids] of Object.entries(user.groups)){
 			if (group_ids.indexOf(id) != -1) {
 				user.groups[group_name].splice(group_ids.indexOf(id), 1);
