@@ -292,7 +292,14 @@ function extStateListener() {
 
 // listen for addGroup button press, add a button to HTML, prompt for group name, set that name as button text, add that group to the storage.sync object
 $('.addGroup').click(function(){
-	$('#groupPrompt').openModal();
+	$('#groupPrompt').openModal({
+		ready: function () {
+			$('#name').focus();
+		},
+		complete: function() {
+			$('#name').val('');
+		}
+	});
 });
 
 $('#nameSubmit').submit(
@@ -330,8 +337,14 @@ $('#nameSubmit').submit(
 // add extensions to new group modal
 function addExtensions(name) { 
 	$('#addExts').openModal({
+		dismissible: true,
 		ready: function() {
 			checkboxListener();
+		},
+		complete: function () {
+			console.log('were in');
+			$('#extList').html('');
+			idList = [];
 		}
 	});
 
@@ -554,8 +567,8 @@ function addGroupLabels(groups){
 
 $("body").on("click",".editBtn",function(){
 	$('#editGroups').openModal({
-		// dismissible: false,
-		ready: function() {}
+		// dismissible: true,
+		ready: function() {},
 	});
 
 	for (let i = 0; i < Object.keys(user.groups).length; i++) {
@@ -672,7 +685,12 @@ $("body").on("click",".edit",function(){
 
 	//wait half a second, open a new confirm/cancel modal
 	setTimeout(function(){
-		$('#editExts').openModal({});
+		$('#editExts').openModal({
+			dismissible: true,
+			complete: function() {
+				$('#editExtList').html('');
+			}
+		});
 	}, 500);
 });
 
