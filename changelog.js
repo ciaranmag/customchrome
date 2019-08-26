@@ -3,6 +3,7 @@ let changelog = {
 	["Fixed a lot of design/layout issues",
 	"Fixed some long standing bugs including inactive extensions not being activated after creating a new group with them in it - thanks for the reports",
 	"Added a total count of active and inactive extensions",
+	"Added a refresh button to use when toggling extensions on or off",
 	"Fixed some popup windows e.g. editing groups, couldn't be dismissed by clicking outside of the window",
 	"Removed ability to add Custom Chrome to a group to avoid unintentionally killing the extension"],
 	"Version 1.0.3":
