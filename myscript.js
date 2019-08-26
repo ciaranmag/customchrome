@@ -715,7 +715,7 @@ $("#editExtSubmit").submit(function(e){
 	if(groupName === $('#editGroupName').val()){
 		// user has NOT changed the group name, so we can just set the idList as the group
 		chrome.storage.sync.remove(groupName, function(){
-			Materialize.toast(name+' group successfully edited', 1000, 'ccToastOn');
+			Materialize.toast(newName+' group successfully edited', 1000, 'ccToastOn');
 			setTimeout(function(){
 				location.reload(false);
 
@@ -741,7 +741,7 @@ $("#editExtSubmit").submit(function(e){
 				//new name is ok, delete old name from storage
 				console.log('deleting old group, '+groupName);
 				chrome.storage.sync.remove(groupName, function(){
-					Materialize.toast(name+' group successfully edited', 1000, 'ccToastOn');
+					Materialize.toast(newName+' group successfully edited', 1000, 'ccToastOn');
 					setTimeout(function(){
 						location.reload(false);
 
