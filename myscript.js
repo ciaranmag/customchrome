@@ -45,15 +45,11 @@ chrome.management.getAll(function(info) {
 		switch(entry.type) {
 			case "extension":
 				extArray.push(entry);
-				// console.log("EXTENSION", entry);
 				break;
 			case "hosted_app":
 				extArray.push(entry);
 				entry.isApp = '<span class="new badge"></span>';
-				// console.log("PACKAGE", entry);
 				break;
-			default:
-				console.log("This is different type: ", entry);
 		}
 	}
 
@@ -83,15 +79,11 @@ chrome.management.getAll(function(info) {
 		entry.stringEnabled = state;
 		
 		// Check if extension type is development
-		entry.installType === "development" ? entry.development = true : 0;
+		entry.installType === "development" ? entry.development = true : false;
 		
 		// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
-		// console.log("entry:", entry)
-		if (entry.enabled) {
-			$('#activeExtensions').append(template(entry));
-		} else {
-			$('#inactiveExtensions').append(template(entry));
-		}
+		entry.enabled ? $('#activeExtensions').append(template(entry)) : $('#inactiveExtensions').append(template(entry));
+	
 	} // close extArray loop
 	
 	// hide on/off switch for Custom Chrome extension
@@ -148,7 +140,7 @@ function handleGroupsClasses(){
 		// if it's on, add/remove appropriate classes
 		if (!off) {
 			group = group.replace(/ /g, "_");
-			$("#" + group).removeClass("off").addClass("on");
+			$(`#${group}`).removeClass("off").addClass("on");
 		}
 	}
 	// delete any empty groups
@@ -156,7 +148,7 @@ function handleGroupsClasses(){
 		user.groups[group].length === 0 ? delete user.groups[group] :0;
 	});
 
-	chrome.storage.sync.set(user, function () {});
+	chrome.storage.sync.set(user);
 }
 
 $('#nameSubmit').submit(
@@ -190,6 +182,7 @@ $('#nameSubmit').submit(
 		}, 500);
 	}
 );
+
 function checkboxListener() {
 	// turn on/off extensions when toggle is switched
 	$('.extList-toggle input').change(function () {
@@ -218,7 +211,7 @@ function addExtensions(name) {
 		}
 	});
 
-	$('#addExts h4').text("Add extensions to " + name);
+	$('#addExts h4').text(`Add extensions to ${name}`);
 	
 	// loop over extArray to populate the list
 	for (let i = 0; i < extArray.length; i++) {
@@ -245,7 +238,7 @@ $('#extSubmit').submit(
 			//extensions were selected
 			submitThatShit(); //submitting extensions to memory
 			$('#extList').html('');
-			Materialize.toast(name +' group added', 2000, 'ccToastOn');
+			Materialize.toast(`${name} group added`, 2000, 'ccToastOn');
 			$('#addExts').closeModal(); //close the modal
 			// $('#groupHeader').slideDown();
 		}
@@ -268,14 +261,11 @@ function submitThatShit() {
 	user.groups[name] = idList;
 
 	chrome.storage.sync.set(user, function () {
-	  console.log('Saved', name, idList);
-
 	  // get user data again, re-fill groups
 	  getUserData();
 
 	  // emptying out idList so that extensions aren't added to future groups
-	  idList = []; 
-
+	  idList = [];
 	});
 
 	// Track event in Google
@@ -291,21 +281,17 @@ function submitThatShit() {
 // check storage for user data
 function getUserData() { 
 	chrome.storage.sync.get(function(obj){
-
-		// There should be a "groups" property
-		// we can check for that and assume that 
-		// if it doesn't exist, then they're on the old version
+		// There should be a "groups" property, assume that if it doesn't exist, then they're on the old version
 		if (!obj.hasOwnProperty('groups')) {
-			console.log('migrating user data...');
+			// console.log('migrating user data...');
 			fixStorage(obj);
 			return;
 		}
 
 		// at this point, we're on the new data structure
-
 		// set global user obj
 		user = obj;
-		console.log("user:", user);
+		// console.log("user:", user);
 
 		// check if user has compact styles checked
 		if (user.compactStyles) {
@@ -335,7 +321,7 @@ function getUserData() {
 			// show toast
 			Materialize.toast(user.showToast, 2000, 'deleteToast');
 			user.showToast = "";
-			chrome.storage.sync.set(user, function(){});
+			chrome.storage.sync.set(user);
 		}
 
 		let allGroups = Object.keys(user.groups);
@@ -353,25 +339,21 @@ function getUserData() {
 			for (let i = 0; i < allGroups.length; i++) {
 				let name = allGroups[i];
 
-				let btnHtml = "<button class='group-btn off' id='"+name.toLowerCase().split(' ').join('_')+"'>"+name+"</button>";
+				let btnHtml = `<button class='group-btn off' id='${name.toLowerCase().split(' ').join('_')}'>${name}</button>`;
 				
 				// append to group-holder
 				$('.group-holder').append(btnHtml); 
 			}
 
 			removeCC();
-
 			handleGroupsClasses();
-
 			// addGroupLabels(user.groups);
-
 		}
 		// if user has dismissed group prompt, hide group header
 		else if (user.dismissedProfilesPrompt) {
 			// User has no groups, and has dismissed groups prompt
 			$('#groupHeader').hide();
 			$('#groupOnboarding').hide();
-			// hide edit button (in options slide-down)
 			$('.editBtn').hide();
 		}
 		else {
@@ -380,7 +362,6 @@ function getUserData() {
 			$('#groupOnboarding').show();
 			$('.editBtn').hide();
 		}
-
 	});
 }
 
@@ -388,17 +369,14 @@ function addGroupLabels(groups){
 	// loop over all groups
 	for (let group in groups) {
 	  if (Object.prototype.hasOwnProperty.call(groups, group)) {
-	    // console.log(`group: ${group}: `+groups[group]);
 	    // for each id in the group
 	    // find the switch with that ID
-	    // then find its parent('.entry')
-	    // then find its child group.badges
+	    // then find its parent entry
+	    // then find its child groupLabel
 	    // append the name to that element
 	    groups[group].forEach(function (id) {
-	      // console.log(id);
 	      let target = $(`#${id}`).parents('.extBlock').find('.extName');
-	      // console.log('target:', target);
-	      let spanHtml = "<span class='groupLabel'>"+group+"</span>";
+	      let spanHtml = `<span class='groupLabel'>${group}</span>`;
 	      target.append(spanHtml);
 	    });
 	  }
@@ -408,12 +386,12 @@ function addGroupLabels(groups){
 function confirmDelete(group){
 	//open the modal and insert the group name into the first p element
 	$('#confirmDelete').openModal({
-		complete: function(){
-			$('#confirmDelete h6').html('Are you sure you want to delete ');
-		}
+		// complete: function(){
+		// 	$('#confirmDelete h6').html(`Are you sure you want to delete TEST ${group}?`);
+		// }
 	});
 
-	$('#confirmDelete h5').append(group + "?");
+	$('#confirmDelete h5').append(`"${group}"?`);
 	
 	//on confirm - delete group from storage, show toast confirming group delete
 	//on cancel - close the modal and do nothing
@@ -422,10 +400,9 @@ function confirmDelete(group){
 
 		// add property to user object that will show "group deleted" toast when extension reloads
 		user.showToast = `${group} successfully deleted`;
-
 		chrome.storage.sync.set(user);
 
-		Materialize.toast('Deleting ' + group, 2000, 'deleteToast');
+		Materialize.toast(`Deleting ${group}`, 2000, 'deleteToast');
 		setTimeout(function () {
 			location.reload(false);
 		}, 1000);
@@ -435,7 +412,7 @@ function confirmDelete(group){
 $("#editExtSubmit").submit(function(e){
 	e.preventDefault();
 
-	//if no extension are selected, show toast warning and return
+	//if no extensions are selected, show toast warning and return
 	if(idList.length === 0){
 		Materialize.toast('You must select at least one extension for this group', 2000, 'alert');
 		return;
@@ -452,7 +429,7 @@ $("#editExtSubmit").submit(function(e){
 	if(groupName === $('#editGroupName').val()){
 		// user has NOT changed the group name, so we can just set the idList as the group
 		chrome.storage.sync.remove(groupName, function(){
-			Materialize.toast(newName+' group successfully edited', 1000, 'ccToastOn');
+			Materialize.toast(`${newName} group successfully edited`, 1000, 'ccToastOn');
 			setTimeout(function(){
 				location.reload(false);
 
@@ -474,9 +451,8 @@ $("#editExtSubmit").submit(function(e){
 			}
 			else {
 				//new name is ok, delete old name from storage
-				console.log('deleting old group, '+groupName);
 				chrome.storage.sync.remove(groupName, function(){
-					Materialize.toast(newName+' group successfully edited', 1000, 'ccToastOn');
+					Materialize.toast(`${newName} group successfully edited`, 1000, 'ccToastOn');
 					setTimeout(function(){
 						location.reload(false);
 
@@ -502,19 +478,10 @@ $("#editExtSubmit").submit(function(e){
 
 
 /****** LISTENERS ******/
-$(function () {
-// listen for compact styles toggle change
-compactStylesListener();
-
-// listen for include apps toggle
-includeAppsListener();
-
+$(function () { // load all listeners when the DOM is ready
 $('#refresh-icon').on('click', function (e) {
 	location.reload(false);
 });
-
-// listen for a change in a checkbox state
-extStateListener();
 
 // Search
 $("#searchbox").keyup(function () {
@@ -526,11 +493,7 @@ $("#searchbox").keyup(function () {
 	let toFilter = user.includeApps ? $(".extBlock") : $(".extBlock:not(.app)");
 
 	toFilter.each(function (i, el) {
-		if ($(el).find('.extName').text().search(new RegExp(filter, "i")) < 0) {
-			$(el).fadeOut();
-		} else {
-			$(el).fadeIn();
-		}
+		$(el).find('.extName').text().search(new RegExp(filter, "i")) < 0 ? $(el).fadeOut() : $(el).fadeIn();
 	});
 
 	// if the search returns no results then show the no results card
@@ -538,31 +501,21 @@ $("#searchbox").keyup(function () {
 		if ($(".extName:visible").length === 0) {
 			$("#noResults").fadeIn();
 			$('#activeExtensions, #inactiveExtensions').parent().css('visibility', 'hidden');
-			$('.allExtensionsContainer').css({
-				'visibility': 'hidden',
-				'height': '0px'
-			});
+			$('.allExtensionsContainer').css({'visibility': 'hidden','height': '0px'});
 			// fill in text
 			$('#noResults .filterLink .search-failed-text').text(filter);
 			// update url
-			$('#noResults a.filterLink').attr("href", "https://chrome.google.com/webstore/search/" + encodeURIComponent(filter));
+			$('#noResults a.filterLink').attr("href", `https://chrome.google.com/webstore/search/"${encodeURIComponent(filter)}`);
 		} else {
 			$("#noResults").hide();
-			$('.allExtensionsContainer').css({
-				'visibility': 'visible',
-				'height': 'auto'
-			});
+			$('.allExtensionsContainer').css({'visibility': 'visible','height': 'auto'});
 			$('#activeExtensions, #inactiveExtensions').parent().css('visibility', 'visible');
 		}
 	}, 500);
-
 });
 
 // after clicking a group's on/off button, we toggle its appearance (on or off) and cycle through associated extensions turning them all on or off
-$("body").on("click", ".group-btn", function () { // if a group btn is clicked
-
-	// cache button in local variable
-	// so we don't repeatedly poll the DOM for the element
+$("body").on("click", ".group-btn", function () {
 	let btn = $(this);
 
 	// find out which extension was clicked and assign to btnId
@@ -570,7 +523,6 @@ $("body").on("click", ".group-btn", function () { // if a group btn is clicked
 
 	// check if group was on or off
 	if (btn.hasClass("on")) {
-
 		// It was on, turn all extensions off
 		// Loop over each extension in the group
 		user.groups[groupClicked].forEach(function (extensionId) {
@@ -603,7 +555,7 @@ $("body").on("click", ".group-btn", function () { // if a group btn is clicked
 
 		});
 
-		Materialize.toast(groupClicked + ' is now off', 2000, 'ccToastOff');
+		Materialize.toast(`${groupClicked} is now off`, 2000, 'ccToastOff');
 
 		// change group btn to "off" appearance
 		$(this).removeClass("on").addClass("off");
@@ -611,14 +563,15 @@ $("body").on("click", ".group-btn", function () { // if a group btn is clicked
 			// adding false lets the page reload from the cache
 			location.reload(false);
 		}, 500);
-	} else if (btn.hasClass("off")) {
+	}
+	else if (btn.hasClass("off")) {
 		// if the btn is currently off then turn all extensions on
 		user.groups[groupClicked].forEach(function (extensionId) {
-			console.log('enabling extension:', extensionId);
+			// console.log('enabling extension:', extensionId);
 			chrome.management.setEnabled(extensionId, true);
 		});
 
-		Materialize.toast(groupClicked + ' is now on', 2000, 'ccToastOn');
+		Materialize.toast(`${groupClicked} is now on`, 2000, 'ccToastOn');
 
 		// change group btn to "on" appearance
 		$(this).removeClass("off").addClass("on");
@@ -634,25 +587,23 @@ $("body").on("click", ".group-btn", function () { // if a group btn is clicked
 });
 
 // turn on/off extensions when toggle is switched
-function extStateListener() {
-	$('.state-switch').change(function () {
-		$('#refresh-icon').show();
-		// get the app id
-		let id = $(this).parents('.switch').attr('id'),
-			// get the app name
-			name = $(this).parents('.switch').attr('name');
-		if ($(this).is(':checked')) {
-			chrome.management.setEnabled(id, true, function () {
-				Materialize.toast(name + ' is now on', 2000, 'ccToastOn');
-			});
-		}
-		else {
-			chrome.management.setEnabled(id, false, function () {
-				Materialize.toast(name + ' is now off', 2000, 'ccToastOff');
-			});
-		}
-	});
-}
+$('.state-switch').change(function () {
+	$('#refresh-icon').show();
+	// get the app id
+	let id = $(this).parents('.switch').attr('id'),
+		// get the app name
+		name = $(this).parents('.switch').attr('name');
+	if ($(this).is(':checked')) {
+		chrome.management.setEnabled(id, true, function () {
+			Materialize.toast(`${name} is now on`, 2000, 'ccToastOn');
+		});
+	}
+	else {
+		chrome.management.setEnabled(id, false, function () {
+			Materialize.toast(`${name} is now off`, 2000, 'ccToastOff');
+		});
+	}
+});
 
 // listen for addGroup button press, add a button to HTML, prompt for group name, set that name as button text, add that group to the storage.sync object
 $('.addGroup').click(function () {
@@ -684,15 +635,12 @@ $('#removeAllBtn').click((e) => {
 });
 
 $("body").on("click", "#deleteAllGroups", function () {
-
 	// User confirms delete all groups
 	// remove all groups (set empty object)
 	user.groups = {};
 
 	// save in memory
-	chrome.storage.sync.set(user, function () {
-		console.log('removed all groups');
-	});
+	chrome.storage.sync.set(user);
 
 	Materialize.toast('Deleting your groups...', 2000, 'deleteToast');
 	setTimeout(function () {
@@ -716,7 +664,7 @@ $("body").on("click", ".delete", function () {
 
 $("body").on("click", ".edit", function () {
 	groupName = $(this).parent().attr('group');
-	console.log('user is editing: ', groupName);
+	// console.log('user is editing: ', groupName);
 
 	//close the current modal, and clear out the groupsList
 	$('#editGroups').closeModal();
@@ -739,14 +687,11 @@ $("body").on("click", ".edit", function () {
 		let id = user.groups[groupName][i];
 		idList.push(id);
 		//find input with this id and add .prop('checked', true);
-		$('#editExtList input[appid="' + id + '"]').prop('checked', true);
+		$(`#editExtList input[appid="${id}"]`).prop('checked', true);
 	}
 
 	//start listening for checkbox changes
 	checkboxListener();
-
-	//save button adds group to Storage.
-	//cancel button disregards changes
 
 	//wait half a second, open a new confirm/cancel modal
 	setTimeout(function () {
@@ -767,29 +712,22 @@ $("body").on("click", ".uninstallExt", function (e) {
 	// get extension ID
 	let id = $(e.currentTarget).parents('.row.buttons').attr('data-extid');
 
-	// uninstall, with native confirm dialog
-	// even with false, an extension uninstalling an extension
-	// will always trigger the native confirm dialog
-	chrome.management.uninstall(id, {
-		"showConfirmDialog": false
-	}, () => {
+	// uninstall {native confirm dialog is mandatory)
+	chrome.management.uninstall(id, {}, () => {
 		for (let [group_name, group_ids] of Object.entries(user.groups)) {
 			if (group_ids.indexOf(id) != -1) {
 				user.groups[group_name].splice(group_ids.indexOf(id), 1);
 			}
 		}
-		chrome.storage.sync.set(user, function () {});
+		chrome.storage.sync.set(user);
 	});
 	// custom chrome closes automatically
 });
 
 $("body").on("click", ".show-ext-links", function (e) {
 	e.preventDefault();
-	// User wants to show the extension links
-	// get refrence to relevant ext-links element
+	// User wants to show the extension links, get refrence to relevant ext-links element
 	let extLinks = $(this).parents('.righty').siblings('.ext-links');
-
-	// Show ext-links
 	extLinks.slideDown();
 
 	// hide down arrow, show up arrow
@@ -799,11 +737,8 @@ $("body").on("click", ".show-ext-links", function (e) {
 
 $("body").on("click", ".hide-ext-links", function (e) {
 	e.preventDefault();
-	// User wants to hide the extension links
-	// get refrence to relevant ext-links element
+	// User wants to hide the extension links, get refrence to relevant ext-links element
 	let extLinks = $(this).parents('.righty').siblings('.ext-links');
-
-	// Show ext-links
 	extLinks.slideUp();
 
 	// hide down arrow, show up arrow
@@ -813,8 +748,7 @@ $("body").on("click", ".hide-ext-links", function (e) {
 
 $("body").on("click", "#dismissGroupPrompt", function (e) {
 	e.preventDefault();
-	// User wants to dismiss the groups onboarding
-	// Hide call to actions, copy and buttons
+	// User wants to dismiss the groups onboarding, hide call to actions, copy and buttons
 	$('#groupHeader').hide();
 
 	// Show user the modal to tell them they can still add a group from the options modal
@@ -823,67 +757,56 @@ $("body").on("click", "#dismissGroupPrompt", function (e) {
 	// Save this to chrome storage so we can use it on next page load and not show the groupheader again UNTIL user resets it in options page....?
 	user.dismissedProfilesPrompt = true;
 
-	chrome.storage.sync.set(user, function () {
-		console.log('Saved, groupsModal dismissed');
-	});
+	chrome.storage.sync.set(user);
 });
 
+// turn on/off compact styles
+$('.compact-styles-switch').change(function () {
+	// get reference to stylesheet
+	let sheet = $('#compactStylesheet')[0];
 
-function compactStylesListener() {
-	// turn on/off compact styles
-	$('.compact-styles-switch').change(function () {
+	// Toggle disabled attribute
+	sheet.disabled = !sheet.disabled;
 
-		// get reference to stylesheet
-		let sheet = $('#compactStylesheet')[0];
+	// save current state to storage
+	user.compactStyles = !sheet.disabled;
+	chrome.storage.sync.set(user);
 
-		console.log('toggling styles, disabled: ', sheet.disabled);
+	// Track event in Google
+	ga('send', 'event', "options", `compact-styles-toggled-to-${user.compactStyles}`);
 
-		// Toggle disabled attribute
-		sheet.disabled = !sheet.disabled;
-
-		// save current state to storage
-		user.compactStyles = !sheet.disabled;
-		console.log("saving user: ", user);
-		chrome.storage.sync.set(user);
-
-		// Track event in Google
-		ga('send', 'event', "options", `compact-styles-toggled-to-${user.compactStyles}`);
-
-	});
-}
-
-function includeAppsListener() {
-	// turn on/off show apps
-	$('.include-apps-switch').change(function (e) {
-
-		console.log('toggling apps: ', e);
-
-		if (e.target.checked) {
-
-			// user wishes to include apps
-			$('.app').show();
-			Materialize.toast('Apps now showing', 2000, 'ccToastOn');
-			$('#searchbox').attr('placeholder', 'search extensions and apps');
-		} else {
-			// user wishes to hide all apps
-			$('.app').hide();
-			Materialize.toast('Apps will not be shown', 2000, 'ccToastOff');
-			$('#searchbox').attr('placeholder', 'search extensions');
-		}
-
-		user.includeApps = e.target.checked;
-		getExtensionCount();
-		// save current state to storage
-		console.log("saving user: ", user);
-		chrome.storage.sync.set(user);
-
-		// Track event in Google
-		ga('send', 'event', "options", `include-apps-toggled-to-${user.includeApps}`);
-	});
-}
 });
 
+// turn on/off show apps
+$('.include-apps-switch').change(function (e) {
+	// console.log('toggling apps: ', e);
+
+	if (e.target.checked) {
+		// user wishes to include apps
+		$('.app').show();
+		Materialize.toast('Apps now showing', 2000, 'ccToastOn');
+		$('#searchbox').attr('placeholder', 'search extensions and apps');
+	}
+	else {
+		// user wishes to hide all apps
+		$('.app').hide();
+		Materialize.toast('Apps will not be shown', 2000, 'ccToastOff');
+		$('#searchbox').attr('placeholder', 'search extensions');
+	}
+
+	user.includeApps = e.target.checked;
+	getExtensionCount();
+	// save current state to storage
+	// console.log("saving user: ", user);
+	chrome.storage.sync.set(user);
+
+	// Track event in Google
+	ga('send', 'event', "options", `include-apps-toggled-to-${user.includeApps}`);
+});
+
+}); // End DOM ready
 /****** END LISTENERS ******/
+
 
 /****** VERSION MANAGEMENT ******/
 /* 
@@ -902,30 +825,25 @@ function fixStorage(groups) {
 
 	// clear the cloud storage
 	chrome.storage.sync.clear();
-
 	// set the backup as storage (in our newer format)
-	chrome.storage.sync.set(newObj, function () {});
+	chrome.storage.sync.set(newObj);
 
 	getUserData();
 }
 
-function getVersion() {
-  return chrome.app.getDetails().version;
-}
-
+let currentVersion = chrome.app.getDetails().version;
 // Check if the version has changed
-if (getVersion() != localStorage.version) {
-  localStorage.version = getVersion();
-	// either way, show changelog modal
+if (currentVersion != localStorage.version) {
+  localStorage.version = currentVersion;
 	showChangeLog();
 }
 
 function showChangeLog() {
-	let changelogHTML = '<hr>';
+	let changelogHTML = '';
 	for (let [key, value] of Object.entries(changelog)) {
-		changelogHTML += '<h6>' + key + '</h6><ul>';
+		changelogHTML += `<h6>${key}</h6><ul>`;
 		value.forEach(function (item) {
-			changelogHTML += '<li>' + item + '</li>';
+			changelogHTML += `<li>${item}</li>`;
 		});
 		changelogHTML += '</ul>';
 	}
@@ -940,7 +858,6 @@ $('#viewChangelog').click(() => {
 // remove Custom Chrome from user's existing groups to prevent them from unintentionally turning off the extension
 function removeCC() {
 	Object.keys(user.groups).forEach(function (key) {
-		// console.log(key, user.groups[key]);
 		user.groups[key] = arrayRemove(user.groups[key], 'balnpimdnhfiodmodckhkgneejophhhm');
 		user.groups[key] == '' ? delete user.groups[key] : 0;
 		chrome.storage.sync.set(user);
