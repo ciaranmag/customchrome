@@ -42,7 +42,10 @@
 	  <div class="col s12">
 	    <div class="card-content group-card-content black-text group-holder">
 	    <p id="noGroupsText"></p>
-	    <p id="groupOnboarding"></p>
+	    <p id="groupOnboarding">
+				<a class="addGroup waves-effect waves-light btn">Create Group</a>
+				<a id="dismissGroupPrompt" class="waves-effect waves-light btn grey lighten-3 grey-text text-darken-2">Dismiss</a>
+			</p>
 	    </div>
 	  </div>
 	</div>
@@ -52,9 +55,11 @@
 <div class="searchbox-holder">
 	<i id="search-icon" class="material-icons">search</i>
 	<input type="text" id="searchbox" tabindex="1">
-	<i id="refresh-icon" class="material-icons">refresh</i>
+	<div class="next-to-search">
+		<i id="refresh-icon" class="material-icons tooltipped" data-tooltip="Refresh">refresh</i>
+	</div>
 	<!-- Settings button on right of searchbox, opens dropdown -->
-	<a href="!#" class="next-to-search settings-icon dropdown-button  tooltipped" data-position="left" data-delay="50" data-tooltip="Options" data-beloworigin="true" data-activates='options-dropdown'>
+	<a href="!#" class="next-to-search settings-icon dropdown-button tooltipped" data-position="left" data-delay="50" data-tooltip="Options" data-beloworigin="true" data-activates='options-dropdown'>
 		<i class="material-icons grey-text">settings</i>
 	</a>
 </div>
@@ -114,7 +119,7 @@
 <div id="addExts" class="modal modal-fixed-footer">
 <form id="extSubmit">
   <div class="modal-content">
-    <h4>Add extensions to </h4>
+    <h4></h4>
     <p>The extensions you tick here will be turned on when this group is active</p>
     <div id='extList'></div>
   </div>
@@ -230,7 +235,7 @@
 	 	</div>
 	 	<div class="nameDesc">
 		 	<span class="extName" >{{ name }}</span>
-      {{#if sideloaded}}<span class="sideloaded-badge">sideloaded</span>{{/if}}
+      {{#if development}}<span class="development-badge tooltipped" data-tooltip="Development">D</span>{{/if}}
     	{{#if isApp}}<span class="new badge"></span>{{/if}}
       <br>
 		 	<span class="extDescription">{{ description }}</span>
