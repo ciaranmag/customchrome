@@ -50,12 +50,12 @@ chrome.management.getAll(function(info) {
 		
 		// extension icons are stored in entry.icons, but not all extensions have icons
 		if (entry.icons === undefined) {
-			imgsrc = 'images/icon-128.png';  // if there aren't any icons, use our default icon
+			entry.pic = 'images/icon-128.png';  // if there aren't any icons, use our default icon
 		} else {
+			console.log(entry.name, entry.icons);
 			// if there is an array of icons, we want the highest res one (which is the last one in the array) so get the array length (-1) to get the last icon then set that item's url as our app icon url
-			imgsrc = entry.icons[entry.icons.length-1].url;
+			entry.pic = entry.icons[entry.icons.length-1].url;
 		}
-		entry.pic = imgsrc; // setting the url we just got as entry.pic
 		
 		let state = entry.enabled;
 		state ? state = "checked" : state = "";
