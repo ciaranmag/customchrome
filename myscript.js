@@ -6,27 +6,27 @@ inactiveExtensions = [],
 idList = [],
 user = {},
 justIds = [],
-groupName,
+groupName;
 
 // Handlebars for active and inactive lists
-source   = $("#entry-template").html(),
-template = Handlebars.compile(source),
+// source   = $("#entry-template").html(),
+// template = Handlebars.compile(source),
 
 // Handlebars for extList (modal for adding extensions to groups)
-extListSource   = $("#extList-template").html(),
-extListTemplate = Handlebars.compile(extListSource),
+// extListSource   = $("#extList-template").html(),
+// extListTemplate = Handlebars.compile(extListSource),
 
 // Handlebars for groupList (modal for editing groups)
-groupListSource   = $("#groupList-template").html(),
-groupListTemplate = Handlebars.compile(groupListSource);
+// groupListSource   = $("#groupList-template").html(),
+// groupListTemplate = Handlebars.compile(groupListSource);
 
 const customChromeId = 'balnpimdnhfiodmodckhkgneejophhhm';
 /****** END DECLARING VARIABLES ******/
 
 // Handlebars Helpers
-Handlebars.registerHelper('lowerStripJoin', function(groupName) {
-	return groupName.toLowerCase().split(' ').join('_');
-});
+// Handlebars.registerHelper('lowerStripJoin', function(groupName) {
+// 	return groupName.toLowerCase().split(' ').join('_');
+// });
 
 
 $('.modal-trigger').leanModal();
@@ -475,6 +475,82 @@ $("#editExtSubmit").submit(function(e){
 // GOOGLE ANALYTICS
 // ga('send', 'event', [eventCategory], [eventAction])
 
+/****** HANDLEBARS REPLACEMENT FUNCTIONS ******/
+function template(entry) {
+	return `
+	<div class="extBlock ${entry.isApp ? 'app' : ''}">
+	<div class="lefty">
+	 	<div class="picHolder">
+	 		<img src="${entry.pic}">
+	 	</div>
+	 	<div class="nameDesc">
+		 	<span class="extName">${entry.name}</span>
+      ${entry.development ? '<span class="development-badge tooltipped" data-tooltip="Development">D</span>' : ''}
+    	${entry.isApp ? '<span class="new badge"></span>' : ''}
+      <br>
+		 	<span class="extDescription">${entry.description}</span>
+		</div>
+	</div>
+
+
+	<div class="righty">
+    <div class="switch ext-switch" id="${entry.id}" name="${entry.name}">
+	    <label>
+	      <input type="checkbox" ${entry.stringEnabled} class="js-switch state-switch" tabindex="1">
+	      <span class="lever"></span>
+	    </label>
+	    <a class='btn-flat show-ext-links' href='#'><i class="material-icons">arrow_drop_down</i></a>
+	    <a class='btn-flat hide-ext-links' href='#'><i class="material-icons">arrow_drop_up</i></a>
+	  </div>
+	</div>
+
+
+	<div class="container ext-links">
+			<div class="row description">
+				<span>${entry.description}</span>
+			</div>
+	    <div class="row buttons" data-extId="${entry.id}">
+        
+        ${entry.homepageUrl ? `<div class="link"><a href="${entry.homepageUrl}" target="_blank"><i class="material-icons">home</i>Homepage</a></div>` : ''}
+				${entry.optionsUrl ? `<div class="link"><a href="${entry.optionsUrl}"><i class="material-icons">settings</i>Options</a></div>` : ''}
+        <div class="link"><a href="#!" class="uninstallExt"><i class="material-icons">delete</i>Uninstall</a></div>
+	    </div>
+	</div>
+
+
+</div>`;
+}
+
+function extListTemplate(ext) {
+	return `
+	<div class='extList-holder'>
+		<div class='extList-toggle'>
+			<input type="checkbox"  id="${ext.name}" appid=${ext.id}>
+			<label for="${ext.name}"></label>
+		</div>
+		<div class='extList-img'>
+			<img src='${ext.pic}'>
+		</div>
+		<div class='extList-name'>
+			<span>${ext.name}</span>
+		</div>
+	</div>`;
+}
+
+function groupListTemplate(group) {
+	return `
+	<div class='groupList-holder' group="${group}">
+		<div class='groupList-name'>
+			<span>${group}</span>
+		</div>
+		<button class="btn waves-effect waves-light grey edit">EDIT</button>
+		<button class="btn waves-effect waves-light red delete">DELETE</button>
+	</div>`;
+}
+
+
+
+/****** END HANDLEBARS REPLACEMENT FUNCTIONS ******/
 
 /****** LISTENERS ******/
 $(function () { // load all listeners when the DOM is ready
@@ -518,7 +594,7 @@ $("body").on("click", ".group-btn", function () {
 	let btn = $(this);
 
 	// find out which extension was clicked and assign to btnId
-	let groupClicked = btn.attr("id").replace(/_/g, " ")
+	let groupClicked = btn.attr("id").replace(/_/g, " ");
 
 	// check if group was on or off
 	if (btn.hasClass("on")) {
