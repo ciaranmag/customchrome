@@ -53,7 +53,7 @@ chrome.management.getAll(function(info) {
 		if (entry.icons === undefined) {
 			entry.pic = 'images/icon-128.png';  // if there aren't any icons, use our default icon
 		} else {
-			console.log(entry.name, entry.icons.length, entry.icons);
+			// console.log(entry.name, entry.icons.length, entry.icons);
 			if (entry.icons.length > 2) {
 				entry.pic = entry.icons[entry.icons.length - 2].url;
 			}else {
@@ -75,7 +75,7 @@ chrome.management.getAll(function(info) {
 	} // close extArray loop
 	
 	// hide on/off switch for Custom Chrome extension
-	$('#balnpimdnhfiodmodckhkgneejophhhm').hide();
+	$('#balnpimdnhfiodmodckhkgneejophhhm label').hide();
 
 }); // close chrome.management.getAll
 
@@ -498,7 +498,6 @@ function template(entry) {
 				<span>${entry.description}</span>
 			</div>
 	    <div class="row buttons" data-extId="${entry.id}">
-        
         ${entry.homepageUrl ? `<div class="link"><a href="${entry.homepageUrl}" target="_blank"><i class="material-icons">home</i>Homepage</a></div>` : ''}
 				${entry.optionsUrl ? `<div class="link"><a href="${entry.optionsUrl}"><i class="material-icons">settings</i>Options</a></div>` : ''}
         <div class="link"><a href="#!" class="uninstallExt"><i class="material-icons">delete</i>Uninstall</a></div>
