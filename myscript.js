@@ -914,7 +914,7 @@ function showChangeLog() {
 	$('#changelogModal').openModal();
 }
 
-$('.viewChangelog').click(() => {
+$('#viewChangelog').click(() => {
 	showChangeLog();
 });
 
