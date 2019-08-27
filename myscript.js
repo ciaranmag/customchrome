@@ -27,11 +27,6 @@ Handlebars.registerHelper('lowerStripJoin', function(groupName) {
 	return groupName.toLowerCase().split(' ').join('_');
 });
 
-
-	// hide groupHeader
-	// $('#groupHeader').hide();
-	// $('#noGroupsText, #groupOnboarding').hide();
-
 // $(function() {
 	
 	// listen for compact styles toggle change
