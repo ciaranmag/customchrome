@@ -8,25 +8,8 @@ user = {},
 justIds = [],
 groupName;
 
-// Handlebars for active and inactive lists
-// source   = $("#entry-template").html(),
-// template = Handlebars.compile(source),
-
-// Handlebars for extList (modal for adding extensions to groups)
-// extListSource   = $("#extList-template").html(),
-// extListTemplate = Handlebars.compile(extListSource),
-
-// Handlebars for groupList (modal for editing groups)
-// groupListSource   = $("#groupList-template").html(),
-// groupListTemplate = Handlebars.compile(groupListSource);
-
 const customChromeId = 'balnpimdnhfiodmodckhkgneejophhhm';
 /****** END DECLARING VARIABLES ******/
-
-// Handlebars Helpers
-// Handlebars.registerHelper('lowerStripJoin', function(groupName) {
-// 	return groupName.toLowerCase().split(' ').join('_');
-// });
 
 
 $('.modal-trigger').leanModal();
@@ -80,7 +63,7 @@ chrome.management.getAll(function(info) {
 		
 		// Check if extension type is development
 		entry.installType === "development" ? entry.development = true : false;
-		
+
 		// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
 		entry.enabled ? $('#activeExtensions').append(template(entry)) : $('#inactiveExtensions').append(template(entry));
 	
@@ -212,6 +195,7 @@ function addExtensions(name) {
 
 	$('#addExts h4').text(`Add extensions to ${name}`);
 	
+	$('#extList').html('');
 	// loop over extArray to populate the list
 	for (let i = 0; i < extArray.length; i++) {
 		// don't include custom chrome
@@ -390,7 +374,7 @@ function confirmDelete(group){
 		// }
 	});
 
-	$('#confirmDelete h5').append(`"${group}"?`);
+	$('#confirmDelete h5').html(`Are you sure you want to delete the group ${group}?`);
 	
 	//on confirm - delete group from storage, show toast confirming group delete
 	//on cancel - close the modal and do nothing
@@ -698,10 +682,10 @@ $("body").on("click", ".editBtn", function () {
 		ready: function () {},
 	});
 
+	$('#groupList').html('');
 	for (let i = 0; i < Object.keys(user.groups).length; i++) {
 		$('#groupList').append(groupListTemplate(Object.keys(user.groups)[i]));
 	}
-
 });
 
 $('#removeAllBtn').click((e) => {
@@ -748,6 +732,7 @@ $("body").on("click", ".edit", function () {
 	//prefill the group name input with the current group name
 	$('#editGroupName').val(groupName);
 
+	$('#editExtList').html('');
 	//populate list with all extensions:
 	for (let i = 0; i < extArray.length; i++) {
 		if (extArray[i].id === 'balnpimdnhfiodmodckhkgneejophhhm') {

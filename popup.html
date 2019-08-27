@@ -164,7 +164,7 @@
 <div id="confirmDelete" class="modal">
     <div class="modal-content">
         <h4>Really?</h4>
-        <h5>Are you sure you want to delete the group </h5>
+        <h5></h5>
         <h6>This is irreversible...</h6>
     </div>
     <div class="modal-footer">
@@ -209,93 +209,7 @@
 </div>
 
 
-<!-- Handlebar Template Start: edit groups in modal -->
-<!-- <script id="groupList-template" type="text/x-handlebars-template">
-	<div class='groupList-holder' group="{{this}}">
-		<div class='groupList-name'>
-			<span>{{this}}</span>
-		</div>
-		<button class="btn waves-effect waves-light grey edit">EDIT</button>
-		<button class="btn waves-effect waves-light red delete">DELETE</button>
-	</div>
-</script> -->
-<!-- Handlebar Template End-->
-
-
-<!-- Handlebar Template Start: active/inactive list -->
-<!-- <script id="entry-template" type="text/x-handlebars-template">
-	{{#if isApp}}
-		<div class="extBlock app">
-	{{else}}
-		<div class="extBlock">
-	{{/if}}
-	<div class="lefty">
-	 	<div class="picHolder">
-	 		<img src="{{ pic }}">
-	 	</div>
-	 	<div class="nameDesc">
-		 	<span class="extName">{{ name }}</span>
-      {{#if development}}<span class="development-badge tooltipped" data-tooltip="Development">D</span>{{/if}}
-    	{{#if isApp}}<span class="new badge"></span>{{/if}}
-      <br>
-		 	<span class="extDescription">{{ description }}</span>
-		</div>
-	</div>
-
-
-	<div class="righty">
-    <div class="switch ext-switch" id="{{ id }}" name="{{name}}">
-	    <label>
-	      <input type="checkbox" {{stringEnabled}} class="js-switch state-switch" tabindex="1">
-	      <span class="lever"></span>
-	    </label>
-	    <a class='btn-flat show-ext-links' href='#'><i class="material-icons">arrow_drop_down</i></a>
-	    <a class='btn-flat hide-ext-links' href='#'><i class="material-icons">arrow_drop_up</i></a>
-	  </div>
-	</div>
-
-
-	<div class="container ext-links">
-			<div class="row description">
-				<span>{{ description }}</span>
-			</div>
-	    <div class="row buttons" data-extId="{{id}}">
-        {{#if homepageUrl}}
-        <div class="link"><a href="{{homepageUrl}}" target="_blank"><i class="material-icons">home</i>Homepage</a></div>
-        {{/if}}
-				{{#if optionsUrl}}
-        <div class="link"><a href="{{optionsUrl}}"><i class="material-icons">settings</i>Options</a></div>
-        {{/if}}
-        <div class="link"><a href="#!" class="uninstallExt"><i class="material-icons">delete</i>Uninstall</a></div>
-	    </div>
-	</div>
-
-
-</div>
-</script> -->
-<!-- Handlebar Template End-->
-
-
-<!-- Handlebar Template Start: add extensions to groups in modal list -->
-<!-- <script id="extList-template" type="text/x-handlebars-template">
-	<div class='extList-holder'>
-		<div class='extList-toggle'>
-			<input type="checkbox"  id="{{ name }}" appid={{ id }}>
-			<label for="{{ name }}"></label>
-		</div>
-		<div class='extList-img'>
-			<img src='{{ pic }}'>
-		</div>
-		<div class='extList-name'>
-			<span>{{ name }}</span>
-		</div>
-	</div>
-</script> -->
-<!-- Handlebar Template End-->
-
-
 <script src="resources/jquery-2.1.1.min.js"></script>
-<!-- <script src="resources/handlebars-v4.0.5.min.js"></script> -->
 <script src="resources/materialize/materialize.min.js"></script>
 <script src="changelog.js"></script>
 <script src="myscript.js"></script>
