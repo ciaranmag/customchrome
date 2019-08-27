@@ -13,6 +13,7 @@ const customChromeId = 'balnpimdnhfiodmodckhkgneejophhhm';
 
 
 $('.modal-trigger').leanModal();
+$('#compactStylesheet')[0].disabled = true;
 
 chrome.management.getAll(function(info) {
 	// info is a list of all user installed apps i.e. extensions, apps, and themes
@@ -52,7 +53,6 @@ chrome.management.getAll(function(info) {
 		if (entry.icons === undefined) {
 			entry.pic = 'images/icon-128.png';  // if there aren't any icons, use our default icon
 		} else {
-			console.log(entry.name, entry.icons);
 			// if there is an array of icons, we want the highest res one (which is the last one in the array) so get the array length (-1) to get the last icon then set that item's url as our app icon url
 			entry.pic = entry.icons[entry.icons.length-1].url;
 		}
@@ -93,8 +93,7 @@ function handleGroupsClasses(){
 	
 	for (let group in user.groups) {
 		// for each group, get all extension id's in that group
-		// if they are all on, add class "on" to element
-		// otherwise, leave it grey
+		// if they are all on, add class "on" to element, otherwise leave it grey
 		let extensionIds = user.groups[group];
 		let tempArray = [];
 
@@ -177,7 +176,6 @@ function checkboxListener() {
 			return;
 		}
 		idList.push(id);
-		// console.log('idList is now ',idList);
 	});
 }
 
