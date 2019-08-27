@@ -5,6 +5,7 @@
 
 .group-card-content {
 	padding-top: 5px !important;
+	padding-bottom: 5px !important;
 }
 
 #groupHeader {
@@ -54,16 +55,6 @@
 	padding: 0 15px;
   margin: 2px 0;
 }
-
-/* .switch label .lever {
-	width: 27px;
-	height: 10px;
-}
-
-.switch label .lever:after {
-	width: 15px;
-	height: 15px
-} */
 
 .switch label input[type=checkbox]:checked+.lever:after {
 	left: 14px;
