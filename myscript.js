@@ -98,7 +98,6 @@ function getExtensionCount() {
 	if (user.includeApps) {
 		$('#activeCount').text($('#activeExtensions').children('.extBlock').length);
 		$('#inactiveCount').text($('#inactiveExtensions').children('.extBlock').length);
-
 	} else if (!user.includeApps) {
 		$('#activeCount').text($('#activeExtensions').children('.extBlock:not(.app)').length);
 		$('#inactiveCount').text($('#inactiveExtensions').children('.extBlock:not(.app)').length);
