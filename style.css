@@ -105,11 +105,13 @@ a #addAGroupText {
 }
 
 .extList-holder {
+	display: flex;
+	align-items: center;
 	margin: 5px 0 5px 0;
 }
 
 .extList-img {
-	width:10%;
+	width:40px;
 	display: inline-block;
 }
 
@@ -121,11 +123,11 @@ a #addAGroupText {
 	width:70%;
 	height:100%; 
 	display: inline-block;
-	padding-left: 5%;
+	padding-left: 12px;
 }
 
 .extList-name span {
-	font-size: 20px;
+	font-size: 16px;
 }
 
 .extList-toggle {

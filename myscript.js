@@ -29,10 +29,10 @@ Handlebars.registerHelper('lowerStripJoin', function(groupName) {
 
 
 	// hide groupHeader
-	$('#groupHeader').hide();
-	$('#noGroupsText, #groupOnboarding').hide();
+	// $('#groupHeader').hide();
+	// $('#noGroupsText, #groupOnboarding').hide();
 
-$(function() {
+// $(function() {
 	
 	// listen for compact styles toggle change
 	compactStylesListener();
@@ -162,7 +162,7 @@ $(function() {
 
 	$('#searchbox').focus();
 
-}); // close $(document).ready
+// }); // close $(document).ready
 
 // Add active and inactive extension count next to card title
 function getExtensionCount() {
