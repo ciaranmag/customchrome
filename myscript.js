@@ -63,6 +63,7 @@ chrome.management.getAll(function(info) {
 		
 		// Check if extension type is development
 		entry.installType === "development" ? entry.development = true : false;
+		entry.installType === "sideload" ? entry.sideload = true : false;
 
 		// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
 		entry.enabled ? $('#activeExtensions').append(template(entry)) : $('#inactiveExtensions').append(template(entry));
@@ -470,6 +471,7 @@ function template(entry) {
 	 	<div class="nameDesc">
 		 	<span class="extName">${entry.name}</span>
       ${entry.development ? '<span class="development-badge tooltipped" data-tooltip="Development">D</span>' : ''}
+      ${entry.sideload ? '<span class="development-badge tooltipped" data-tooltip="Sideload">S</span>' : ''}
     	${entry.isApp ? '<span class="new badge"></span>' : ''}
       <br>
 		 	<span class="extDescription">${entry.description}</span>
