@@ -76,7 +76,7 @@ chrome.management.getAll(function(info) {
 	
 	// hide on/off switch for Custom Chrome extension
 	$('#balnpimdnhfiodmodckhkgneejophhhm label').hide();
-	
+
 	// turn on/off extensions when toggle is switched
 	$('.state-switch').change(function () {
 		$('#refresh-icon').show();
@@ -94,6 +94,9 @@ chrome.management.getAll(function(info) {
 			});
 		}
 	});
+
+	// initialise tooltips
+	$('.tooltipped').tooltip();
 
 }); // close chrome.management.getAll
 
@@ -483,7 +486,9 @@ $("#editExtSubmit").submit(function(e){
 // GOOGLE ANALYTICS
 // ga('send', 'event', [eventCategory], [eventAction])
 
+
 /****** HANDLEBARS REPLACEMENT FUNCTIONS ******/
+
 function template(entry) {
 	return `
 	<div class="extBlock ${entry.isApp ? 'app' : ''}">
@@ -556,11 +561,11 @@ function groupListTemplate(group) {
 	</div>`;
 }
 
-
-
 /****** END HANDLEBARS REPLACEMENT FUNCTIONS ******/
 
+
 /****** LISTENERS ******/
+
 $(function () { // load all listeners when the DOM is ready
 $('#refresh-icon').on('click', function (e) {
 	location.reload(false);
