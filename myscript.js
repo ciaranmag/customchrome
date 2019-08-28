@@ -76,6 +76,24 @@ chrome.management.getAll(function(info) {
 	
 	// hide on/off switch for Custom Chrome extension
 	$('#balnpimdnhfiodmodckhkgneejophhhm label').hide();
+	
+	// turn on/off extensions when toggle is switched
+	$('.state-switch').change(function () {
+		$('#refresh-icon').show();
+		// get the app id
+		let id = $(this).parents('.switch').attr('id'),
+			// get the app name
+			name = $(this).parents('.switch').attr('name');
+		if ($(this).is(':checked')) {
+			chrome.management.setEnabled(id, true, function () {
+				Materialize.toast(`${name} is now on`, 2000, 'ccToastOn');
+			});
+		} else {
+			chrome.management.setEnabled(id, false, function () {
+				Materialize.toast(`${name} is now off`, 2000, 'ccToastOff');
+			});
+		}
+	});
 
 }); // close chrome.management.getAll
 
@@ -649,25 +667,6 @@ $("body").on("click", ".group-btn", function () {
 	// track that the user has toggled a group
 	// ga('send', 'event', "groups", "group-toggled");
 
-});
-
-// turn on/off extensions when toggle is switched
-$('.state-switch').change(function () {
-	$('#refresh-icon').show();
-	// get the app id
-	let id = $(this).parents('.switch').attr('id'),
-		// get the app name
-		name = $(this).parents('.switch').attr('name');
-	if ($(this).is(':checked')) {
-		chrome.management.setEnabled(id, true, function () {
-			Materialize.toast(`${name} is now on`, 2000, 'ccToastOn');
-		});
-	}
-	else {
-		chrome.management.setEnabled(id, false, function () {
-			Materialize.toast(`${name} is now off`, 2000, 'ccToastOff');
-		});
-	}
 });
 
 // listen for addGroup button press, add a button to HTML, prompt for group name, set that name as button text, add that group to the storage.sync object
