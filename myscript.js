@@ -354,7 +354,7 @@ function getUserData() {
 
 			removeCC();
 			handleGroupsClasses();
-			// addGroupLabels(user.groups);
+			addGroupLabels(user.groups);
 		}
 		// if user has dismissed group prompt, hide group header
 		else if (user.dismissedProfilesPrompt) {
@@ -384,11 +384,12 @@ function addGroupLabels(groups){
 	    // append the name to that element
 	    groups[group].forEach(function (id) {
 	      let target = $(`#${id}`).parents('.extBlock').find('.extName');
-	      let spanHtml = `<span class='groupLabel'>${group}</span>`;
+	      let spanHtml = `<span class='groupLabel  tooltipped' data-tooltip="${group}">${group.substring(0, 1).toUpperCase()}</span>`;
 	      target.append(spanHtml);
 	    });
 	  }
 	}
+	$('.tooltipped').tooltip();
 }
 
 function confirmDelete(group){
@@ -498,7 +499,7 @@ function template(entry) {
 	 	<div class="nameDesc">
 		 	<span class="extName">${entry.name}</span>
       ${entry.development ? '<span class="development-badge tooltipped" data-tooltip="Development">D</span>' : ''}
-      ${entry.sideload ? '<span class="development-badge tooltipped" data-tooltip="Sideload">S</span>' : ''}
+      <!--${entry.sideload ? '<span class="development-badge tooltipped" data-tooltip="Sideload">S</span>' : ''}-->
     	${entry.isApp ? '<span class="new badge"></span>' : ''}
       <br>
 		 	<span class="extDescription">${entry.description}</span>
@@ -566,6 +567,13 @@ function groupListTemplate(group) {
 /****** LISTENERS ******/
 
 $(function () { // load all listeners when the DOM is ready
+$('#searchbox').focus(function () {
+	$('#search-icon').css('color', '#26a69a');
+});
+$('#searchbox').focusout(function () {
+	$('#search-icon').css('color', '#9f9f9f');
+});
+
 $('#refresh-icon').on('click', function (e) {
 	location.reload(false);
 });
