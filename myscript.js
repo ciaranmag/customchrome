@@ -456,8 +456,8 @@ $("#editExtSubmit").submit(function(e){
 	}
 	else {
 		//user has updated the group name, check if group with this new name already exists
-		chrome.storage.sync.get(function(obj){
-			if ($.inArray(newName, Object.keys(obj)) != -1){
+		// chrome.storage.sync.get(function(obj){
+			if ($.inArray(newName, Object.keys(user.groups)) != -1){
 				Materialize.toast('Group name already exists!', 2000, 'alert');
 			}
 			else {
@@ -478,7 +478,7 @@ $("#editExtSubmit").submit(function(e){
 					}, 1000);
 				});
 			}
-		});
+		// });
 	}
 
 	// Track event in Google
