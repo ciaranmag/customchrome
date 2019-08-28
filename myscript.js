@@ -757,6 +757,7 @@ $("body").on("click", ".edit", function () {
 		idList.push(id);
 		//find input with this id and add .prop('checked', true);
 		$(`#editExtList input[appid="${id}"]`).prop('checked', true);
+		$("#editExtList").prepend($(`[appid=${id}]`)[0].parentElement.parentElement);
 	}
 
 	//start listening for checkbox changes
