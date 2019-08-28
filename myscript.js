@@ -134,6 +134,8 @@ function handleGroupsClasses(){
 		user.groups[group].length === 0 ? delete user.groups[group] :0;
 	});
 
+	$('.group-holder').show();
+
 	chrome.storage.sync.set(user);
 }
 
@@ -344,6 +346,7 @@ function getUserData() {
 		}
 		else {
 			// show user the group prompt and hide the edit groups button
+			$('.group-holder').show();
 			$('#noGroupsText').text("You don't have any groups setup.");
 			$('#groupOnboarding').show();
 			$('.editBtn').hide();

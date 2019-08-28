@@ -67,6 +67,7 @@ a #addAGroupText {
 }
 
 .group-holder {
+	display: none;
 	text-align: center;
 }
 
