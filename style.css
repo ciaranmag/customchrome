@@ -528,10 +528,11 @@ span.badge.new {
 
 .development-badge {
 	background: #cfcbcb;
-	padding: 3px 5px;
+	padding: 2px 5px;
 	margin-left: 5px;
   border-radius: 3px;
-  color: #353535;
+	color: #353535;
+	border-radius: 50%;
 }
 
 .groupLabel {
