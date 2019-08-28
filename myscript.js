@@ -179,11 +179,8 @@ $('#nameSubmit').submit(
 			return;
 		}
 		
-		// groupname doesn't exists yet, proceed with selecting extensions for the new group
+		// groupname doesn't exist yet, proceed with selecting extensions for the new group
 		$('#groupPrompt').closeModal();
-
-		// Make sure groupHeader is visible
-		// $('#groupHeader').slideDown();
 
 		// after half a second open the modal, user can specify what extensions to add to group
 		setTimeout(function(){
@@ -347,8 +344,9 @@ function getUserData() {
 			// append groups to the div
 			for (let i = 0; i < allGroups.length; i++) {
 				let name = allGroups[i];
+				let extCount = user.groups[name].length;
 
-				let btnHtml = `<button class='group-btn off' id='${name.toLowerCase().split(' ').join('_')}'>${name}</button>`;
+				let btnHtml = `<button class='group-btn off' id='${name.toLowerCase().split(' ').join('_')}'>${name} (${extCount})</button>`;
 				
 				// append to group-holder
 				$('.group-holder').append(btnHtml); 
@@ -456,29 +454,27 @@ $("#editExtSubmit").submit(function(e){
 	}
 	else {
 		//user has updated the group name, check if group with this new name already exists
-		// chrome.storage.sync.get(function(obj){
-			if ($.inArray(newName, Object.keys(user.groups)) != -1){
-				Materialize.toast('Group name already exists!', 2000, 'alert');
-			}
-			else {
-				//new name is ok, delete old name from storage
-				delete user.groups[groupName];
-				user.groups[newName] = idList;
-				chrome.storage.sync.set(user, function(){
-					Materialize.toast(`${newName} group successfully edited`, 1000, 'ccToastOn');
-					setTimeout(function(){
-						location.reload(false);
+		if ($.inArray(newName, Object.keys(user.groups)) != -1){
+			Materialize.toast('Group name already exists!', 2000, 'alert');
+		}
+		else {
+			//new name is ok, delete old name from storage
+			delete user.groups[groupName];
+			user.groups[newName] = idList;
+			chrome.storage.sync.set(user, function(){
+				Materialize.toast(`${newName} group successfully edited`, 1000, 'ccToastOn');
+				setTimeout(function(){
+					location.reload(false);
 
-						//clear out the editExtList
-						$('#editExtList').html('');
+					//clear out the editExtList
+					$('#editExtList').html('');
 
-						//set new group in storage with idList as array
-						name = newName;
-						submitThatShit();
-					}, 1000);
-				});
-			}
-		// });
+					//set new group in storage with idList as array
+					name = newName;
+					submitThatShit();
+				}, 1000);
+			});
+		}
 	}
 
 	// Track event in Google
