@@ -19,9 +19,6 @@ $('.modal-trigger').leanModal();
 
 chrome.management.getAll(function(info) {
 	// info is a list of all user installed apps i.e. extensions, apps, and themes
-	
-	// MANAGEMENT OF USER'S EXTENSIONS
-	
 	// push extensions to extArray
 	for (let i = 0; i < info.length; i++) {
 		let entry = info[i];
@@ -864,8 +861,8 @@ $('#include-apps-switch').change(function (e) {
 		$('#searchbox').attr('placeholder', 'search extensions');
 	}
 
-	user.includeApps = e.target.checked;
 	getExtensionCount();
+	user.includeApps = e.target.checked;
 	chrome.storage.sync.set(user);
 
 	// Track event in Google
