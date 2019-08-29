@@ -22,7 +22,6 @@ chrome.management.getAll(function(info) {
 	
 	// MANAGEMENT OF USER'S EXTENSIONS
 	
-	justIds = [];
 	// push extensions to extArray
 	for (let i = 0; i < info.length; i++) {
 		let entry = info[i];
@@ -50,24 +49,24 @@ chrome.management.getAll(function(info) {
 	// loop over extArray, sort icons, append to appropriate element
 	for (let i = 0; i < extArray.length; i++) {
 		let entry = extArray[i];
-		
+	
 		// extension icons are stored in entry.icons, but not all extensions have icons
 		if (entry.icons === undefined) {
 			entry.pic = 'images/icon-128.png';  // if there aren't any icons, use our default icon
-		} else {
-			// console.log(entry.name, entry.icons.length, entry.icons);
-			if (entry.icons.length > 2) {
-				entry.pic = entry.icons[entry.icons.length - 2].url;
-			}else {
-			// if there is an array of icons, we want the highest res one (which is the last one in the array) so get the array length (-1) to get the last icon then set that item's url as our app icon url
-			entry.pic = entry.icons[entry.icons.length-1].url;}
 		}
-		
+		else if (entry.icons.length > 2) {
+			entry.pic = entry.icons[entry.icons.length-2].url;
+		}
+		else {
+			// if there is an array of icons, we want the highest res one (which is the last one in the array) so get the array length (-1) to get the last icon then set that item's url as our app icon url
+			entry.pic = entry.icons[entry.icons.length-1].url;
+		}
+
 		entry.stringEnabled = entry.enabled ? "checked" : '';
 		
 		// Check if extension type is development
 		entry.installType === "development" ? entry.development = true : false;
-		entry.installType === "sideload" ? entry.sideload = true : false;
+		// entry.installType === "sideload" ? entry.sideload = true : false;
 
 		// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
 		entry.enabled ? $('#activeExtensions').append(template(entry)) : $('#inactiveExtensions').append(template(entry));
@@ -77,23 +76,27 @@ chrome.management.getAll(function(info) {
 	// hide on/off switch for Custom Chrome extension
 	$('#balnpimdnhfiodmodckhkgneejophhhm label').hide();
 
-	
-
 	// turn on/off extensions when toggle is switched
 	$('.state-switch').change(function () {
 		$('#refresh-icon').show();
 		// get the app id
 		let id = $(this).parents('.switch').attr('id'),
-			// get the app name
-			name = $(this).parents('.switch').attr('name');
-		if ($(this).is(':checked')) {
-			chrome.management.setEnabled(id, true, function () {
-				Materialize.toast(`${name} is now on`, 2000, 'ccToastOn');
-			});
-		} else {
-			chrome.management.setEnabled(id, false, function () {
-				Materialize.toast(`${name} is now off`, 2000, 'ccToastOff');
-			});
+		// get the app name
+		name = $(this).parents('.switch').attr('name');
+		// if ($(this).is(':checked')) {
+		for (let i = 0; i < extArray.length; i++) {
+			if (extArray[i].id === id && !extArray[i].enabled) {
+				extArray[i].enabled = true;
+				chrome.management.setEnabled(id, true, function () {
+					Materialize.toast(`${name} is now on`, 2000, 'ccToastOn');
+				});
+			}
+			else if (extArray[i].id === id && extArray[i].enabled) {
+				extArray[i].enabled = false;
+				chrome.management.setEnabled(id, false, function () {
+					Materialize.toast(`${name} is now off`, 2000, 'ccToastOff');
+				});
+			}
 		}
 		handleGroupsClasses();
 	});
@@ -117,6 +120,7 @@ function getExtensionCount() {
 }
 
 function handleGroupsClasses(){
+	console.log('here');
 	// setting the group buttons to on/off appearance
 	
 	for (let group in user.groups) {
@@ -138,18 +142,23 @@ function handleGroupsClasses(){
 				if (extArray[x].id === id) { tempArray.push(extArray[x]); }
 			}
 		}
-
+		console.log(tempArray);
 		// tempArray now contains extension objects for this group
 		// check if any of the extensions have enabled === false
 		// if even one extension is off, then the group is inactive
 		let off = tempArray.some(function(ext){
 			return ext.enabled === false;
 		}) || false;
+		console.log(off);
 
 		// if it's on, add/remove appropriate classes
 		if (!off) {
 			group = group.replace(/ /g, "_");
 			$(`#${group}`).removeClass("off").addClass("on");
+		}
+		else if (off) {
+			group = group.replace(/ /g, "_");
+			$(`#${group}`).removeClass("on").addClass("off");
 		}
 	}
 	/**** ONLY NEED TO CHECK THIS ON LOAD - MOVE IT! ****/
