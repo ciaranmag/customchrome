@@ -128,44 +128,30 @@ function handleGroupsClasses(){
 		// if they are all on, add class "on" to element, otherwise leave it grey
 		let tempArray = [];
 
-		for (let i = user.groups[group].length - 1; i >= 0; i--) {
+		for (let i = user.groups[group].length-1; i >= 0; i--) {
 
-			/**** ONLY NEED TO CHECK THIS ON LOAD - MOVE IT! ****/
-			// check if the extension is still installed by the user
 			let id = user.groups[group][i];
-			if (justIds.indexOf(id) == -1) {
-				user.groups[group].splice(user.groups[group].indexOf(id),1);
-				continue;
-			}
 			
 			for (let x = 0; x < extArray.length; x++) {
 				if (extArray[x].id === id) { tempArray.push(extArray[x]); }
 			}
 		}
-		console.log(tempArray);
 		// tempArray now contains extension objects for this group
 		// check if any of the extensions have enabled === false
 		// if even one extension is off, then the group is inactive
 		let off = tempArray.some(function(ext){
 			return ext.enabled === false;
 		}) || false;
-		console.log(off);
 
-		// if it's on, add/remove appropriate classes
+		group = group.replace(/ /g, "_");
+		// if it's on/off, add/remove appropriate classes
 		if (!off) {
-			group = group.replace(/ /g, "_");
 			$(`#${group}`).removeClass("off").addClass("on");
 		}
 		else if (off) {
-			group = group.replace(/ /g, "_");
 			$(`#${group}`).removeClass("on").addClass("off");
 		}
 	}
-	/**** ONLY NEED TO CHECK THIS ON LOAD - MOVE IT! ****/
-	// delete any empty groups
-	Object.keys(user.groups).forEach(function (group) {
-		if (user.groups[group].length === 0) { delete user.groups[group]; }
-	});
 
 	$('.group-holder').show();
 
@@ -293,7 +279,7 @@ function submitThatShit() {
 }
 
 // check storage for user data
-function getUserData() { 
+function getUserData() {
 	chrome.storage.sync.get(function(obj){
 		// There should be a "groups" property, assume that if it doesn't exist, then they're on the old version
 		if (!obj.hasOwnProperty('groups')) {
@@ -351,6 +337,15 @@ function getUserData() {
 
 			// append groups to the div
 			for (let i = 0; i < allGroups.length; i++) {
+				for (let x = 0; x < user.groups[allGroups[i]].length; x++) {
+				
+				// check if each extension is still installed by the user
+				let id = user.groups[allGroups[i]][0];
+				if (justIds.indexOf(id) == -1) {
+					user.groups[allGroups[i]].splice(user.groups[allGroups[i]].indexOf(id), 1);
+					continue;
+				}}
+
 				let name = allGroups[i];
 				let extCount = user.groups[name].length;
 
@@ -359,6 +354,14 @@ function getUserData() {
 				// append to group-holder
 				$('.group-holder').append(btnHtml); 
 			}
+			/**** ONLY NEED TO CHECK THIS ON LOAD - MOVE IT! ****/
+			// delete any empty groups
+			Object.keys(user.groups).forEach(function (group) {
+				if (user.groups[group].length === 0) {
+					$(`#${group.toLowerCase().split(' ').join('_')}`).remove();
+					delete user.groups[group];
+				}
+			});
 
 			removeCC();
 			handleGroupsClasses();
