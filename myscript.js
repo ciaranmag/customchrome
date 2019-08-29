@@ -70,7 +70,7 @@ chrome.management.getAll(function(info) {
 		entry.installType === "sideload" ? entry.sideload = true : false;
 
 		// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
-		entry.enabled ? $('#activeExtensions').append(template(entry)) : $('#inactiveExtensions').append(template(entry));
+		entry.enabled = entry.enabled ? $('#activeExtensions').append(template(entry)) : $('#inactiveExtensions').append(template(entry));
 	
 	} // close extArray loop
 	
@@ -93,6 +93,7 @@ chrome.management.getAll(function(info) {
 				Materialize.toast(`${name} is now off`, 2000, 'ccToastOff');
 			});
 		}
+		handleGroupsClasses();
 	});
 
 	// initialise tooltips
@@ -525,7 +526,7 @@ function template(entry) {
 			</div>
 	    <div class="row buttons" data-extId="${entry.id}">
         ${entry.homepageUrl ? `<div class="link"><a href="${entry.homepageUrl}" target="_blank"><i class="material-icons">home</i>Homepage</a></div>` : ''}
-				${entry.optionsUrl ? `<div class="link"><a href="${entry.optionsUrl}"><i class="material-icons">settings</i>Options</a></div>` : ''}
+				<!--${entry.optionsUrl ? `<div class="link"><a href="${entry.optionsUrl}"><i class="material-icons">settings</i>Options</a></div>` : ''}-->
         <div class="link"><a href="#!" class="uninstallExt"><i class="material-icons">delete</i>Uninstall</a></div>
 	    </div>
 	</div>
@@ -567,6 +568,7 @@ function groupListTemplate(group) {
 /****** LISTENERS ******/
 
 $(function () { // load all listeners when the DOM is ready
+// When the search input is in focus change the colour of the search icon
 $('#searchbox').focus(function () {
 	$('#search-icon').css('color', '#26a69a');
 });
@@ -759,8 +761,8 @@ $("body").on("click", ".edit", function () {
 		$('#editExtList').append(extListTemplate(ext));
 	}
 
-	// Loop over all id's in group and tick the boxes that are already in the group
-	for (let i = 0; i < user.groups[groupName].length; i++) {
+	// Loop over all id's in group and tick the boxes that are already in the group, also raise the checked extensions to the top of the list, do this loop starting at the end (i--) so that it's done alphabetically
+	for (let i = user.groups[groupName].length-1; i >= 0; i--) {
 		let id = user.groups[groupName][i];
 		idList.push(id);
 		//find input with this id and add .prop('checked', true);
