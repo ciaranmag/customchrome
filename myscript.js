@@ -510,7 +510,7 @@ function template(entry) {
       <!--${entry.sideload ? '<span class="development-badge tooltipped" data-tooltip="Sideload">S</span>' : ''}-->
     	${entry.isApp ? '<span class="new badge"></span>' : ''}
       <br>
-		 	<span class="extDescription">${entry.description}</span>
+		 	${!user.compactStyles ? `<span class="extDescription">${entry.description}</span>`: ''}
 		</div>
 	</div>
 
