@@ -63,9 +63,7 @@ chrome.management.getAll(function(info) {
 			entry.pic = entry.icons[entry.icons.length-1].url;}
 		}
 		
-		let state = entry.enabled;
-		state ? state = "checked" : state = "";
-		entry.stringEnabled = state;
+		entry.stringEnabled = entry.enabled ? "checked" : '';
 		
 		// Check if extension type is development
 		entry.installType === "development" ? entry.development = true : false;
@@ -78,6 +76,8 @@ chrome.management.getAll(function(info) {
 	
 	// hide on/off switch for Custom Chrome extension
 	$('#balnpimdnhfiodmodckhkgneejophhhm label').hide();
+
+	
 
 	// turn on/off extensions when toggle is switched
 	$('.state-switch').change(function () {
@@ -117,33 +117,27 @@ function getExtensionCount() {
 }
 
 function handleGroupsClasses(){
-	console.log('in handle');
 	// setting the group buttons to on/off appearance
 	
 	for (let group in user.groups) {
-		console.log(group);
-		console.log('ids: ', user.groups[group]);
 		// for each group, get all extension id's in that group
 		// if they are all on, add class "on" to element, otherwise leave it grey
-		let extensionIds = user.groups[group];
 		let tempArray = [];
 
-		for (let i = extensionIds.length -1; i>=0; i--) {
-			let id = extensionIds[i];
-			
+		for (let i = user.groups[group].length - 1; i >= 0; i--) {
+
 			/**** ONLY NEED TO CHECK THIS ON LOAD - MOVE IT! ****/
 			// check if the extension is still installed by the user
+			let id = user.groups[group][i];
 			if (justIds.indexOf(id) == -1) {
 				user.groups[group].splice(user.groups[group].indexOf(id),1);
 				continue;
 			}
 			
 			for (let x = 0; x < extArray.length; x++) {
-				let obj = extArray[x];
-				obj.id === id ? tempArray.push(obj) : 0;
+				if (extArray[x].id === id) { tempArray.push(extArray[x]); }
 			}
 		}
-		console.log('tempArray', tempArray);
 
 		// tempArray now contains extension objects for this group
 		// check if any of the extensions have enabled === false
@@ -151,11 +145,9 @@ function handleGroupsClasses(){
 		let off = tempArray.some(function(ext){
 			return ext.enabled === false;
 		}) || false;
-		console.log('off', off);
 
 		// if it's on, add/remove appropriate classes
 		if (!off) {
-			console.log('all on apparaently');
 			group = group.replace(/ /g, "_");
 			$(`#${group}`).removeClass("off").addClass("on");
 		}
@@ -163,7 +155,7 @@ function handleGroupsClasses(){
 	/**** ONLY NEED TO CHECK THIS ON LOAD - MOVE IT! ****/
 	// delete any empty groups
 	Object.keys(user.groups).forEach(function (group) {
-		user.groups[group].length === 0 ? delete user.groups[group] :0;
+		if (user.groups[group].length === 0) { delete user.groups[group]; }
 	});
 
 	$('.group-holder').show();
