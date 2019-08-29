@@ -1,0 +1,19 @@
+body {
+	background: #1e1e1e !important;
+}
+#groupHeader .row {
+	background: #1e1e1e !important;
+}
+.card {
+	background: #1e1e1e !important;
+}
+.extName {
+	color: #fff !important;
+}
+.extDescription {
+	color: #fff !important;
+}
+.ext-links .description {
+	color: #fff !important;
+}
+

@@ -6,30 +6,16 @@ inactiveExtensions = [],
 idList = [],
 user = {},
 justIds = [],
-groupName,
-
-// Handlebars for active and inactive lists
-source   = $("#entry-template").html(),
-template = Handlebars.compile(source),
-
-// Handlebars for extList (modal for adding extensions to groups)
-extListSource   = $("#extList-template").html(),
-extListTemplate = Handlebars.compile(extListSource),
-
-// Handlebars for groupList (modal for editing groups)
-groupListSource   = $("#groupList-template").html(),
-groupListTemplate = Handlebars.compile(groupListSource);
+currentJob,
+groupName;
 
 const customChromeId = 'balnpimdnhfiodmodckhkgneejophhhm';
 /****** END DECLARING VARIABLES ******/
 
-// Handlebars Helpers
-Handlebars.registerHelper('lowerStripJoin', function(groupName) {
-	return groupName.toLowerCase().split(' ').join('_');
-});
-
 
 $('.modal-trigger').leanModal();
+$('#compactStylesheet')[0].disabled = true;
+$('#darkMode')[0].disabled = true;
 
 chrome.management.getAll(function(info) {
 	// info is a list of all user installed apps i.e. extensions, apps, and themes
@@ -67,12 +53,15 @@ chrome.management.getAll(function(info) {
 		
 		// extension icons are stored in entry.icons, but not all extensions have icons
 		if (entry.icons === undefined) {
-			imgsrc = 'images/icon-128.png';  // if there aren't any icons, use our default icon
+			entry.pic = 'images/icon-128.png';  // if there aren't any icons, use our default icon
 		} else {
+			// console.log(entry.name, entry.icons.length, entry.icons);
+			if (entry.icons.length > 2) {
+				entry.pic = entry.icons[entry.icons.length - 2].url;
+			}else {
 			// if there is an array of icons, we want the highest res one (which is the last one in the array) so get the array length (-1) to get the last icon then set that item's url as our app icon url
-			imgsrc = entry.icons[entry.icons.length-1].url;
+			entry.pic = entry.icons[entry.icons.length-1].url;}
 		}
-		entry.pic = imgsrc; // setting the url we just got as entry.pic
 		
 		let state = entry.enabled;
 		state ? state = "checked" : state = "";
@@ -80,14 +69,37 @@ chrome.management.getAll(function(info) {
 		
 		// Check if extension type is development
 		entry.installType === "development" ? entry.development = true : false;
-		
+		entry.installType === "sideload" ? entry.sideload = true : false;
+
 		// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
 		entry.enabled ? $('#activeExtensions').append(template(entry)) : $('#inactiveExtensions').append(template(entry));
 	
 	} // close extArray loop
 	
 	// hide on/off switch for Custom Chrome extension
-	$('#balnpimdnhfiodmodckhkgneejophhhm').hide();
+	$('#balnpimdnhfiodmodckhkgneejophhhm label').hide();
+
+	// turn on/off extensions when toggle is switched
+	$('.state-switch').change(function () {
+		$('#refresh-icon').show();
+		// get the app id
+		let id = $(this).parents('.switch').attr('id'),
+			// get the app name
+			name = $(this).parents('.switch').attr('name');
+		if ($(this).is(':checked')) {
+			chrome.management.setEnabled(id, true, function () {
+				Materialize.toast(`${name} is now on`, 2000, 'ccToastOn');
+			});
+		} else {
+			chrome.management.setEnabled(id, false, function () {
+				Materialize.toast(`${name} is now off`, 2000, 'ccToastOff');
+			});
+		}
+		handleGroupsClasses();
+	});
+
+	// initialise tooltips
+	$('.tooltipped').tooltip();
 
 }); // close chrome.management.getAll
 
@@ -105,18 +117,21 @@ function getExtensionCount() {
 }
 
 function handleGroupsClasses(){
+	console.log('in handle');
 	// setting the group buttons to on/off appearance
 	
 	for (let group in user.groups) {
+		console.log(group);
+		console.log('ids: ', user.groups[group]);
 		// for each group, get all extension id's in that group
-		// if they are all on, add class "on" to element
-		// otherwise, leave it grey
+		// if they are all on, add class "on" to element, otherwise leave it grey
 		let extensionIds = user.groups[group];
 		let tempArray = [];
 
 		for (let i = extensionIds.length -1; i>=0; i--) {
 			let id = extensionIds[i];
 			
+			/**** ONLY NEED TO CHECK THIS ON LOAD - MOVE IT! ****/
 			// check if the extension is still installed by the user
 			if (justIds.indexOf(id) == -1) {
 				user.groups[group].splice(user.groups[group].indexOf(id),1);
@@ -128,6 +143,7 @@ function handleGroupsClasses(){
 				obj.id === id ? tempArray.push(obj) : 0;
 			}
 		}
+		console.log('tempArray', tempArray);
 
 		// tempArray now contains extension objects for this group
 		// check if any of the extensions have enabled === false
@@ -135,17 +151,22 @@ function handleGroupsClasses(){
 		let off = tempArray.some(function(ext){
 			return ext.enabled === false;
 		}) || false;
+		console.log('off', off);
 
 		// if it's on, add/remove appropriate classes
 		if (!off) {
+			console.log('all on apparaently');
 			group = group.replace(/ /g, "_");
 			$(`#${group}`).removeClass("off").addClass("on");
 		}
 	}
+	/**** ONLY NEED TO CHECK THIS ON LOAD - MOVE IT! ****/
 	// delete any empty groups
 	Object.keys(user.groups).forEach(function (group) {
 		user.groups[group].length === 0 ? delete user.groups[group] :0;
 	});
+
+	$('.group-holder').show();
 
 	chrome.storage.sync.set(user);
 }
@@ -169,11 +190,8 @@ $('#nameSubmit').submit(
 			return;
 		}
 		
-		// groupname doesn't exists yet, proceed with selecting extensions for the new group
+		// groupname doesn't exist yet, proceed with selecting extensions for the new group
 		$('#groupPrompt').closeModal();
-
-		// Make sure groupHeader is visible
-		// $('#groupHeader').slideDown();
 
 		// after half a second open the modal, user can specify what extensions to add to group
 		setTimeout(function(){
@@ -193,7 +211,6 @@ function checkboxListener() {
 			return;
 		}
 		idList.push(id);
-		// console.log('idList is now ',idList);
 	});
 }
 
@@ -212,6 +229,7 @@ function addExtensions(name) {
 
 	$('#addExts h4').text(`Add extensions to ${name}`);
 	
+	$('#extList').html('');
 	// loop over extArray to populate the list
 	for (let i = 0; i < extArray.length; i++) {
 		// don't include custom chrome
@@ -245,16 +263,12 @@ $('#extSubmit').submit(
 );
 
 function submitThatShit() {
-	// group name is in a global variable 'name'
-	// extension id's are in a global variable 'idList'
-	if (idList.length === 0) {
-		return;
+	// turn all selected extensions on -- DON'T DO THIS EDITING
+	if (currentJob === 'creating') {
+		idList.forEach(function(extensionId, index) {
+			chrome.management.setEnabled(extensionId, true);
+		});
 	}
-
-	// turn all selected extensions on
-	idList.forEach(function(extensionId, index) {
-		chrome.management.setEnabled(extensionId, true);
-	});
 
 	// set new group on user obj, with idlist as array
 	user.groups[name] = idList;
@@ -268,7 +282,7 @@ function submitThatShit() {
 	});
 
 	// Track event in Google
-	ga('send', 'event', "groups", "group-added");
+	// ga('send', 'event', "groups", "group-added");
 
 	setTimeout(function () {
 		// adding false lets the page reload from the cache
@@ -337,8 +351,9 @@ function getUserData() {
 			// append groups to the div
 			for (let i = 0; i < allGroups.length; i++) {
 				let name = allGroups[i];
+				let extCount = user.groups[name].length;
 
-				let btnHtml = `<button class='group-btn off' id='${name.toLowerCase().split(' ').join('_')}'>${name}</button>`;
+				let btnHtml = `<button class='group-btn off' id='${name.toLowerCase().split(' ').join('_')}'>${name} (${extCount})</button>`;
 				
 				// append to group-holder
 				$('.group-holder').append(btnHtml); 
@@ -346,7 +361,7 @@ function getUserData() {
 
 			removeCC();
 			handleGroupsClasses();
-			// addGroupLabels(user.groups);
+			addGroupLabels(user.groups);
 		}
 		// if user has dismissed group prompt, hide group header
 		else if (user.dismissedProfilesPrompt) {
@@ -357,6 +372,7 @@ function getUserData() {
 		}
 		else {
 			// show user the group prompt and hide the edit groups button
+			$('.group-holder').show();
 			$('#noGroupsText').text("You don't have any groups setup.");
 			$('#groupOnboarding').show();
 			$('.editBtn').hide();
@@ -375,11 +391,12 @@ function addGroupLabels(groups){
 	    // append the name to that element
 	    groups[group].forEach(function (id) {
 	      let target = $(`#${id}`).parents('.extBlock').find('.extName');
-	      let spanHtml = `<span class='groupLabel'>${group}</span>`;
+	      let spanHtml = `<span class='groupLabel  tooltipped' data-tooltip="${group}">${group.substring(0, 1).toUpperCase()}</span>`;
 	      target.append(spanHtml);
 	    });
 	  }
 	}
+	$('.tooltipped').tooltip();
 }
 
 function confirmDelete(group){
@@ -390,7 +407,7 @@ function confirmDelete(group){
 		// }
 	});
 
-	$('#confirmDelete h5').append(`"${group}"?`);
+	$('#confirmDelete h5').html(`Are you sure you want to delete the group ${group}?`);
 	
 	//on confirm - delete group from storage, show toast confirming group delete
 	//on cancel - close the modal and do nothing
@@ -427,7 +444,9 @@ $("#editExtSubmit").submit(function(e){
 
 	if(groupName === $('#editGroupName').val()){
 		// user has NOT changed the group name, so we can just set the idList as the group
-		chrome.storage.sync.remove(groupName, function(){
+		/***** CHECK IF THE GROUP LIST AND ID LIST ARE THE SAME IF SO THEN NOTHING WAS EDITED ******/
+		user.groups[groupName] = idList;
+		chrome.storage.sync.set(user, function(){
 			Materialize.toast(`${newName} group successfully edited`, 1000, 'ccToastOn');
 			setTimeout(function(){
 				location.reload(false);
@@ -444,31 +463,31 @@ $("#editExtSubmit").submit(function(e){
 	}
 	else {
 		//user has updated the group name, check if group with this new name already exists
-		chrome.storage.sync.get(function(obj){
-			if ($.inArray(newName, Object.keys(obj)) != -1){
-				Materialize.toast('Group name already exists!', 2000, 'alert');
-			}
-			else {
-				//new name is ok, delete old name from storage
-				chrome.storage.sync.remove(groupName, function(){
-					Materialize.toast(`${newName} group successfully edited`, 1000, 'ccToastOn');
-					setTimeout(function(){
-						location.reload(false);
+		if ($.inArray(newName, Object.keys(user.groups)) != -1){
+			Materialize.toast('Group name already exists!', 2000, 'alert');
+		}
+		else {
+			//new name is ok, delete old name from storage
+			delete user.groups[groupName];
+			user.groups[newName] = idList;
+			chrome.storage.sync.set(user, function(){
+				Materialize.toast(`${newName} group successfully edited`, 1000, 'ccToastOn');
+				setTimeout(function(){
+					location.reload(false);
 
-						//clear out the editExtList
-						$('#editExtList').html('');
+					//clear out the editExtList
+					$('#editExtList').html('');
 
-						//set new group in storage with idList as array
-						name = newName;
-						submitThatShit();
-					}, 1000);
-				});
-			}
-		});
+					//set new group in storage with idList as array
+					name = newName;
+					submitThatShit();
+				}, 1000);
+			});
+		}
 	}
 
 	// Track event in Google
-	ga('send', 'event', "groups", "group-edited");
+	// ga('send', 'event', "groups", "group-edited");
 
 });
 
@@ -476,8 +495,94 @@ $("#editExtSubmit").submit(function(e){
 // ga('send', 'event', [eventCategory], [eventAction])
 
 
+/****** HANDLEBARS REPLACEMENT FUNCTIONS ******/
+
+function template(entry) {
+	return `
+	<div class="extBlock ${entry.isApp ? 'app' : ''}">
+	<div class="lefty">
+	 	<div class="picHolder">
+	 		<img src="${entry.pic}">
+	 	</div>
+	 	<div class="nameDesc">
+		 	<span class="extName">${entry.name}</span>
+      ${entry.development ? '<span class="development-badge tooltipped" data-tooltip="Development">D</span>' : ''}
+      <!--${entry.sideload ? '<span class="development-badge tooltipped" data-tooltip="Sideload">S</span>' : ''}-->
+    	${entry.isApp ? '<span class="new badge"></span>' : ''}
+      <br>
+		 	${!user.compactStyles ? `<span class="extDescription">${entry.description}</span>`: ''}
+		</div>
+	</div>
+
+
+	<div class="righty">
+    <div class="switch ext-switch" id="${entry.id}" name="${entry.name}">
+	    <label>
+	      <input type="checkbox" ${entry.stringEnabled} class="js-switch state-switch" tabindex="1">
+	      <span class="lever"></span>
+	    </label>
+	    <a class='btn-flat show-ext-links' href='#'><i class="material-icons">arrow_drop_down</i></a>
+	    <a class='btn-flat hide-ext-links' href='#'><i class="material-icons">arrow_drop_up</i></a>
+	  </div>
+	</div>
+
+
+	<div class="container ext-links">
+			<div class="row description">
+				<span>${entry.description}</span>
+			</div>
+	    <div class="row buttons" data-extId="${entry.id}">
+        ${entry.homepageUrl ? `<div class="link"><a href="${entry.homepageUrl}" target="_blank"><i class="material-icons">home</i>Homepage</a></div>` : ''}
+				<!--${entry.optionsUrl ? `<div class="link"><a href="${entry.optionsUrl}"><i class="material-icons">settings</i>Options</a></div>` : ''}-->
+        <div class="link"><a href="#!" class="uninstallExt"><i class="material-icons">delete</i>Uninstall</a></div>
+	    </div>
+	</div>
+
+
+</div>`;
+}
+
+function extListTemplate(ext) {
+	return `
+	<div class='extList-holder'>
+		<div class='extList-toggle'>
+			<input type="checkbox"  id="${ext.name}" appid=${ext.id}>
+			<label for="${ext.name}"></label>
+		</div>
+		<div class='extList-img'>
+			<img src='${ext.pic}'>
+		</div>
+		<div class='extList-name'>
+			<span>${ext.name}</span>
+		</div>
+	</div>`;
+}
+
+function groupListTemplate(group) {
+	return `
+	<div class='groupList-holder' group="${group}">
+		<div class='groupList-name'>
+			<span>${group}</span>
+		</div>
+		<button class="btn waves-effect waves-light grey edit">EDIT</button>
+		<button class="btn waves-effect waves-light red delete">DELETE</button>
+	</div>`;
+}
+
+/****** END HANDLEBARS REPLACEMENT FUNCTIONS ******/
+
+
 /****** LISTENERS ******/
+
 $(function () { // load all listeners when the DOM is ready
+// When the search input is in focus change the colour of the search icon
+$('#searchbox').focus(function () {
+	$('#search-icon').css('color', '#26a69a');
+});
+$('#searchbox').focusout(function () {
+	$('#search-icon').css('color', '#9f9f9f');
+});
+
 $('#refresh-icon').on('click', function (e) {
 	location.reload(false);
 });
@@ -518,7 +623,7 @@ $("body").on("click", ".group-btn", function () {
 	let btn = $(this);
 
 	// find out which extension was clicked and assign to btnId
-	let groupClicked = btn.attr("id").replace(/_/g, " ")
+	let groupClicked = btn.attr("id").replace(/_/g, " ");
 
 	// check if group was on or off
 	if (btn.hasClass("on")) {
@@ -581,31 +686,13 @@ $("body").on("click", ".group-btn", function () {
 	}
 
 	// track that the user has toggled a group
-	ga('send', 'event', "groups", "group-toggled");
+	// ga('send', 'event', "groups", "group-toggled");
 
-});
-
-// turn on/off extensions when toggle is switched
-$('.state-switch').change(function () {
-	$('#refresh-icon').show();
-	// get the app id
-	let id = $(this).parents('.switch').attr('id'),
-		// get the app name
-		name = $(this).parents('.switch').attr('name');
-	if ($(this).is(':checked')) {
-		chrome.management.setEnabled(id, true, function () {
-			Materialize.toast(`${name} is now on`, 2000, 'ccToastOn');
-		});
-	}
-	else {
-		chrome.management.setEnabled(id, false, function () {
-			Materialize.toast(`${name} is now off`, 2000, 'ccToastOff');
-		});
-	}
 });
 
 // listen for addGroup button press, add a button to HTML, prompt for group name, set that name as button text, add that group to the storage.sync object
 $('.addGroup').click(function () {
+	currentJob = 'creating';
 	$('#groupPrompt').openModal({
 		ready: function () {
 			$('#name').focus();
@@ -617,15 +704,16 @@ $('.addGroup').click(function () {
 });
 
 $("body").on("click", ".editBtn", function () {
+	currentJob = 'editing';
 	$('#editGroups').openModal({
 		// dismissible: true,
 		ready: function () {},
 	});
 
+	$('#groupList').html('');
 	for (let i = 0; i < Object.keys(user.groups).length; i++) {
 		$('#groupList').append(groupListTemplate(Object.keys(user.groups)[i]));
 	}
-
 });
 
 $('#removeAllBtn').click((e) => {
@@ -672,6 +760,7 @@ $("body").on("click", ".edit", function () {
 	//prefill the group name input with the current group name
 	$('#editGroupName').val(groupName);
 
+	$('#editExtList').html('');
 	//populate list with all extensions:
 	for (let i = 0; i < extArray.length; i++) {
 		if (extArray[i].id === 'balnpimdnhfiodmodckhkgneejophhhm') {
@@ -681,12 +770,13 @@ $("body").on("click", ".edit", function () {
 		$('#editExtList').append(extListTemplate(ext));
 	}
 
-	// Loop over all id's in group and tick the boxes that are already in the group
-	for (let i = 0; i < user.groups[groupName].length; i++) {
+	// Loop over all id's in group and tick the boxes that are already in the group, also raise the checked extensions to the top of the list, do this loop starting at the end (i--) so that it's done alphabetically
+	for (let i = user.groups[groupName].length-1; i >= 0; i--) {
 		let id = user.groups[groupName][i];
 		idList.push(id);
 		//find input with this id and add .prop('checked', true);
 		$(`#editExtList input[appid="${id}"]`).prop('checked', true);
+		$("#editExtList").prepend($(`[appid=${id}]`)[0].parentElement.parentElement);
 	}
 
 	//start listening for checkbox changes
@@ -772,7 +862,7 @@ $('.compact-styles-switch').change(function () {
 	chrome.storage.sync.set(user);
 
 	// Track event in Google
-	ga('send', 'event', "options", `compact-styles-toggled-to-${user.compactStyles}`);
+	// ga('send', 'event', "options", `compact-styles-toggled-to-${user.compactStyles}`);
 
 });
 
@@ -800,7 +890,7 @@ $('.include-apps-switch').change(function (e) {
 	chrome.storage.sync.set(user);
 
 	// Track event in Google
-	ga('send', 'event', "options", `include-apps-toggled-to-${user.includeApps}`);
+	// ga('send', 'event', "options", `include-apps-toggled-to-${user.includeApps}`);
 });
 
 }); // End DOM ready
