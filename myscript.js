@@ -71,7 +71,7 @@ chrome.management.getAll(function(info) {
 		entry.installType === "sideload" ? entry.sideload = true : false;
 
 		// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
-		entry.enabled = entry.enabled ? $('#activeExtensions').append(template(entry)) : $('#inactiveExtensions').append(template(entry));
+		entry.enabled ? $('#activeExtensions').append(template(entry)) : $('#inactiveExtensions').append(template(entry));
 	
 	} // close extArray loop
 	
@@ -116,9 +116,12 @@ function getExtensionCount() {
 }
 
 function handleGroupsClasses(){
+	console.log('in handle');
 	// setting the group buttons to on/off appearance
 	
 	for (let group in user.groups) {
+		console.log(group);
+		console.log('ids: ', user.groups[group]);
 		// for each group, get all extension id's in that group
 		// if they are all on, add class "on" to element, otherwise leave it grey
 		let extensionIds = user.groups[group];
@@ -127,6 +130,7 @@ function handleGroupsClasses(){
 		for (let i = extensionIds.length -1; i>=0; i--) {
 			let id = extensionIds[i];
 			
+			/**** ONLY NEED TO CHECK THIS ON LOAD - MOVE IT! ****/
 			// check if the extension is still installed by the user
 			if (justIds.indexOf(id) == -1) {
 				user.groups[group].splice(user.groups[group].indexOf(id),1);
@@ -138,6 +142,7 @@ function handleGroupsClasses(){
 				obj.id === id ? tempArray.push(obj) : 0;
 			}
 		}
+		console.log('tempArray', tempArray);
 
 		// tempArray now contains extension objects for this group
 		// check if any of the extensions have enabled === false
@@ -145,13 +150,16 @@ function handleGroupsClasses(){
 		let off = tempArray.some(function(ext){
 			return ext.enabled === false;
 		}) || false;
+		console.log('off', off);
 
 		// if it's on, add/remove appropriate classes
 		if (!off) {
+			console.log('all on apparaently');
 			group = group.replace(/ /g, "_");
 			$(`#${group}`).removeClass("off").addClass("on");
 		}
 	}
+	/**** ONLY NEED TO CHECK THIS ON LOAD - MOVE IT! ****/
 	// delete any empty groups
 	Object.keys(user.groups).forEach(function (group) {
 		user.groups[group].length === 0 ? delete user.groups[group] :0;
