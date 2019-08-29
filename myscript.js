@@ -504,7 +504,7 @@ $("#searchbox").keyup(function () {
 			// fill in text
 			$('#noResults .filterLink .search-failed-text').text(filter);
 			// update url
-			$('#noResults a.filterLink').attr("href", `https://chrome.google.com/webstore/search/"${encodeURIComponent(filter)}`);
+			$('#noResults a.filterLink').attr("href", `https://chrome.google.com/webstore/search/${encodeURIComponent(filter)}`);
 		} else {
 			$("#noResults").hide();
 			$('.allExtensionsContainer').css({'visibility': 'visible','height': 'auto'});
