@@ -14,6 +14,7 @@ const customChromeId = 'balnpimdnhfiodmodckhkgneejophhhm';
 
 $('.modal-trigger').leanModal();
 $('#compactStylesheet')[0].disabled = true;
+$('#darkMode')[0].disabled = true;
 
 chrome.management.getAll(function(info) {
 	// info is a list of all user installed apps i.e. extensions, apps, and themes
