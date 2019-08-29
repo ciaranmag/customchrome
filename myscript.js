@@ -6,6 +6,7 @@ inactiveExtensions = [],
 idList = [],
 user = {},
 justIds = [],
+currentJob,
 groupName;
 
 const customChromeId = 'balnpimdnhfiodmodckhkgneejophhhm';
@@ -262,16 +263,12 @@ $('#extSubmit').submit(
 );
 
 function submitThatShit() {
-	// group name is in a global variable 'name'
-	// extension id's are in a global variable 'idList'
-	if (idList.length === 0) {
-		return;
+	// turn all selected extensions on -- DON'T DO THIS EDITING
+	if (currentJob === 'creating') {
+		idList.forEach(function(extensionId, index) {
+			chrome.management.setEnabled(extensionId, true);
+		});
 	}
-
-	// turn all selected extensions on
-	idList.forEach(function(extensionId, index) {
-		chrome.management.setEnabled(extensionId, true);
-	});
 
 	// set new group on user obj, with idlist as array
 	user.groups[name] = idList;
@@ -447,6 +444,7 @@ $("#editExtSubmit").submit(function(e){
 
 	if(groupName === $('#editGroupName').val()){
 		// user has NOT changed the group name, so we can just set the idList as the group
+		/***** CHECK IF THE GROUP LIST AND ID LIST ARE THE SAME IF SO THEN NOTHING WAS EDITED ******/
 		user.groups[groupName] = idList;
 		chrome.storage.sync.set(user, function(){
 			Materialize.toast(`${newName} group successfully edited`, 1000, 'ccToastOn');
@@ -694,6 +692,7 @@ $("body").on("click", ".group-btn", function () {
 
 // listen for addGroup button press, add a button to HTML, prompt for group name, set that name as button text, add that group to the storage.sync object
 $('.addGroup').click(function () {
+	currentJob = 'creating';
 	$('#groupPrompt').openModal({
 		ready: function () {
 			$('#name').focus();
@@ -705,6 +704,7 @@ $('.addGroup').click(function () {
 });
 
 $("body").on("click", ".editBtn", function () {
+	currentJob = 'editing';
 	$('#editGroups').openModal({
 		// dismissible: true,
 		ready: function () {},
