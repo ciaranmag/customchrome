@@ -120,7 +120,6 @@ function getExtensionCount() {
 }
 
 function handleGroupsClasses(){
-	console.log('here');
 	// setting the group buttons to on/off appearance
 	
 	for (let group in user.groups) {
@@ -260,13 +259,7 @@ function submitThatShit() {
 	// set new group on user obj, with idlist as array
 	user.groups[name] = idList;
 
-	chrome.storage.sync.set(user, function () {
-	  // get user data again, re-fill groups
-	  getUserData();
-
-	  // emptying out idList so that extensions aren't added to future groups
-	  idList = [];
-	});
+	chrome.storage.sync.set(user, function () {});
 
 	// Track event in Google
 	// ga('send', 'event', "groups", "group-added");
@@ -288,8 +281,7 @@ function getUserData() {
 			return;
 		}
 
-		// at this point, we're on the new data structure
-		// set global user obj
+		// at this point, we're on the new data structure, set global user obj
 		user = obj;
 		// console.log("user:", user);
 
@@ -297,7 +289,6 @@ function getUserData() {
 		if (user.compactStyles) {
 			// toggle switch to on state
 			$('.compact-styles-switch').attr('checked', true);
-
 			// enable compact styles stylesheet
 			$('#compactStylesheet')[0].disabled = false;
 		}
@@ -310,7 +301,7 @@ function getUserData() {
 		}
 		else {
 			// set toggle switch to checked
-			$('.include-apps-switch').attr('checked', true);
+			$('#include-apps-switch').attr('checked', true);
 			$('#searchbox').attr('placeholder','search extensions and apps');
 		}
 		
@@ -328,25 +319,25 @@ function getUserData() {
 		// if user has groups, show groups
 		if (allGroups.length > 0) {
 			// show groups
-			$('#groupHeader').show();
+			$('#groupHeader, .editBtn').show();
 			$('#noGroupsText, #groupOnboarding').hide();
-			$('.editBtn').show();
 
 			// clear out html in group-holder
 			$('.group-holder').html('');
 
 			// append groups to the div
 			for (let i = 0; i < allGroups.length; i++) {
-				for (let x = 0; x < user.groups[allGroups[i]].length; x++) {
-				
-				// check if each extension is still installed by the user
-				let id = user.groups[allGroups[i]][0];
-				if (justIds.indexOf(id) == -1) {
-					user.groups[allGroups[i]].splice(user.groups[allGroups[i]].indexOf(id), 1);
-					continue;
-				}}
-
 				let name = allGroups[i];
+
+				for (let x = 0; x < user.groups[allGroups[i]].length; x++) {
+					// check if each extension is still installed by the user
+					let id = user.groups[name][0];
+					if (justIds.indexOf(id) == -1) {
+						user.groups[name].splice(user.groups[name].indexOf(id), 1);
+						continue;
+					}
+				}
+
 				let extCount = user.groups[name].length;
 
 				let btnHtml = `<button class='group-btn off' id='${name.toLowerCase().split(' ').join('_')}'>${name} (${extCount})</button>`;
@@ -354,7 +345,7 @@ function getUserData() {
 				// append to group-holder
 				$('.group-holder').append(btnHtml); 
 			}
-			/**** ONLY NEED TO CHECK THIS ON LOAD - MOVE IT! ****/
+
 			// delete any empty groups
 			Object.keys(user.groups).forEach(function (group) {
 				if (user.groups[group].length === 0) {
@@ -370,15 +361,12 @@ function getUserData() {
 		// if user has dismissed group prompt, hide group header
 		else if (user.dismissedProfilesPrompt) {
 			// User has no groups, and has dismissed groups prompt
-			$('#groupHeader').hide();
-			$('#groupOnboarding').hide();
-			$('.editBtn').hide();
+			$('#groupHeader, #groupOnboarding, .editBtn').hide();
 		}
 		else {
 			// show user the group prompt and hide the edit groups button
-			$('.group-holder').show();
+			$('.group-holder, #groupOnboarding').show();
 			$('#noGroupsText').text("You don't have any groups setup.");
-			$('#groupOnboarding').show();
 			$('.editBtn').hide();
 		}
 	});
@@ -388,10 +376,8 @@ function addGroupLabels(groups){
 	// loop over all groups
 	for (let group in groups) {
 	  if (Object.prototype.hasOwnProperty.call(groups, group)) {
-	    // for each id in the group
-	    // find the switch with that ID
-	    // then find its parent entry
-	    // then find its child groupLabel
+	    // for each id in the group, find the switch with that ID
+	    // then find its parent entry, then its child groupLabel
 	    // append the name to that element
 	    groups[group].forEach(function (id) {
 	      let target = $(`#${id}`).parents('.extBlock').find('.extName');
@@ -404,13 +390,7 @@ function addGroupLabels(groups){
 }
 
 function confirmDelete(group){
-	//open the modal and insert the group name into the first p element
-	$('#confirmDelete').openModal({
-		// complete: function(){
-		// 	$('#confirmDelete h6').html(`Are you sure you want to delete TEST ${group}?`);
-		// }
-	});
-
+	$('#confirmDelete').openModal({});
 	$('#confirmDelete h5').html(`Are you sure you want to delete the group ${group}?`);
 	
 	//on confirm - delete group from storage, show toast confirming group delete
@@ -499,7 +479,7 @@ $("#editExtSubmit").submit(function(e){
 // ga('send', 'event', [eventCategory], [eventAction])
 
 
-/****** HANDLEBARS REPLACEMENT FUNCTIONS ******/
+/****** TEMPLATE FUNCTIONS ******/
 
 function template(entry) {
 	return `
@@ -518,18 +498,16 @@ function template(entry) {
 		</div>
 	</div>
 
-
 	<div class="righty">
     <div class="switch ext-switch" id="${entry.id}" name="${entry.name}">
 	    <label>
 	      <input type="checkbox" ${entry.stringEnabled} class="js-switch state-switch" tabindex="1">
 	      <span class="lever"></span>
 	    </label>
-	    <a class='btn-flat show-ext-links' href='#'><i class="material-icons">arrow_drop_down</i></a>
+	    <a class='btn-flat show-ext-links togdrop' href='#'><i class="material-icons">arrow_drop_down</i></a>
 	    <a class='btn-flat hide-ext-links' href='#'><i class="material-icons">arrow_drop_up</i></a>
 	  </div>
 	</div>
-
 
 	<div class="container ext-links">
 			<div class="row description">
@@ -541,8 +519,6 @@ function template(entry) {
         <div class="link"><a href="#!" class="uninstallExt"><i class="material-icons">delete</i>Uninstall</a></div>
 	    </div>
 	</div>
-
-
 </div>`;
 }
 
@@ -573,7 +549,19 @@ function groupListTemplate(group) {
 	</div>`;
 }
 
-/****** END HANDLEBARS REPLACEMENT FUNCTIONS ******/
+function popupMessage(message, btnText) {
+	return `
+	<div id="popupMessage" class="modal">
+		<div class="modal-content">
+			<p>${message}</p>
+		</div>
+		<div class="modal-footer">
+			<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">${btnText}</a>
+		</div>
+	</div>`;
+}
+
+/****** END TEMPLATE FUNCTIONS ******/
 
 
 /****** LISTENERS ******/
@@ -594,14 +582,13 @@ $('#refresh-icon').on('click', function (e) {
 // Search
 $("#searchbox").keyup(function () {
 	// Retrieve the input field text
-	let filter = $(this).val();
-	// Loop through the extensions
-	// toFilter array will hold all elements to search through
+	let searchTerm = $(this).val();
+	// Loop through the extensions, toFilter array will hold all elements to search through
 	// fill this depending on whether apps are on or off
 	let toFilter = user.includeApps ? $(".extBlock") : $(".extBlock:not(.app)");
 
 	toFilter.each(function (i, el) {
-		$(el).find('.extName').text().search(new RegExp(filter, "i")) < 0 ? $(el).fadeOut() : $(el).fadeIn();
+		$(el).find('.extName').text().search(new RegExp(searchTerm, "i")) < 0 ? $(el).fadeOut() : $(el).fadeIn();
 	});
 
 	// if the search returns no results then show the no results card
@@ -611,9 +598,9 @@ $("#searchbox").keyup(function () {
 			$('#activeExtensions, #inactiveExtensions').parent().css('visibility', 'hidden');
 			$('.allExtensionsContainer').css({'visibility': 'hidden','height': '0px'});
 			// fill in text
-			$('#noResults .filterLink .search-failed-text').text(filter);
+			$('#noResults .filterLink .search-failed-text').text(searchTerm);
 			// update url
-			$('#noResults a.filterLink').attr("href", `https://chrome.google.com/webstore/search/${encodeURIComponent(filter)}`);
+			$('#noResults a.filterLink').attr("href", `https://chrome.google.com/webstore/search/${encodeURIComponent(searchTerm)}`);
 		} else {
 			$("#noResults").hide();
 			$('.allExtensionsContainer').css({'visibility': 'visible','height': 'auto'});
@@ -641,9 +628,8 @@ $("body").on("click", ".group-btn", function () {
 			// Get all group names that are on (have .on class)
 			let activeGroups = [];
 			for (let i = $('.group-btn.on').length - 1; i >= 0; i--) {
-				let groupName = $($('.group-btn.on')[i]).attr('id');
+				let groupName = $($('.group-btn.on')[i]).attr('id').replace(/_/g, " ");
 
-				groupName = groupName.replace(/_/g, " ");
 				// ignore the groupClicked group
 				groupName != groupClicked ? activeGroups.push(groupName) : false;
 			}
@@ -710,7 +696,6 @@ $('.addGroup').click(function () {
 $("body").on("click", ".editBtn", function () {
 	currentJob = 'editing';
 	$('#editGroups').openModal({
-		// dismissible: true,
 		ready: function () {},
 	});
 
@@ -726,8 +711,7 @@ $('#removeAllBtn').click((e) => {
 });
 
 $("body").on("click", "#deleteAllGroups", function () {
-	// User confirms delete all groups
-	// remove all groups (set empty object)
+	// User confirms delete all groups, remove all groups (set empty object)
 	user.groups = {};
 
 	// save in memory
@@ -774,7 +758,7 @@ $("body").on("click", ".edit", function () {
 		$('#editExtList').append(extListTemplate(ext));
 	}
 
-	// Loop over all id's in group and tick the boxes that are already in the group, also raise the checked extensions to the top of the list, do this loop starting at the end (i--) so that it's done alphabetically
+	// Loop over all id's in group, check the boxes that are already in the group, also raise the checked extensions to the top of the list, do this loop starting at the end (i--) so that it's done alphabetically
 	for (let i = user.groups[groupName].length-1; i >= 0; i--) {
 		let id = user.groups[groupName][i];
 		idList.push(id);
@@ -789,7 +773,6 @@ $("body").on("click", ".edit", function () {
 	//wait half a second, open a new confirm/cancel modal
 	setTimeout(function () {
 		$('#editExts').openModal({
-			dismissible: true,
 			complete: function () {
 				$('#editExtList').html('');
 			}
@@ -800,28 +783,21 @@ $("body").on("click", ".edit", function () {
 $("body").on("click", ".uninstallExt", function (e) {
 	e.preventDefault();
 
-	// User wants to uninstall an extension
-	// relevant docs: https://developer.chrome.com/extensions/management#method-uninstall
-	// get extension ID
+	// User wants to uninstall an extension, get extension ID
 	let id = $(e.currentTarget).parents('.row.buttons').attr('data-extid');
 
-	// uninstall {native confirm dialog is mandatory)
+	// uninstall - native confirm dialog is mandatory therefore CC will start again where it will remove the extension from any groups it was in
 	chrome.management.uninstall(id, {}, () => {
-		for (let [group_name, group_ids] of Object.entries(user.groups)) {
-			if (group_ids.indexOf(id) != -1) {
-				user.groups[group_name].splice(group_ids.indexOf(id), 1);
-			}
-		}
 		chrome.storage.sync.set(user);
 	});
 	// custom chrome closes automatically
 });
 
+
 $("body").on("click", ".show-ext-links", function (e) {
 	e.preventDefault();
 	// User wants to show the extension links, get refrence to relevant ext-links element
-	let extLinks = $(this).parents('.righty').siblings('.ext-links');
-	extLinks.slideDown();
+	$(this).parents('.righty').siblings('.ext-links').slideDown();
 
 	// hide down arrow, show up arrow
 	$(e.currentTarget).hide();
@@ -831,8 +807,7 @@ $("body").on("click", ".show-ext-links", function (e) {
 $("body").on("click", ".hide-ext-links", function (e) {
 	e.preventDefault();
 	// User wants to hide the extension links, get refrence to relevant ext-links element
-	let extLinks = $(this).parents('.righty').siblings('.ext-links');
-	extLinks.slideUp();
+	$(this).parents('.righty').siblings('.ext-links').slideUp();
 
 	// hide down arrow, show up arrow
 	$(e.currentTarget).hide();
@@ -844,12 +819,14 @@ $("body").on("click", "#dismissGroupPrompt", function (e) {
 	// User wants to dismiss the groups onboarding, hide call to actions, copy and buttons
 	$('#groupHeader').hide();
 
-	// Show user the modal to tell them they can still add a group from the options modal
-	$('#confirmDismissGroupPrompt').openModal();
+	$('#popup').append(popupMessage('You can still add a group from the options panel (click gear icon in top right)', 'Ok!'));
+	$('#popupMessage').openModal({
+		complete: function () {
+			$('#popup').html('');
+		}
+	});
 
-	// Save this to chrome storage so we can use it on next page load and not show the groupheader again UNTIL user resets it in options page....?
 	user.dismissedProfilesPrompt = true;
-
 	chrome.storage.sync.set(user);
 });
 
@@ -871,7 +848,7 @@ $('.compact-styles-switch').change(function () {
 });
 
 // turn on/off show apps
-$('.include-apps-switch').change(function (e) {
+$('#include-apps-switch').change(function (e) {
 	// console.log('toggling apps: ', e);
 
 	if (e.target.checked) {
@@ -889,8 +866,6 @@ $('.include-apps-switch').change(function (e) {
 
 	user.includeApps = e.target.checked;
 	getExtensionCount();
-	// save current state to storage
-	// console.log("saving user: ", user);
 	chrome.storage.sync.set(user);
 
 	// Track event in Google

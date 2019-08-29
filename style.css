@@ -522,6 +522,10 @@ span.badge.new {
 	border-top: 7px solid #81c784;
 }
 
+#popup .modal-content p {
+	font-size: 16px;
+}
+
 .btn {
 	background-color: #81c784;
 }
