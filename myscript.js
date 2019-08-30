@@ -100,7 +100,7 @@ chrome.management.getAll(function(info) {
 	});
 
 	// initialise tooltips
-	$('.tooltipped').tooltip();
+	// $('.tooltipped').tooltip();
 
 }); // close chrome.management.getAll
 
@@ -620,18 +620,20 @@ $("#searchbox").keyup(function () {
 // after clicking a group's on/off button, we toggle its appearance (on or off) and cycle through associated extensions turning them all on or off
 $("body").on("click", ".group-btn", function () {
 	let btn = $(this);
-
 	// find out which extension was clicked and assign to btnId
 	let groupClicked = btn.attr("id").replace(/_/g, " ");
 
 	// check if group was on or off
 	if (btn.hasClass("on")) {
-		// It was on, turn all extensions off
-		// Loop over each extension in the group
+		let extsInThisGroup =	user.groups[groupClicked];
+		let inOthers = [];
+
+
+		// turn all extensions off, loop over each extension in the group
 		user.groups[groupClicked].forEach(function (extensionId) {
 
 			// Check to see if this extension lives in any of the groups that are still on
-			let keepOn = false;
+			// let keepOn = false;
 
 			// Get all group names that are on (have .on class)
 			let activeGroups = [];
@@ -646,25 +648,56 @@ $("body").on("click", ".group-btn", function () {
 			// search the ids in its group
 			// if we get a match, then keepOn = true
 			for (let i = activeGroups.length - 1; i >= 0; i--) {
-				keepOn = user.groups[activeGroups[i]].some(function (extId) {
-					return extId === extensionId;
+				user.groups[activeGroups[i]].some(function (extId) {
+					if (extId === extensionId) {
+						if ($.inArray(extensionId, inOthers) == -1) {
+							inOthers.push(extensionId);
+						}
+					}
 				});
 			}
 
-			// this extension mustn't be in any other active group
-			// turn it off
-			!keepOn ? chrome.management.setEnabled(extensionId, false) : 0;
-
 		});
+		console.log(inOthers);
 
-		Materialize.toast(`${groupClicked} is now off`, 2000, 'ccToastOff');
-
-		// change group btn to "off" appearance
-		$(this).removeClass("on").addClass("off");
-		setTimeout(function () {
-			// adding false lets the page reload from the cache
-			location.reload(false);
-		}, 500);
+		if (extsInThisGroup.length === inOthers.length) {
+			// all the extensions in this group are ON in other ACTIVE (turned on) groups
+			console.log('all the extensions in this group are ON in other ACTIVE (turned on) groups');
+			$('#popup').append(popupMessage(`All of the extensions in "${groupClicked}" are in at least one other active group which is keeping them on. Use the switches next to the extensions below to force them off.`, "Ok"));
+			$('#popupMessage').openModal({
+				complete: function () {
+					$('#popup').html('');
+				}
+			});
+		}
+		else if (inOthers.length > 0) {
+			// some extensions in this group are ON in other ACTIVE (turned on) groups
+			console.log('some of ye are on in other groups');
+			user.groups[groupClicked].forEach(function (extensionId) {
+				// if the extentionId is NOT in InOthers then turn it off
+				if ($.inArray(extensionId, inOthers) == -1) {
+					chrome.management.setEnabled(extensionId, false);
+				}
+			});
+			setTimeout(function () {
+				// adding false lets the page reload from the cache
+				location.reload(false);
+			}, 1000);
+		}
+		else {
+			// none of the extensions in this group are in any other ACTIVE (turned on) groups
+			console.log('none of the extensions in this group are in any other ACTIVE (turned on) groups');
+			user.groups[groupClicked].forEach(function (extensionId) {
+				chrome.management.setEnabled(extensionId, false);
+			});
+			Materialize.toast(`${groupClicked} is now off`, 2000, 'ccToastOff');
+			$(this).removeClass("on").addClass("off");
+			setTimeout(function () {
+				// adding false lets the page reload from the cache
+				location.reload(false);
+			}, 1000);
+		}
+		
 	}
 	else if (btn.hasClass("off")) {
 		// if the btn is currently off then turn all extensions on
@@ -680,7 +713,7 @@ $("body").on("click", ".group-btn", function () {
 		setTimeout(function () {
 			// adding false lets the page reload from the cache
 			location.reload(false);
-		}, 500);
+		}, 1000);
 	}
 
 	// track that the user has toggled a group
