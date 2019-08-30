@@ -540,7 +540,7 @@ span.badge.new {
 
 .development-badge {
 	background: #da5454;
-	padding: 2px 5px;
+	padding: 3px 6px;
 	margin-left: 5px;
   border-radius: 3px;
 	color: #fff;
@@ -549,9 +549,9 @@ span.badge.new {
 
 .groupLabel-on,
 .groupLabel-off {
-	padding: 2px 5px;
+	padding: 3px 6px;
 	margin-left: 5px;
-	border-radius: 3px;
+	border-radius: 50%;
 	font-size: 10.5px;
 }
 
