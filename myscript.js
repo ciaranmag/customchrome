@@ -251,7 +251,7 @@ function submitThatShit() {
 	chrome.storage.sync.set(user, function () {});
 
 	// Track event in Google
-	// ga('send', 'event', "groups", "group-added");
+	ga('send', 'event', "groups", "group-added");
 
 	setTimeout(function () {
 		// adding false lets the page reload from the cache
@@ -469,12 +469,12 @@ $("#editExtSubmit").submit(function(e){
 	}
 
 	// Track event in Google
-	// ga('send', 'event', "groups", "group-edited");
+	ga('send', 'event', "groups", "group-edited");
 
 });
 
 // GOOGLE ANALYTICS
-// ga('send', 'event', [eventCategory], [eventAction])
+ga('send', 'event', [eventCategory], [eventAction])
 
 
 /****** TEMPLATE FUNCTIONS ******/
@@ -694,7 +694,7 @@ $("body").on("click", ".group-btn", function () {
 	}
 
 	// track that the user has toggled a group
-	// ga('send', 'event', "groups", "group-toggled");
+	ga('send', 'event', "groups", "group-toggled");
 
 });
 
@@ -859,7 +859,7 @@ $('.compact-styles-switch').change(function () {
 	chrome.storage.sync.set(user);
 
 	// Track event in Google
-	// ga('send', 'event', "options", `compact-styles-toggled-to-${user.compactStyles}`);
+	ga('send', 'event', "options", `compact-styles-toggled-to-${user.compactStyles}`);
 
 });
 
@@ -883,7 +883,7 @@ $('#include-apps-switch').change(function (e) {
 	chrome.storage.sync.set(user);
 
 	// Track event in Google
-	// ga('send', 'event', "options", `include-apps-toggled-to-${user.includeApps}`);
+	ga('send', 'event', "options", `include-apps-toggled-to-${user.includeApps}`);
 });
 
 $("body").on("click", ".copy-clipboard", function (e) {
