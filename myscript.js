@@ -805,8 +805,11 @@ $("body").on("click", ".uninstallExt", function (e) {
 	// uninstall - native confirm dialog is mandatory therefore CC will start again where it will remove the extension from any groups it was in
 	chrome.management.uninstall(id, {}, () => {
 		chrome.storage.sync.set(user);
+		setTimeout(function () {
+			// adding false lets the page reload from the cache
+			location.reload(false);
+		}, 500);
 	});
-	// custom chrome closes automatically
 });
 
 
