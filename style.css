@@ -547,3 +547,11 @@ span.badge.new {
 	border-radius: 3px;
 	font-size: 10.5px;
 }
+.material-tooltip {
+	white-space: pre;
+}
+.material-tooltip span {
+}
+.material-tooltip .backdrop {
+	border-radius: 0;
+}

@@ -14,7 +14,7 @@ const customChromeId = 'balnpimdnhfiodmodckhkgneejophhhm';
 
 
 $('#compactStylesheet')[0].disabled = true;
-$('#darkMode')[0].disabled = true;
+// $('#darkMode')[0].disabled = true;
 $('.modal-trigger').leanModal();
 
 chrome.management.getAll(function(info) {
@@ -22,6 +22,7 @@ chrome.management.getAll(function(info) {
 	// push extensions to extArray
 	for (let i = 0; i < info.length; i++) {
 		let entry = info[i];
+		// console.log(entry);
 		// Make an array of all the extension and app ids
 		justIds.push(entry.id);
 		switch(entry.type) {
@@ -326,7 +327,7 @@ function getUserData() {
 			for (let i = 0; i < allGroups.length; i++) {
 				let name = allGroups[i];
 
-				for (let x = 0; x < user.groups[allGroups[i]].length; x++) {
+				for (let x = 0; x < user.groups[name].length; x++) {
 					// check if each extension is still installed by the user
 					let id = user.groups[name][0];
 					if (justIds.indexOf(id) == -1) {
@@ -337,7 +338,17 @@ function getUserData() {
 
 				let extCount = user.groups[name].length;
 
-				let btnHtml = `<button class='group-btn off' id='${name.toLowerCase().split(' ').join('_')}'>${name} (${extCount})</button>`;
+				let extNames = [];
+				for (let k = 0; k < user.groups[name].length; k++) {
+					let id = user.groups[name][k];
+					for (let x = 0; x < extArray.length; x++) {
+						if (extArray[x].id === id) {
+							extNames.push(extArray[x].shortName);
+						}
+					}
+				}
+
+				let btnHtml = `<button class='group-btn tooltipped off' id='${name.toLowerCase().split(' ').join('_')}' data-tooltip='${extNames.join('\n')}'>${name} (${extCount})</button>`;
 				
 				// append to group-holder
 				$('.group-holder').append(btnHtml); 
@@ -378,7 +389,7 @@ function addGroupLabels(groups){
 	    // append the name to that element
 	    groups[group].forEach(function (id) {
 	      let target = $(`#${id}`).parents('.extBlock').find('.extName');
-	      let spanHtml = `<span class='groupLabel  tooltipped' data-tooltip="${group}">${group.substring(0, 1).toUpperCase()}</span>`;
+	      let spanHtml = `<span class='groupLabel tooltipped' data-tooltip="${group}">${group.substring(0, 1).toUpperCase()}</span>`;
 	      target.append(spanHtml);
 	    });
 	  }
@@ -480,7 +491,7 @@ $("#editExtSubmit").submit(function(e){
 
 function template(entry) {
 	return `
-	<div class="extBlock ${entry.isApp ? 'app' : ''}">
+	<div class="extBlock${entry.isApp ? ' app' : ''}">
 	<div class="lefty">
 	 	<div class="picHolder">
 	 		<img src="${entry.pic}">
@@ -692,9 +703,7 @@ $('.addGroup').click(function () {
 
 $("body").on("click", ".editBtn", function () {
 	currentJob = 'editing';
-	$('#editGroups').openModal({
-		ready: function () {},
-	});
+	$('#editGroups').openModal({});
 
 	$('#groupList').html('');
 	for (let i = 0; i < Object.keys(user.groups).length; i++) {
