@@ -1,3 +1,30 @@
+
+// turn analytics back on?
+
+// update screenshots in readme and on Chrome Web Store
+
+// reply to feedback and reviews
+
+// update blurb with example use cases
+
+
+
+// delete unused materialize files
+
+// fix extension link to it's options page
+
+// dark mode
+
+// Web Store button focus
+
+// edit ext list for edit and new groups should only show apps if show apps is on
+
+// groups (on edge of window) tooltips showing offscreen
+
+// groupLabels should update when you use an extension switch
+ 
+ 
+ 
  ToDo For Next Release:
    ☐ [BUG] Editing an existing group's name creates a new group with new name and leaves old group there instead of replacing it
    ☐ user.seen_changelog isn't used anymore, we use local storage, maybe we should go back though because it syncs with the cloud and local doesn't
