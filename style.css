@@ -539,21 +539,29 @@ span.badge.new {
 }
 
 .development-badge {
-	background: #cfcbcb;
+	background: #da5454;
 	padding: 2px 5px;
 	margin-left: 5px;
   border-radius: 3px;
-	color: #353535;
+	color: #fff;
 	border-radius: 50%;
 }
 
-.groupLabel {
-	background: #81c784;
-	color: #fff;
+.groupLabel-on,
+.groupLabel-off {
 	padding: 2px 5px;
 	margin-left: 5px;
 	border-radius: 3px;
 	font-size: 10.5px;
+}
+
+.groupLabel-on {
+	background: #81c784;
+	color: #fff;
+}
+.groupLabel-off {
+	background: #cfcbcb;
+	color: #353535;
 }
 .material-tooltip {
 	white-space: pre;

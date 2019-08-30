@@ -383,16 +383,15 @@ function getUserData() {
 function addGroupLabels(groups){
 	// loop over all groups
 	for (let group in groups) {
-	  if (Object.prototype.hasOwnProperty.call(groups, group)) {
-	    // for each id in the group, find the switch with that ID
-	    // then find its parent entry, then its child groupLabel
-	    // append the name to that element
-	    groups[group].forEach(function (id) {
-	      let target = $(`#${id}`).parents('.extBlock').find('.extName');
-	      let spanHtml = `<span class='groupLabel tooltipped' data-tooltip="${group}">${group.substring(0, 1).toUpperCase()}</span>`;
-	      target.append(spanHtml);
-	    });
-	  }
+		let on = $(`#${group.toLowerCase().split(' ').join('_')}`).hasClass('on');
+		// for each id in the group, find the switch with that ID
+		// then find its parent entry, then its child groupLabel
+		// append the name to that element
+		groups[group].forEach(function (id) {
+			let target = $(`#${id}`).parents('.extBlock').find('.extName');
+			let spanHtml = `<span class='groupLabel-${on?'on':'off'} tooltipped' data-tooltip="${group}">${group.substring(0, 1).toUpperCase()}</span>`;
+			target.append(spanHtml);
+		});
 	}
 	$('.tooltipped').tooltip();
 }
@@ -680,6 +679,7 @@ $("body").on("click", ".group-btn", function () {
 				}
 			});
 			setTimeout(function () {
+				addGroupLabels();
 				// adding false lets the page reload from the cache
 				location.reload(false);
 			}, 1000);
@@ -693,6 +693,7 @@ $("body").on("click", ".group-btn", function () {
 			Materialize.toast(`${groupClicked} is now off`, 2000, 'ccToastOff');
 			$(this).removeClass("on").addClass("off");
 			setTimeout(function () {
+				addGroupLabels();
 				// adding false lets the page reload from the cache
 				location.reload(false);
 			}, 1000);
