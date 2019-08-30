@@ -22,7 +22,6 @@ chrome.management.getAll(function(info) {
 	// push extensions to extArray
 	for (let i = 0; i < info.length; i++) {
 		let entry = info[i];
-		// console.log(entry);
 		// Make an array of all the extension and app ids
 		justIds.push(entry.id);
 		switch(entry.type) {
@@ -64,7 +63,6 @@ chrome.management.getAll(function(info) {
 		
 		// Check if extension type is development
 		entry.installType === "development" ? entry.development = true : false;
-		// entry.installType === "sideload" ? entry.sideload = true : false;
 
 		// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
 		entry.enabled ? $('#activeExtensions').append(template(entry)) : $('#inactiveExtensions').append(template(entry));
@@ -81,7 +79,6 @@ chrome.management.getAll(function(info) {
 		let id = $(this).parents('.switch').attr('id'),
 		// get the app name
 		name = $(this).parents('.switch').attr('name');
-		// if ($(this).is(':checked')) {
 		for (let i = 0; i < extArray.length; i++) {
 			if (extArray[i].id === id && !extArray[i].enabled) {
 				extArray[i].enabled = true;
@@ -98,9 +95,6 @@ chrome.management.getAll(function(info) {
 		}
 		handleGroupsClasses();
 	});
-
-	// initialise tooltips
-	// $('.tooltipped').tooltip();
 
 }); // close chrome.management.getAll
 
@@ -151,12 +145,10 @@ function handleGroupsClasses(){
 	}
 
 	$('.group-holder').show();
-
 	chrome.storage.sync.set(user);
 }
 
-$('#nameSubmit').submit(
-	function(e){
+$('#nameSubmit').submit(function(e) {
 		e.preventDefault();
 
 		// catch the group name the user entered
@@ -228,8 +220,7 @@ function addExtensions(name) {
 	$('#name').val('');
 }
 
-$('#extSubmit').submit(
-	function(e){
+$('#extSubmit').submit(function(e) {
 		e.preventDefault();
 		//if no extension are selected, show toast warning and do not close modal
 		if (idList.length === 0) {
@@ -627,10 +618,8 @@ $("body").on("click", ".group-btn", function () {
 		let extsInThisGroup =	user.groups[groupClicked];
 		let inOthers = [];
 
-
 		// turn all extensions off, loop over each extension in the group
 		user.groups[groupClicked].forEach(function (extensionId) {
-
 			// Check to see if this extension lives in any of the groups that are still on
 			// let keepOn = false;
 
@@ -643,25 +632,18 @@ $("body").on("click", ".group-btn", function () {
 				groupName != groupClicked ? activeGroups.push(groupName) : false;
 			}
 
-			// for each group in activeGroups array
-			// search the ids in its group
-			// if we get a match, then keepOn = true
+			// for each group in activeGroups array, search the ids in its group, if we get a match, then keepOn = true
 			for (let i = activeGroups.length - 1; i >= 0; i--) {
 				user.groups[activeGroups[i]].some(function (extId) {
 					if (extId === extensionId) {
-						if ($.inArray(extensionId, inOthers) == -1) {
-							inOthers.push(extensionId);
-						}
+						if ($.inArray(extensionId, inOthers) == -1) { inOthers.push(extensionId); }
 					}
 				});
 			}
-
 		});
-		console.log(inOthers);
 
 		if (extsInThisGroup.length === inOthers.length) {
 			// all the extensions in this group are ON in other ACTIVE (turned on) groups
-			console.log('all the extensions in this group are ON in other ACTIVE (turned on) groups');
 			$('#popup').append(popupMessage(`All of the extensions in "${groupClicked}" are in at least one other active group which is keeping them on. Use the switches next to the extensions below to force them off.`, "Ok"));
 			$('#popupMessage').openModal({
 				complete: function () {
@@ -671,7 +653,6 @@ $("body").on("click", ".group-btn", function () {
 		}
 		else if (inOthers.length > 0) {
 			// some extensions in this group are ON in other ACTIVE (turned on) groups
-			console.log('some of ye are on in other groups');
 			user.groups[groupClicked].forEach(function (extensionId) {
 				// if the extentionId is NOT in InOthers then turn it off
 				if ($.inArray(extensionId, inOthers) == -1) {
@@ -680,13 +661,11 @@ $("body").on("click", ".group-btn", function () {
 			});
 			setTimeout(function () {
 				addGroupLabels();
-				// adding false lets the page reload from the cache
 				location.reload(false);
 			}, 1000);
 		}
 		else {
 			// none of the extensions in this group are in any other ACTIVE (turned on) groups
-			console.log('none of the extensions in this group are in any other ACTIVE (turned on) groups');
 			user.groups[groupClicked].forEach(function (extensionId) {
 				chrome.management.setEnabled(extensionId, false);
 			});
@@ -694,7 +673,6 @@ $("body").on("click", ".group-btn", function () {
 			$(this).removeClass("on").addClass("off");
 			setTimeout(function () {
 				addGroupLabels();
-				// adding false lets the page reload from the cache
 				location.reload(false);
 			}, 1000);
 		}
@@ -703,7 +681,6 @@ $("body").on("click", ".group-btn", function () {
 	else if (btn.hasClass("off")) {
 		// if the btn is currently off then turn all extensions on
 		user.groups[groupClicked].forEach(function (extensionId) {
-			// console.log('enabling extension:', extensionId);
 			chrome.management.setEnabled(extensionId, true);
 		});
 
@@ -712,7 +689,6 @@ $("body").on("click", ".group-btn", function () {
 		// change group btn to "on" appearance
 		$(this).removeClass("off").addClass("on");
 		setTimeout(function () {
-			// adding false lets the page reload from the cache
 			location.reload(false);
 		}, 1000);
 	}
@@ -759,7 +735,7 @@ $("body").on("click", "#deleteAllGroups", function () {
 
 	Materialize.toast('Deleting your groups...', 2000, 'deleteToast');
 	setTimeout(function () {
-		location.reload(false); // adding false lets the page reload from the cache
+		location.reload(false);
 	}, 1000);
 });
 
@@ -802,15 +778,15 @@ $("body").on("click", ".edit", function () {
 	for (let i = user.groups[groupName].length-1; i >= 0; i--) {
 		let id = user.groups[groupName][i];
 		idList.push(id);
-		//find input with this id and add .prop('checked', true);
+		// find input with this id and add .prop('checked', true);
 		$(`#editExtList input[appid="${id}"]`).prop('checked', true);
 		$("#editExtList").prepend($(`[appid=${id}]`)[0].parentElement.parentElement);
 	}
 
-	//start listening for checkbox changes
+	// start listening for checkbox changes
 	checkboxListener();
 
-	//wait half a second, open a new confirm/cancel modal
+	// wait half a second, open a new confirm/cancel modal
 	setTimeout(function () {
 		$('#editExts').openModal({
 			complete: function () {
@@ -889,8 +865,6 @@ $('.compact-styles-switch').change(function () {
 
 // turn on/off show apps
 $('#include-apps-switch').change(function (e) {
-	// console.log('toggling apps: ', e);
-
 	if (e.target.checked) {
 		// user wishes to include apps
 		$('.app').show();
@@ -914,7 +888,7 @@ $('#include-apps-switch').change(function (e) {
 
 $("body").on("click", ".copy-clipboard", function (e) {
 	e.preventDefault();
-	value = $(this).data('clipboard'); //Upto this I am getting value
+	value = $(this).data('clipboard'); // Upto this I am getting value
 
 	var $temp = $("<input>");
 	$("body").append($temp);
@@ -974,7 +948,7 @@ $('#viewChangelog').click(() => {
 	showChangeLog();
 });
 
-// remove Custom Chrome from user's existing groups to prevent them from unintentionally turning off the extension
+// remove Custom Chrome from user's existing groups to prevent them from unintentionally turning it off
 function removeCC() {
 	Object.keys(user.groups).forEach(function (key) {
 		user.groups[key] = arrayRemove(user.groups[key], 'balnpimdnhfiodmodckhkgneejophhhm');

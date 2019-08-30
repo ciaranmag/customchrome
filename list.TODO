@@ -22,8 +22,9 @@
 // groups (on edge of window) tooltips showing offscreen
 
 // groupLabels should update when you use an extension switch
- 
- 
+
+// show a helpful message telling the user the allowed characters in a group name 
+
  
  ToDo For Next Release:
    ☐ [BUG] Editing an existing group's name creates a new group with new name and leaves old group there instead of replacing it
