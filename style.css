@@ -350,11 +350,19 @@ span.lever::after {
 	padding:0 0 0 22px !important;
 }
 
-.ext-switch label input[type=checkbox]:checked+.lever:after {
+.switch label input[type=checkbox]:checked+.lever:after {
 	background-color: #81c784;
 }
 
-.ext-switch label input[type=checkbox]:checked+.lever {
+.switch label input[type=checkbox]:checked+.lever {
+	background-color: #81c784;
+}
+
+.js-switch label input[type=checkbox]:checked+.lever:after {
+	background-color: #81c784;
+}
+
+.js-switch label input[type=checkbox]:checked+.lever {
 	background-color: #81c784;
 }
 
@@ -549,6 +557,7 @@ span.badge.new {
 }
 .material-tooltip {
 	white-space: pre;
+	border-radius: 15px;
 }
 .material-tooltip span {
 }
