@@ -878,6 +878,17 @@ $('#include-apps-switch').change(function (e) {
 	// ga('send', 'event', "options", `include-apps-toggled-to-${user.includeApps}`);
 });
 
+$("body").on("click", ".copy-clipboard", function (e) {
+	e.preventDefault();
+	value = $(this).data('clipboard'); //Upto this I am getting value
+
+	var $temp = $("<input>");
+	$("body").append($temp);
+	$temp.val(value).select();
+	document.execCommand("copy");
+	$temp.remove();
+});
+
 }); // End DOM ready
 /****** END LISTENERS ******/
 

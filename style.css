@@ -564,3 +564,19 @@ span.badge.new {
 .material-tooltip .backdrop {
 	border-radius: 0;
 }
+.share-section {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: center;
+	background: #eee;
+	justify-content: space-evenly;
+}
+.share-title {
+	width: 100%;
+	text-align: center;
+}
+.share-with-icons {}
+.share-icon {
+	width: 30px;
+	height: 30px;
+}
