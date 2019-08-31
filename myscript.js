@@ -66,9 +66,22 @@ chrome.management.getAll(function(info) {
 
 		// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
 		entry.enabled ? $('#activeExtensions').append(template(entry)) : $('#inactiveExtensions').append(template(entry));
-	
+
 	} // close extArray loop
-	
+
+	// listeners for options links
+	$(".options-link").click(function (e) {
+		e.preventDefault();
+		optUrl = $(this).attr('data-link');
+		console.log(optUrl);
+		chrome.tabs.create({
+			// url: chrome.extension.getURL(settings.manifest.options_page),
+			// get the link
+			url: optUrl,
+			selected: !0
+		});
+	});
+
 	// hide on/off switch for Custom Chrome extension
 	$('#balnpimdnhfiodmodckhkgneejophhhm label').hide();
 
@@ -513,7 +526,7 @@ function template(entry) {
 			</div>
 	    <div class="row buttons" data-extId="${entry.id}">
         ${entry.homepageUrl ? `<div class="link"><a href="${entry.homepageUrl}" target="_blank"><i class="material-icons">home</i>Homepage</a></div>` : ''}
-				<!--${entry.optionsUrl ? `<div class="link"><a href="${entry.optionsUrl}"><i class="material-icons">settings</i>Options</a></div>` : ''}-->
+				${entry.optionsUrl ? `<div class="link options-link" data-link="${entry.optionsUrl}"><a href=""><i class="material-icons">settings</i>Options</a></div>` : ''}
         <div class="link"><a href="#!" class="uninstallExt"><i class="material-icons">delete</i>Uninstall</a></div>
 	    </div>
 	</div>
