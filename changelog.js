@@ -1,4 +1,6 @@
 let changelog = {
+	"Version 1.41":
+		["Added an options link for each extension that has an options page"],
 	"Version 1.4":
 		["Fixed a lot of design/layout issues",
 		"Fixed some long standing bugs including inactive extensions not being activated after creating a new group with them in it - thanks for the reports",
