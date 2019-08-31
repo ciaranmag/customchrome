@@ -5,11 +5,11 @@
 
 // update blurb with example use cases
 
-
+// we could store the extension info in an onject as we would like it structured to reduce the amount of times we loop through it and maybe store extension icons to be more easily accessible?
 
 // delete unused materialize files
 
-// fix extension link to it's options page
+// create/edit groups on popup.html, no modals
 
 // dark mode
 
@@ -27,21 +27,10 @@
 
  
  ToDo For Next Release:
-   ☐ [BUG] Editing an existing group's name creates a new group with new name and leaves old group there instead of replacing it
    ☐ user.seen_changelog isn't used anymore, we use local storage, maybe we should go back though because it syncs with the cloud and local doesn't
 
- Housekeeping:
-   ☐ Update blurb - add example use cases (Github repo, Custom Chrome Github website, Chrome Web Store)
-   ☐ Update screenshots (same places as blurb)
-   ✔ Reply to Chrome Web Store reviews/feedback @done (18-04-29 19:37)
-   ☐ Post on Reddit
-   ☐ 
-
 Future Features:
-   ☐ display profile tooltips vertically (have tried <br> "\n" "&lt;br /&gt;" "&#013;")
-   ☐ change search icon colour on when focusing on search input
    ☐ import/export (as json) button on groups
-   ☐ add numbered badge to Groups
    ☐ if an extension is in the inactive list because it needs increased permissions then visually show that to the user next to the extension (chrome.management ExtensionDisabledReason "permissions_increase")
    ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
    ☐ advanced option to see memory usage of each extension (next to switch)
