@@ -24,14 +24,18 @@ chrome.management.getAll(function(info) {
 		let entry = info[i];
 		// Make an array of all the extension and app ids
 		justIds.push(entry.id);
+		// console.log(info[i]);
 		switch(entry.type) {
 			case "extension":
 				extArray.push(entry);
 				break;
 			case "hosted_app":
+			case "packaged_app":
 				extArray.push(entry);
 				entry.isApp = '<span class="new badge"></span>';
 				break;
+			// default:
+			// 	console.log(entry.type);
 		}
 	}
 
@@ -71,14 +75,8 @@ chrome.management.getAll(function(info) {
 
 	// listeners for options links
 	$(".options-link").click(function (e) {
-		e.preventDefault();
-		optUrl = $(this).attr('data-link');
-		console.log(optUrl);
 		chrome.tabs.create({
-			// url: chrome.extension.getURL(settings.manifest.options_page),
-			// get the link
-			url: optUrl,
-			selected: !0
+			url: $(this).attr('data-link')
 		});
 	});
 

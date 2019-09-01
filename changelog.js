@@ -1,4 +1,6 @@
 let changelog = {
+	"Version 1.42":
+		["Fixed an issue with Custom Chrome not showing all apps"],
 	"Version 1.41":
 		["Added an options link for each extension that has an options page"],
 	"Version 1.4":
