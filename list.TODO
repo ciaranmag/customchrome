@@ -1,13 +1,23 @@
-
-// turn analytics back on?
+QUICK
+// send GA every time a user has an extension/app we aren't showing
 
 // update screenshots in readme and on Chrome Web Store
-
 // update blurb with example use cases
 
-// we could store the extension info in an onject as we would like it structured to reduce the amount of times we loop through it and maybe store extension icons to be more easily accessible?
-
 // delete unused materialize files
+
+// Web Store button focus
+
+
+// show a helpful message telling the user the allowed characters in a group name 
+
+// if an extension is in the inactive list because it needs increased permissions then visually show that to the user next to the extension (chrome.management ExtensionDisabledReason "permissions_increase")
+
+// do not show an on/off switch if the app can't be disabled/uninstalled by the user (chrome.management ExtensionInfo "mayDisable")
+
+
+BIG
+// we could store the extension info in an onject as we would like it structured to reduce the amount of times we loop through it and maybe store extension icons to be more easily accessible?
 
 // create/edit groups on popup.html, no modals
 
@@ -15,27 +25,26 @@
 
 // donate button
 
-// Web Store button focus
+// import/export (as json) button on groups
 
-// edit ext list for edit and new groups should only show apps if show apps is on
 
+OTHER
 // groups (on edge of window) tooltips showing offscreen
 
 // groupLabels should update when you use an extension switch
 
-// show a helpful message telling the user the allowed characters in a group name 
 
- 
- ToDo For Next Release:
-   ☐ user.seen_changelog isn't used anymore, we use local storage, maybe we should go back though because it syncs with the cloud and local doesn't
+UNDECIDED
+// user.seen_changelog isn't used anymore, we use local storage, maybe we should go back though because it syncs with the cloud and local doesn't
 
-Future Features:
-   ☐ import/export (as json) button on groups
-   ☐ if an extension is in the inactive list because it needs increased permissions then visually show that to the user next to the extension (chrome.management ExtensionDisabledReason "permissions_increase")
-   ☐ IFTTT - IF I'm on Reddit THEN turn on RES automatically
-   ☐ advanced option to see memory usage of each extension (next to switch)
-   ☐ have an option to make sure certain extensions are off when using a profile e.g. turn off ad blockers and social blockers when using "Web Dev" profile but record their state before the change and re-instate it after profile is turned off
-   ☐ extension alerts when an extension has been sold, has malware, has vulnerabilities etc. (chrome.management ExtensionInfo "version")
-   ☐ do not show an on/off switch if the app can't be disabled/uninstalled by the user (chrome.management ExtensionInfo "mayDisable")
-   ☐ 
-   ☐ 
+// edit ext list for edit and new groups should only show apps if show apps is on ??
+
+// IFTTT - IF I'm on Reddit THEN turn on RES automatically
+
+// advanced option to see memory usage of each extension (next to switch)
+
+// have an option to make sure certain extensions are off when using a profile e.g. turn off ad blockers and social blockers when using "Web Dev" profile but record their state before the change and re-instate it after profile is turned off
+
+// extension alerts when an extension has been sold, has malware, has vulnerabilities etc. (chrome.management ExtensionInfo "version")
+
+

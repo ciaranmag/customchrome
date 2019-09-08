@@ -35,7 +35,49 @@
 	  </span></a></li>
 	  <li><a href="#!" id="viewChangelog">View Changelog</a></li>
 	  <li><a href="https://chrome.google.com/webstore/detail/custom-chrome-extension-m/balnpimdnhfiodmodckhkgneejophhhm/reviews" target="_blank" id="ratingLink">Rate Custom Chrome</a></li>
-	  <li><a href="https://chrome.google.com/webstore/detail/custom-chrome-extension-m/balnpimdnhfiodmodckhkgneejophhhm/support" target="_blank" id="feedbackLink">Leave Us Feedback</a></li>
+		<li><a href="https://chrome.google.com/webstore/detail/custom-chrome-extension-m/balnpimdnhfiodmodckhkgneejophhhm/support" target="_blank" id="feedbackLink">Leave Us Feedback</a></li>
+		<li>
+
+			<!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
+			<button style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+				id="checkout-button-sku_FlYXWRzTMdyvpE" role="link">
+				Checkout
+			</button>
+
+			<div id="error-message"></div>
+
+			<script>
+				var stripe = Stripe('pk_live_2Z7zv99tKPasf0UjVsKGPxvO');
+
+				var checkoutButton = document.getElementById('checkout-button-sku_FlYXWRzTMdyvpE');
+				checkoutButton.addEventListener('click', function () {
+					// When the customer clicks on the button, redirect
+					// them to Checkout.
+					stripe.redirectToCheckout({
+							items: [{
+								sku: 'sku_FlYXWRzTMdyvpE',
+								quantity: 1
+							}],
+
+							// Do not rely on the redirect to the successUrl for fulfilling
+							// purchases, customers may not always reach the success_url after
+							// a successful payment.
+							// Instead use one of the strategies described in
+							// https://stripe.com/docs/payments/checkout/fulfillment
+							successUrl: 'https://ciaranmag.com/success',
+							cancelUrl: 'https://ciaranmag.com/canceled',
+						})
+						.then(function (result) {
+							if (result.error) {
+								// If `redirectToCheckout` fails due to a browser or network
+								// error, display the localized error message to your customer.
+								var displayError = document.getElementById('error-message');
+								displayError.textContent = result.error.message;
+							}
+						});
+				});
+			</script>
+		</li>
 	  <li class="share-section">
 			<span class="share-title">Share Custom Chrome</span>
 			<div class="share-with-icons">
@@ -223,5 +265,7 @@
 <script src="changelog.js"></script>
 <script src="myscript.js"></script>
 <script src="/resources/ga.js"></script>
+			<!-- Load Stripe.js on your website. -->
+			<script src="https://js.stripe.com/v3"></script>
 </body>
 </html>
