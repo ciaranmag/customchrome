@@ -7,6 +7,8 @@ idList = [],
 user = {},
 justIds = [],
 currentJob,
+addActive = '',
+addInactive = '',
 groupName;
 
 const customChromeId = 'balnpimdnhfiodmodckhkgneejophhhm';
@@ -15,7 +17,7 @@ const customChromeId = 'balnpimdnhfiodmodckhkgneejophhhm';
 
 $('#compactStylesheet')[0].disabled = true;
 // $('#darkMode')[0].disabled = true;
-$('.modal-trigger').leanModal();
+
 
 chrome.management.getAll(function(info) {
 	// info is a list of all user installed apps i.e. extensions, apps, and themes
@@ -34,8 +36,9 @@ chrome.management.getAll(function(info) {
 				extArray.push(entry);
 				entry.isApp = '<span class="new badge"></span>';
 				break;
-			// default:
-			// 	console.log(entry.type);
+			default:
+				// ga('send', 'event', "extTypeNotShowing", entry.type);
+				// console.log(entry.type);
 		}
 	}
 
@@ -66,12 +69,15 @@ chrome.management.getAll(function(info) {
 		entry.stringEnabled = entry.enabled ? "checked" : '';
 		
 		// Check if extension type is development
-		entry.installType === "development" ? entry.development = true : false;
+		entry.development = entry.installType === "development" ? true : false;
 
-		// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off) and output them into the appropriate HTML div
-		entry.enabled ? $('#activeExtensions').append(template(entry)) : $('#inactiveExtensions').append(template(entry));
+		// divide the extensions into two separate lists of active (enabled = true) and inactive (enabled = off)
+		entry.enabled ? addActive += template(entry): addInactive += template(entry);
 
 	} // close extArray loop
+	// output them into the appropriate HTML div
+	document.getElementById('activeExtensions').innerHTML += addActive;
+	document.getElementById('inactiveExtensions').innerHTML += addInactive;
 
 	// listeners for options links
 	$(".options-link").click(function (e) {
@@ -109,6 +115,7 @@ chrome.management.getAll(function(info) {
 
 }); // close chrome.management.getAll
 
+$('.modal-trigger').leanModal();
 $('#searchbox').focus();
 
 // Add active and inactive extension count next to card title
@@ -130,7 +137,7 @@ function handleGroupsClasses(){
 		// if they are all on, add class "on" to element, otherwise leave it grey
 		let tempArray = [];
 
-		for (let i = user.groups[group].length-1; i >= 0; i--) {
+		for (let i = 0; i<user.groups[group].length; i++) {
 
 			let id = user.groups[group][i];
 			
@@ -491,6 +498,7 @@ $("#editExtSubmit").submit(function(e){
 /****** TEMPLATE FUNCTIONS ******/
 
 function template(entry) {
+	console.log(entry);
 	return `
 	<div class="extBlock${entry.isApp ? ' app' : ''}">
 	<div class="lefty">
@@ -498,9 +506,9 @@ function template(entry) {
 	 		<img src="${entry.pic}">
 	 	</div>
 	 	<div class="nameDesc">
-		 	<span class="extName">${entry.name}</span>
+			<span class="extName">${entry.name}</span>
+			${entry.disabledReason === "permissions_increase" ? '<span style="color:red">(needs more permissions)</span>' : ''}
       ${entry.development ? '<span class="development-badge tooltipped" data-tooltip="Development">D</span>' : ''}
-      <!--${entry.sideload ? '<span class="development-badge tooltipped" data-tooltip="Sideload">S</span>' : ''}-->
     	${entry.isApp ? '<span class="new badge"></span>' : ''}
       <br>
 		 	${!user.compactStyles ? `<span class="extDescription">${entry.description}</span>`: ''}

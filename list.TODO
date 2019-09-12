@@ -1,5 +1,4 @@
 QUICK
-// send GA every time a user has an extension/app we aren't showing
 
 // update screenshots in readme and on Chrome Web Store
 // update blurb with example use cases
@@ -8,12 +7,10 @@ QUICK
 
 // Web Store button focus
 
+// in extlist add labels for app and dev
 
 // show a helpful message telling the user the allowed characters in a group name 
 
-// if an extension is in the inactive list because it needs increased permissions then visually show that to the user next to the extension (chrome.management ExtensionDisabledReason "permissions_increase")
-
-// do not show an on/off switch if the app can't be disabled/uninstalled by the user (chrome.management ExtensionInfo "mayDisable")
 
 
 BIG
@@ -36,6 +33,8 @@ OTHER
 
 UNDECIDED
 // user.seen_changelog isn't used anymore, we use local storage, maybe we should go back though because it syncs with the cloud and local doesn't
+
+// do not show an on/off switch if the app can't be disabled/uninstalled by the user (chrome.management ExtensionInfo "mayDisable")
 
 // edit ext list for edit and new groups should only show apps if show apps is on ??
 
