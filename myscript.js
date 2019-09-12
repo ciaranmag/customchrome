@@ -498,7 +498,6 @@ $("#editExtSubmit").submit(function(e){
 /****** TEMPLATE FUNCTIONS ******/
 
 function template(entry) {
-	console.log(entry);
 	return `
 	<div class="extBlock${entry.isApp ? ' app' : ''}">
 	<div class="lefty">
@@ -551,6 +550,8 @@ function extListTemplate(ext) {
 		</div>
 		<div class='extList-name'>
 			<span>${ext.name}</span>
+			${ext.development ? '<span class="development-badge tooltipped" data-tooltip="Development">D</span>' : ''}
+    	${ext.isApp ? '<span class="new badge"></span>' : ''}
 		</div>
 	</div>`;
 }

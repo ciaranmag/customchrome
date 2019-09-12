@@ -1,4 +1,7 @@
 let changelog = {
+	"Version 1.43":
+		["Added 'app' and 'development' tags to extensions in the edit and create group lists",
+		"Added 'needs more permissions' to extensions that are looking for more permissions before being activated"],
 	"Version 1.42":
 		["Fixed an issue with Custom Chrome not showing all apps"],
 	"Version 1.41":
