@@ -209,7 +209,7 @@ function checkboxListener() {
 }
 
 // add extensions to new group modal
-function addExtensions(name) { 
+function addExtensions(name) {
 	$('#addExts').openModal({
 		dismissible: true,
 		ready: function() {
@@ -720,6 +720,7 @@ $("body").on("click", ".group-btn", function () {
 
 // listen for addGroup button press, add a button to HTML, prompt for group name, set that name as button text, add that group to the storage.sync object
 $('.addGroup').click(function () {
+	idList = [];
 	currentJob = 'creating';
 	$('#groupPrompt').openModal({
 		ready: function () {
@@ -732,6 +733,7 @@ $('.addGroup').click(function () {
 });
 
 $("body").on("click", ".editBtn", function () {
+	idList = [];
 	currentJob = 'editing';
 	$('#editGroups').openModal({});
 

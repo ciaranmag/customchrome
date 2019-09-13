@@ -9,8 +9,6 @@ QUICK
 
 // show a helpful message telling the user the allowed characters in a group name 
 
-
-
 BIG
 // we could store the extension info in an onject as we would like it structured to reduce the amount of times we loop through it and maybe store extension icons to be more easily accessible?
 
