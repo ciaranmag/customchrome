@@ -1,5 +1,7 @@
 let changelog = {
-	"Version 1.43":
+	"Version 1.45":
+		["Last year we disabled Google Analytics, now we've fully removed all the code"],
+	"Version 1.44":
 		["Added 'app' and 'development' tags to extensions in the edit and create group lists",
 		"Added 'needs more permissions' to extensions that are looking for more permissions before being activated"],
 	"Version 1.42":

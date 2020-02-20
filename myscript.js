@@ -19,6 +19,8 @@ $('#compactStylesheet')[0].disabled = true;
 // $('#darkMode')[0].disabled = true;
 
 
+console.time('full');
+console.time('test');
 chrome.management.getAll(function(info) {
 	// info is a list of all user installed apps i.e. extensions, apps, and themes
 	// push extensions to extArray
@@ -37,7 +39,6 @@ chrome.management.getAll(function(info) {
 				entry.isApp = '<span class="new badge"></span>';
 				break;
 			default:
-				// ga('send', 'event', "extTypeNotShowing", entry.type);
 				// console.log(entry.type);
 		}
 	}
@@ -87,7 +88,7 @@ chrome.management.getAll(function(info) {
 	});
 
 	// hide on/off switch for Custom Chrome extension
-	$('#balnpimdnhfiodmodckhkgneejophhhm label').hide();
+	$(`#${customChromeId} label`).hide();
 
 	// turn on/off extensions when toggle is switched
 	$('.state-switch').change(function () {
@@ -114,7 +115,7 @@ chrome.management.getAll(function(info) {
 	});
 
 }); // close chrome.management.getAll
-
+console.timeEnd('test');
 $('.modal-trigger').leanModal();
 $('#searchbox').focus();
 
@@ -131,7 +132,7 @@ function getExtensionCount() {
 
 function handleGroupsClasses(){
 	// setting the group buttons to on/off appearance
-	
+	console.time('here');
 	for (let group in user.groups) {
 		// for each group, get all extension id's in that group
 		// if they are all on, add class "on" to element, otherwise leave it grey
@@ -142,7 +143,7 @@ function handleGroupsClasses(){
 			let id = user.groups[group][i];
 			
 			for (let x = 0; x < extArray.length; x++) {
-				if (extArray[x].id === id) { tempArray.push(extArray[x]); }
+				if (extArray[x].id === id) { tempArray.push(extArray[x]); break; }
 			}
 		}
 		// tempArray now contains extension objects for this group
@@ -161,6 +162,7 @@ function handleGroupsClasses(){
 			$(`#${group}`).removeClass("on").addClass("off");
 		}
 	}
+	console.timeEnd('here');
 
 	$('.group-holder').show();
 	chrome.storage.sync.set(user);
@@ -227,7 +229,7 @@ function addExtensions(name) {
 	// loop over extArray to populate the list
 	for (let i = 0; i < extArray.length; i++) {
 		// don't include custom chrome
-		if (extArray[i].id === 'balnpimdnhfiodmodckhkgneejophhhm') {
+		if (extArray[i].id === `${customChromeId}`) {
 			continue;
 		}
 		let ext = extArray[i];
@@ -267,9 +269,6 @@ function submitThatShit() {
 	user.groups[name] = idList;
 
 	chrome.storage.sync.set(user, function () {});
-
-	// Track event in Google
-	ga('send', 'event', "groups", "group-added");
 
 	setTimeout(function () {
 		// adding false lets the page reload from the cache
@@ -485,14 +484,7 @@ $("#editExtSubmit").submit(function(e){
 			});
 		}
 	}
-
-	// Track event in Google
-	ga('send', 'event', "groups", "group-edited");
-
 });
-
-// GOOGLE ANALYTICS
-// ga('send', 'event', [eventCategory], [eventAction])
 
 
 /****** TEMPLATE FUNCTIONS ******/
@@ -606,7 +598,7 @@ $("#searchbox").keyup(function () {
 	let toFilter = user.includeApps ? $(".extBlock") : $(".extBlock:not(.app)");
 
 	toFilter.each(function (i, el) {
-		$(el).find('.extName').text().search(new RegExp(searchTerm, "i")) < 0 ? $(el).fadeOut() : $(el).fadeIn();
+		return $(el).find('.extName').text().search(new RegExp(searchTerm, "i")) < 0 ? $(el).fadeOut() : $(el).fadeIn();
 	});
 
 	// if the search returns no results then show the no results card
@@ -712,10 +704,6 @@ $("body").on("click", ".group-btn", function () {
 			location.reload(false);
 		}, 1000);
 	}
-
-	// track that the user has toggled a group
-	ga('send', 'event', "groups", "group-toggled");
-
 });
 
 // listen for addGroup button press, add a button to HTML, prompt for group name, set that name as button text, add that group to the storage.sync object
@@ -789,7 +777,7 @@ $("body").on("click", ".edit", function () {
 	$('#editExtList').html('');
 	//populate list with all extensions:
 	for (let i = 0; i < extArray.length; i++) {
-		if (extArray[i].id === 'balnpimdnhfiodmodckhkgneejophhhm') {
+		if (extArray[i].id === `${customChromeId}`) {
 			continue;
 		}
 		let ext = extArray[i];
@@ -882,10 +870,6 @@ $('.compact-styles-switch').change(function () {
 	// save current state to storage
 	user.compactStyles = !sheet.disabled;
 	chrome.storage.sync.set(user);
-
-	// Track event in Google
-	ga('send', 'event', "options", `compact-styles-toggled-to-${user.compactStyles}`);
-
 });
 
 // turn on/off show apps
@@ -906,9 +890,6 @@ $('#include-apps-switch').change(function (e) {
 	getExtensionCount();
 	user.includeApps = e.target.checked;
 	chrome.storage.sync.set(user);
-
-	// Track event in Google
-	ga('send', 'event', "options", `include-apps-toggled-to-${user.includeApps}`);
 });
 
 $("body").on("click", ".copy-clipboard", function (e) {
@@ -976,8 +957,9 @@ $('#viewChangelog').click(() => {
 // remove Custom Chrome from user's existing groups to prevent them from unintentionally turning it off
 function removeCC() {
 	Object.keys(user.groups).forEach(function (key) {
-		user.groups[key] = arrayRemove(user.groups[key], 'balnpimdnhfiodmodckhkgneejophhhm');
-		user.groups[key] == '' ? delete user.groups[key] : 0;
+		user.groups[key] = arrayRemove(user.groups[key], `${customChromeId}`);
+		// user.groups[key] == '' ? delete user.groups[key] : 0;
+		if (user.groups[key] == '') {delete user.groups[key];}
 		chrome.storage.sync.set(user);
 	});
 }
@@ -990,3 +972,4 @@ function arrayRemove(arr, value) {
 }
 
 /****** END VERSION MANAGEMENT ******/
+console.timeEnd("full");

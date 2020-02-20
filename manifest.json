@@ -7,9 +7,9 @@
 
   "description": "A beautiful Google Chrome extension manager to turn on/off other extensions quickly and easily without leaving your current tab",
 
-  "version": "1.43",
+  "version": "1.45",
 
-  "content_security_policy": "script-src https://js.stripe.com/v3  https://www.google-analytics.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.google-analytics.com; object-src 'self'",
 
   "permissions": [
     "storage",
