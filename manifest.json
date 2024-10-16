@@ -1,8 +1,6 @@
 {
-  "manifest_version": 3,
-
+	"manifest_version": 3,
 	"name": "Custom Chrome - Extension Manager",
-	
 	"author": "Ciaran & Chris",
 
   "description": "A beautiful Google Chrome extension manager to turn on/off other extensions quickly and easily without leaving your current tab",
@@ -11,7 +9,7 @@
 
   "content_security_policy": {
     "extension_pages": "script-src 'self' 'unsafe-eval' https://www.google-analytics.com; object-src 'self'"
-  }
+  },
 	
   "permissions": [
     "storage",
