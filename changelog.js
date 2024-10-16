@@ -1,4 +1,6 @@
 let changelog = {
+	"Version 1.46":
+		["Updated to manifest v3"],
 	"Version 1.45":
 		["Last year we disabled Google Analytics, now we've fully removed all the code"],
 	"Version 1.44":
