@@ -10,9 +10,8 @@
   "version": "1.45",
 
   "content_security_policy": {
-    "extension_pages": "script-src 'self' 'unsafe-eval' https://www.google-analytics.com; object-src 'self'",
+    "extension_pages": "script-src 'self' 'unsafe-eval' https://www.google-analytics.com; object-src 'self'"
   }
-
 	
   "permissions": [
     "storage",
