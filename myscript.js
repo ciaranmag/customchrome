@@ -930,7 +930,7 @@ function fixStorage(groups) {
 	getUserData();
 }
 
-let currentVersion = chrome.app.getDetails().version;
+let currentVersion = chrome.runtime.getManifest().version;
 // Check if the version has changed
 if (currentVersion != localStorage.version) {
   localStorage.version = currentVersion;
