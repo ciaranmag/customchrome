@@ -5,7 +5,7 @@
 	
 	"description": "A beautiful Google Chrome extension manager to turn on/off other extensions quickly and easily without leaving your current tab",
 	
-	"version": "1.45",
+	"version": "1.46",
 	"permissions": [
 		"storage",
 		"management"
