@@ -335,14 +335,18 @@ function getUserData() {
 			for (let i = 0; i < allGroups.length; i++) {
 				let name = allGroups[i];
 
+				// Create a new array for valid IDs for this group
+				let validGroupIds = [];
 				for (let x = 0; x < user.groups[name].length; x++) {
-					// check if each extension is still installed by the user
-					let id = user.groups[name][0];
-					if (justIds.indexOf(id) == -1) {
-						user.groups[name].splice(user.groups[name].indexOf(id), 1);
-						continue;
+					let id = user.groups[name][x]; // <--- Corrected: Iterate through 'x'
+					if (justIds.includes(id)) {
+						// Use .includes() for better readability
+						validGroupIds.push(id);
 					}
+					// If not found, it's simply not added to validGroupIds, effectively removing it.
 				}
+				user.groups[name] = validGroupIds; // Update the group with only valid IDs
+				// No need for 'continue' here as we're rebuilding the array
 
 				let extCount = user.groups[name].length;
 
