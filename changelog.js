@@ -1,4 +1,6 @@
 let changelog = {
+	"Version 1.47":
+		["Fixed group breaking bug, thank you Jupiter-Liar [Github]"],
 	"Version 1.46":
 		["Updated to manifest v3"],
 	"Version 1.45":
