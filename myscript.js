@@ -337,7 +337,7 @@ function getUserData() {
 
 				for (let x = 0; x < user.groups[name].length; x++) {
 					// check if each extension is still installed by the user
-					let id = user.groups[name][0];
+					let id = user.groups[name][x];
 					if (justIds.indexOf(id) == -1) {
 						user.groups[name].splice(user.groups[name].indexOf(id), 1);
 						continue;
