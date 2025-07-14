@@ -57,7 +57,7 @@ chrome.management.getAll(function(info) {
 	
 		// extension icons are stored in entry.icons, but not all extensions have icons
 		if (entry.icons === undefined) {
-			entry.pic = 'images/icon-128.png';  // if there aren't any icons, use our default icon
+			entry.pic = 'images/icon-128.png'; // if there aren't any icons, use our default icon
 		}
 		else if (entry.icons.length > 2) {
 			entry.pic = entry.icons[entry.icons.length-2].url;
@@ -495,33 +495,33 @@ function template(entry) {
 	 	<div class="nameDesc">
 			<span class="extName">${entry.name}</span>
 			${entry.disabledReason === "permissions_increase" ? '<span style="color:red">(needs more permissions)</span>' : ''}
-      ${entry.development ? '<span class="development-badge tooltipped" data-tooltip="Development">D</span>' : ''}
-    	${entry.isApp ? '<span class="new badge"></span>' : ''}
-      <br>
+			${entry.development ? '<span class="development-badge tooltipped" data-tooltip="Development">D</span>' : ''}
+			${entry.isApp ? '<span class="new badge"></span>' : ''}
+			<br>
 		 	${!user.compactStyles ? `<span class="extDescription">${entry.description}</span>`: ''}
 		</div>
 	</div>
 
 	<div class="righty">
-    <div class="switch ext-switch" id="${entry.id}" name="${entry.name}">
-	    <label>
-	      <input type="checkbox" ${entry.stringEnabled} class="js-switch state-switch" tabindex="1">
-	      <span class="lever"></span>
-	    </label>
-	    <a class='btn-flat show-ext-links togdrop' href='#'><i class="material-icons">arrow_drop_down</i></a>
-	    <a class='btn-flat hide-ext-links' href='#'><i class="material-icons">arrow_drop_up</i></a>
-	  </div>
+		<div class="switch ext-switch" id="${entry.id}" name="${entry.name}">
+			<label>
+				<input type="checkbox" ${entry.stringEnabled} class="js-switch state-switch" tabindex="1">
+				<span class="lever"></span>
+			</label>
+			<a class='btn-flat show-ext-links togdrop' href='#'><i class="material-icons">arrow_drop_down</i></a>
+			<a class='btn-flat hide-ext-links' href='#'><i class="material-icons">arrow_drop_up</i></a>
+		</div>
 	</div>
 
 	<div class="container ext-links">
 			<div class="row description">
 				<span>${entry.description}</span>
 			</div>
-	    <div class="row buttons" data-extId="${entry.id}">
-        ${entry.homepageUrl ? `<div class="link"><a href="${entry.homepageUrl}" target="_blank"><i class="material-icons">home</i>Homepage</a></div>` : ''}
+			<div class="row buttons" data-extId="${entry.id}">
+				${entry.homepageUrl ? `<div class="link"><a href="${entry.homepageUrl}" target="_blank"><i class="material-icons">home</i>Homepage</a></div>` : ''}
 				${entry.optionsUrl ? `<div class="link options-link" data-link="${entry.optionsUrl}"><a href=""><i class="material-icons">settings</i>Options</a></div>` : ''}
-        <div class="link"><a href="#!" class="uninstallExt"><i class="material-icons">delete</i>Uninstall</a></div>
-	    </div>
+				<div class="link"><a href="#!" class="uninstallExt"><i class="material-icons">delete</i>Uninstall</a></div>
+			</div>
 	</div>
 </div>`;
 }
@@ -530,7 +530,7 @@ function extListTemplate(ext) {
 	return `
 	<div class='extList-holder'>
 		<div class='extList-toggle'>
-			<input type="checkbox"  id="${ext.name}" appid=${ext.id}>
+			<input type="checkbox"	id="${ext.name}" appid=${ext.id}>
 			<label for="${ext.name}"></label>
 		</div>
 		<div class='extList-img'>
@@ -539,7 +539,7 @@ function extListTemplate(ext) {
 		<div class='extList-name'>
 			<span>${ext.name}</span>
 			${ext.development ? '<span class="development-badge tooltipped" data-tooltip="Development">D</span>' : ''}
-    	${ext.isApp ? '<span class="new badge"></span>' : ''}
+			${ext.isApp ? '<span class="new badge"></span>' : ''}
 		</div>
 	</div>`;
 }
@@ -906,7 +906,7 @@ $("body").on("click", ".copy-clipboard", function (e) {
 let currentVersion = chrome.runtime.getManifest().version;
 // Check if the version has changed
 if (currentVersion != localStorage.version) {
-  localStorage.version = currentVersion;
+	localStorage.version = currentVersion;
 	showChangeLog();
 }
 
@@ -931,10 +931,11 @@ $('#viewChangelog').click(() => {
 function removeCC() {
 	Object.keys(user.groups).forEach(function (key) {
 		user.groups[key] = arrayRemove(user.groups[key], `${customChromeId}`);
-		// user.groups[key] == '' ? delete user.groups[key] : 0;
-		if (user.groups[key] == '') {delete user.groups[key];}
-		chrome.storage.sync.set(user);
+		if (Array.isArray(user.groups[key]) && user.groups[key].length === 0) {
+			delete user.groups[key];
+		}
 	});
+	chrome.storage.sync.set(user);
 }
 
 // remove an item from an array (used for removing custom chrome from users' groups)
@@ -944,5 +945,4 @@ function arrayRemove(arr, value) {
 	});
 }
 
-/****** END VERSION MANAGEMENT ******/
 // console.timeEnd("full");
