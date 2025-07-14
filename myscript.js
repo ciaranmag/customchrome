@@ -502,35 +502,50 @@ $('#refresh-icon').on('click', function (e) {
 	location.reload(false);
 });
 
+// Debounce utility
+function debounce(func, wait) {
+	let timeout;
+	return function(...args) {
+		const later = () => {
+			timeout = null;
+			func.apply(this, args);
+		};
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+	};
+}
+
 // Search
-$("#searchbox").keyup(function () {
-	// Retrieve the input field text
-	let searchTerm = $(this).val();
-	// Loop through the extensions, toFilter array will hold all elements to search through
-	// fill this depending on whether apps are on or off
-	let toFilter = user.includeApps ? $(".extBlock") : $(".extBlock:not(.app)");
+$("#searchbox").keyup(
+	debounce(function () {
+		// Retrieve the input field text
+		let searchTerm = $(this).val();
+		// Loop through the extensions, toFilter array will hold all elements to search through
+		// fill this depending on whether apps are on or off
+		let toFilter = user.includeApps ? $(".extBlock") : $(".extBlock:not(.app)");
 
-	toFilter.each(function (i, el) {
-		return $(el).find('.extName').text().search(new RegExp(searchTerm, "i")) < 0 ? $(el).fadeOut() : $(el).fadeIn();
-	});
+		toFilter.each(function (i, el) {
+			return $(el).find('.extName').text().search(new RegExp(searchTerm, "i")) < 0 ? $(el).fadeOut() : $(el).fadeIn();
+		});
 
-	// if the search returns no results then show the no results card
-	setTimeout(function () {
-		if ($(".extName:visible").length === 0) {
-			$("#noResults").fadeIn();
-			$('#activeExtensions, #inactiveExtensions').parent().css('visibility', 'hidden');
-			$('.allExtensionsContainer').css({'visibility': 'hidden','height': '0px'});
-			// fill in text
-			$('#noResults .filterLink .search-failed-text').text(searchTerm);
-			// update url
-			$('#noResults a.filterLink').attr("href", `https://chrome.google.com/webstore/search/${encodeURIComponent(searchTerm)}`);
-		} else {
-			$("#noResults").hide();
-			$('.allExtensionsContainer').css({'visibility': 'visible','height': 'auto'});
-			$('#activeExtensions, #inactiveExtensions').parent().css('visibility', 'visible');
-		}
-	}, 500);
-});
+		// if the search returns no results then show the no results card
+		setTimeout(function () {
+			if ($(".extName:visible").length === 0) {
+				$("#noResults").fadeIn();
+				$('#activeExtensions, #inactiveExtensions').parent().css('visibility', 'hidden');
+				$('.allExtensionsContainer').css({'visibility': 'hidden','height': '0px'});
+				// fill in text
+				$('#noResults .filterLink .search-failed-text').text(searchTerm);
+				// update url
+				$('#noResults a.filterLink').attr("href", `https://chrome.google.com/webstore/search/${encodeURIComponent(searchTerm)}`);
+			} else {
+				$("#noResults").hide();
+				$('.allExtensionsContainer').css({'visibility': 'visible','height': 'auto'});
+				$('#activeExtensions, #inactiveExtensions').parent().css('visibility', 'visible');
+			}
+		}, 500);
+	}, 300)
+);
 
 // after clicking a group's on/off button, we toggle its appearance (on or off) and cycle through associated extensions turning them all on or off
 $("body").on("click", ".group-btn", function () {
