@@ -19,8 +19,8 @@ $('#compactStylesheet')[0].disabled = true;
 // $('#darkMode')[0].disabled = true;
 
 
-console.time('full');
-console.time('test');
+// console.time('full');
+// console.time('test');
 chrome.management.getAll(function(info) {
 	// info is a list of all user installed apps i.e. extensions, apps, and themes
 	// push extensions to extArray
@@ -115,7 +115,7 @@ chrome.management.getAll(function(info) {
 	});
 
 }); // close chrome.management.getAll
-console.timeEnd('test');
+// console.timeEnd('test');
 $('.modal-trigger').leanModal();
 $('#searchbox').focus();
 
@@ -132,7 +132,7 @@ function getExtensionCount() {
 
 function handleGroupsClasses(){
 	// setting the group buttons to on/off appearance
-	console.time('here');
+	// console.time('here');
 	for (let group in user.groups) {
 		// for each group, get all extension id's in that group
 		// if they are all on, add class "on" to element, otherwise leave it grey
@@ -162,7 +162,7 @@ function handleGroupsClasses(){
 			$(`#${group}`).removeClass("on").addClass("off");
 		}
 	}
-	console.timeEnd('here');
+	// console.timeEnd('here');
 
 	$('.group-holder').show();
 	chrome.storage.sync.set(user);
@@ -280,14 +280,6 @@ function submitThatShit() {
 // check storage for user data
 function getUserData() {
 	chrome.storage.sync.get(function(obj){
-		// There should be a "groups" property, assume that if it doesn't exist, then they're on the old version
-		if (!obj.hasOwnProperty('groups')) {
-			// console.log('migrating user data...');
-			fixStorage(obj);
-			return;
-		}
-
-		// at this point, we're on the new data structure, set global user obj
 		user = obj;
 		// console.log("user:", user);
 
@@ -911,29 +903,6 @@ $("body").on("click", ".copy-clipboard", function (e) {
 /****** END LISTENERS ******/
 
 
-/****** VERSION MANAGEMENT ******/
-/* 
-This function is for moving from v0.82 -> v0.83
-We were storing groups on the global sync object. We need to put them into a groups property
-We also need to add properties for compactStyles and dismissedProfilesPrompt
-*/
-
-function fixStorage(groups) {
-	// create new object (essentially backing up the user's settings)
-	let newObj = {
-		"groups": groups || [],
-		"dismissedProfilesPrompt": false,
-		"compactStyles": false
-	};
-
-	// clear the cloud storage
-	chrome.storage.sync.clear();
-	// set the backup as storage (in our newer format)
-	chrome.storage.sync.set(newObj);
-
-	getUserData();
-}
-
 let currentVersion = chrome.runtime.getManifest().version;
 // Check if the version has changed
 if (currentVersion != localStorage.version) {
@@ -976,4 +945,4 @@ function arrayRemove(arr, value) {
 }
 
 /****** END VERSION MANAGEMENT ******/
-console.timeEnd("full");
+// console.timeEnd("full");
