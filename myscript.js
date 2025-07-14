@@ -313,7 +313,7 @@ function getUserData() {
 			chrome.storage.sync.set(user);
 		}
 
-		let allGroups = Object.keys(user.groups);
+		let allGroups = Object.keys(user.groups || {});
 		// if user has groups, show groups
 		if (allGroups.length > 0) {
 			// show groups
