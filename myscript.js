@@ -1,15 +1,10 @@
 /****** DECLARING VARIABLES *****/
 
 let extArray = [],
-appArray = [],
-activeExtensions = [],
-inactiveExtensions = [],
 idList = [],
 user = {},
 justIds = [],
 currentJob,
-addActive = '',
-addInactive = '',
 groupName;
 
 const customChromeId = 'balnpimdnhfiodmodckhkgneejophhhm';
@@ -20,8 +15,6 @@ $('#compactStylesheet')[0].disabled = true;
 // $('#darkMode')[0].disabled = true;
 
 
-// console.time('full');
-// console.time('test');
 chrome.management.getAll(function(info) {
 	// info is a list of all user installed apps i.e. extensions, apps, and themes
 	// push extensions to extArray
@@ -29,7 +22,6 @@ chrome.management.getAll(function(info) {
 		let entry = info[i];
 		// Make an array of all the extension and app ids
 		justIds.push(entry.id);
-		// console.log(info[i]);
 		switch(entry.type) {
 			case "extension":
 				extArray.push(entry);
@@ -40,7 +32,6 @@ chrome.management.getAll(function(info) {
 				entry.isApp = '<span class="new badge"></span>';
 				break;
 			default:
-				// console.log(entry.type);
 		}
 	}
 
@@ -53,6 +44,8 @@ chrome.management.getAll(function(info) {
 	});
 	
 	// loop over extArray, sort icons, append to appropriate element
+	addActive = '';
+	addInactive = '';
 	for (let i = 0; i < extArray.length; i++) {
 		let entry = extArray[i];
 	
@@ -116,7 +109,6 @@ chrome.management.getAll(function(info) {
 	});
 
 }); // close chrome.management.getAll
-// console.timeEnd('test');
 $('.modal-trigger').leanModal();
 $('#searchbox').focus();
 
@@ -133,7 +125,6 @@ function getExtensionCount() {
 
 function handleGroupsClasses(){
 	// setting the group buttons to on/off appearance
-	// console.time('here');
 	for (let group in user.groups) {
 		// for each group, get all extension id's in that group
 		// if they are all on, add class "on" to element, otherwise leave it grey
@@ -163,7 +154,6 @@ function handleGroupsClasses(){
 			$(`#${group}`).removeClass("on").addClass("off");
 		}
 	}
-	// console.timeEnd('here');
 
 	$('.group-holder').show();
 	chrome.storage.sync.set(user);
@@ -182,7 +172,7 @@ $('#nameSubmit').submit(function(e) {
 		}
 
 		// check if group name already exists
-		if($.inArray(name,Object.keys(user.groups)) != -1){
+		if($.inArray(name, Object.keys(user.groups || {})) != -1){
 			Materialize.toast('Group name already exists!', 2000, 'alert');
 			return;
 		}
@@ -267,6 +257,8 @@ function submitThatShit() {
 	}
 
 	// set new group on user obj, with idlist as array
+	if (!user.groups) user.groups = {};
+	if (!user.groups[name]) user.groups[name] = [];
 	user.groups[name] = idList;
 
 	chrome.storage.sync.set(user, function () {});
@@ -282,7 +274,6 @@ function submitThatShit() {
 function getUserData() {
 	chrome.storage.sync.get(function(obj){
 		user = obj;
-		// console.log("user:", user);
 
 		// check if user has compact styles checked
 		if (user.compactStyles) {
@@ -333,7 +324,7 @@ function getUserData() {
 				// Create a new array for valid IDs for this group
 				let validGroupIds = [];
 				for (let x = 0; x < user.groups[name].length; x++) {
-					let id = user.groups[name][x]; // <--- Corrected: Iterate through 'x'
+					let id = user.groups[name][x];
 					if (justIds.includes(id)) {
 						// Use .includes() for better readability
 						validGroupIds.push(id);
@@ -341,7 +332,6 @@ function getUserData() {
 					// If not found, it's simply not added to validGroupIds, effectively removing it.
 				}
 				user.groups[name] = validGroupIds; // Update the group with only valid IDs
-				// No need for 'continue' here as we're rebuilding the array
 
 				let extCount = user.groups[name].length;
 
@@ -357,7 +347,6 @@ function getUserData() {
 
 				let btnHtml = `<button class='group-btn tooltipped off' id='${name.toLowerCase().split(' ').join('_')}' data-tooltip='${extNames.join('\n')}'>${name} (${extCount})</button>`;
 
-				// append to group-holder (vanilla JS)
 				document.querySelector('.group-holder').insertAdjacentHTML('beforeend', btnHtml);
 			}
 
@@ -516,35 +505,29 @@ function debounce(func, wait) {
 }
 
 // Search
+function filterExtensions(searchTerm) {
+    let toFilter = user.includeApps ? $(".extBlock") : $(".extBlock:not(.app)");
+    toFilter.each(function (i, el) {
+        return $(el).find('.extName').text().search(new RegExp(searchTerm, "i")) < 0 ? $(el).fadeOut() : $(el).fadeIn();
+    });
+    if ($(".extName:visible").length === 0) {
+        $("#noResults").fadeIn();
+        $('#activeExtensions, #inactiveExtensions').parent().css('visibility', 'hidden');
+        $('.allExtensionsContainer').css({'visibility': 'hidden','height': '0px'});
+        $('#noResults .filterLink .search-failed-text').text(searchTerm);
+        $('#noResults a.filterLink').attr("href", `https://chrome.google.com/webstore/search/${encodeURIComponent(searchTerm)}`);
+    } else {
+        $("#noResults").hide();
+        $('.allExtensionsContainer').css({'visibility': 'visible','height': 'auto'});
+        $('#activeExtensions, #inactiveExtensions').parent().css('visibility', 'visible');
+    }
+}
+
+// ...then in your search handler:
 $("#searchbox").keyup(
-	debounce(function () {
-		// Retrieve the input field text
-		let searchTerm = $(this).val();
-		// Loop through the extensions, toFilter array will hold all elements to search through
-		// fill this depending on whether apps are on or off
-		let toFilter = user.includeApps ? $(".extBlock") : $(".extBlock:not(.app)");
-
-		toFilter.each(function (i, el) {
-			return $(el).find('.extName').text().search(new RegExp(searchTerm, "i")) < 0 ? $(el).fadeOut() : $(el).fadeIn();
-		});
-
-		// if the search returns no results then show the no results card
-		setTimeout(function () {
-			if ($(".extName:visible").length === 0) {
-				$("#noResults").fadeIn();
-				$('#activeExtensions, #inactiveExtensions').parent().css('visibility', 'hidden');
-				$('.allExtensionsContainer').css({'visibility': 'hidden','height': '0px'});
-				// fill in text
-				$('#noResults .filterLink .search-failed-text').text(searchTerm);
-				// update url
-				$('#noResults a.filterLink').attr("href", `https://chrome.google.com/webstore/search/${encodeURIComponent(searchTerm)}`);
-			} else {
-				$("#noResults").hide();
-				$('.allExtensionsContainer').css({'visibility': 'visible','height': 'auto'});
-				$('#activeExtensions, #inactiveExtensions').parent().css('visibility', 'visible');
-			}
-		}, 500);
-	}, 300)
+    debounce(function () {
+        filterExtensions($(this).val());
+    }, 300)
 );
 
 // after clicking a group's on/off button, we toggle its appearance (on or off) and cycle through associated extensions turning them all on or off
@@ -693,7 +676,6 @@ $("body").on("click", ".delete", function () {
 
 $("body").on("click", ".edit", function () {
 	groupName = $(this).parent().attr('group');
-	// console.log('user is editing: ', groupName);
 
 	//close the current modal, and clear out the groupsList
 	$('#editGroups').closeModal();
@@ -877,4 +859,3 @@ function arrayRemove(arr, value) {
 	});
 }
 
-// console.timeEnd("full");

@@ -568,8 +568,6 @@ span.badge.new {
 	white-space: pre;
 	border-radius: 15px;
 }
-.material-tooltip span {
-}
 .material-tooltip .backdrop {
 	border-radius: 0;
 }
@@ -584,7 +582,6 @@ span.badge.new {
 	width: 100%;
 	text-align: center;
 }
-.share-with-icons {}
 .share-icon {
 	width: 30px;
 	height: 30px;
